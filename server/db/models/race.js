@@ -1,15 +1,13 @@
-// const crypto = require('crypto')
-
 const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Race = db.define('race', {
   govLevel: {
-    type: Sequelize.ENUM,
-    values: ["Municipal", "State", "Federal"],
-    allowNull: false,
+    type: Sequelize.ENUM('Municipal', 'State', 'Federal'),
+    allowNull: false
   },
   positionAvailable: {
+    // Mayor, Sheriff, Governor, Senator, President, Senator
     type: Sequelize.STRING,
     allowNull: false,
     validate: {
@@ -17,26 +15,26 @@ const Race = db.define('race', {
     }
   },
   address: {
-    type: Sequelize.STRING,
+    type: Sequelize.STRING
   },
   latitude: {
     type: Sequelize.INTEGER,
     allowNull: true,
     defaultValue: null,
-    validate: { min: -90, max: 90 }
+    validate: {min: -90, max: 90}
   },
   longitude: {
     type: Sequelize.INTEGER,
     allowNull: true,
     defaultValue: null,
-    validate: { min: -180, max: 180 }
+    validate: {min: -180, max: 180}
   },
   isDecided: {
-    type: Sequelize.BOOLEAN,
+    type: Sequelize.BOOLEAN
   },
-  tags:{
+  tags: {
     type: Sequelize.ARRAY(Sequelize.STRING)
   }
 })
 
-export default Race;
+export default Race
