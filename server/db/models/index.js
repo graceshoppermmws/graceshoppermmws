@@ -1,7 +1,6 @@
 const User = require('./user')
 const Candidate = require('./candidate')
 const Race = require('./race')
-const Vote = require('./vote')
 const Order = require('/order')
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -18,11 +17,6 @@ const Order = require('/order')
  */
 
 //ASSOCIATIONS:
-Vote.belongsTo(Candidate)
-Candidate.hasMany(Vote)
-
-Vote.belongsTo(Race)
-Race.hasMany(Vote)
 
 Candidate.belongsTo(Race)
 Race.hasMany(Candidate)
@@ -30,21 +24,14 @@ Race.hasMany(Candidate)
 User.hasMany(Order)
 Order.belongsTo(User)
 
-Vote.belongsTo(Order)
-Order.hasMany(Vote)
+Order.belongsTo(Candidate)
+Candidate.hasMany(Order)
 
 // methods:
-
-Order.totalQuantity = async function() {
-  const ballotsBought = await Vote.findAll({
-    where: {}
-  })
-}
 
 module.exports = {
   User,
   Candidate,
   Race,
-  Vote,
   Order
 }
