@@ -31,7 +31,11 @@ router.get('/:raceId', async (req, res, next) => {
 // POST a race
 router.post('/', async (req, res, next) => {
   try {
-    const newRace = await Race.create(req.body)
+    const newRace = await Race.create({
+      govLevel: req.body.govLevel,
+      positionAvailable: req.body.positionAvailable,
+      address: req.body.address
+    })
     res.status(201).json(newRace)
   } catch (error) {
     next(error)
@@ -56,7 +60,7 @@ router.put('/:raceId', async (req, res, next) => {
 })
 
 // POST candidate by raceId
-router.post('/:raceId', async (req, res, next) => {
+router.post('/:raceId/candidates', async (req, res, next) => {
   try {
     const newCandidate = await Candidate.create({
       name: req.body.name,
