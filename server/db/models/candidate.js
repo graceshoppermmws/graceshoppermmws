@@ -18,10 +18,10 @@ const Candidate = db.define('candidate', {
       'http://theotherway.org/wp-content/uploads/2014/08/Coming-soon.jpg'
   },
   hasWon: {
-    type: Sequelize.ENUM,
-    values: [true, false, null]
+    type: Sequelize.BOOLEAN,
+    defaultValue: false
   },
-  //categories like gun control, property prices, issues
+  // categories like gun control, property prices, issues
   tags: {
     type: Sequelize.ARRAY(Sequelize.STRING)
   },
