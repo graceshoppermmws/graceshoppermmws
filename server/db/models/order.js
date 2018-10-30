@@ -3,13 +3,16 @@ const db = require('../db')
 
 const Order = db.define('order', {
   status: {
-    type: Sequelize.ENUM(['Created', 'Processing', 'Cancelled', 'Completed']),
+    type: Sequelize.ENUM('Created', 'Processing', 'Cancelled', 'Completed'),
     allowNull: false,
     defaultValue: 'Created'
   },
   historicPrice: {
     type: Sequelize.DECIMAL,
-    allowNull: false
+    allowNull: true // captures the current price when status -> processing
+  },
+  quantity: {
+    type: Sequelize.INTEGER
   }
 })
 
@@ -23,13 +26,6 @@ module.exports = Order
  * classMethods
  */
 
-Order.totalPrice = function() {
-  return Order.quantity * Order.historicPrice
-}
-
-Order.totalPrice = function() {
-  return Order.quantity * Order.historicPrice
-}
 /**
  * hooks
  */
