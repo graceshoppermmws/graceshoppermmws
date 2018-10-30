@@ -34,4 +34,4 @@ const Candidate = db.define('candidate', {
   }
 })
 
-export default Candidate
+module.exports = Candidate
