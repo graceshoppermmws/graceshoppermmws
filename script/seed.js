@@ -1,18 +1,45 @@
 'use strict'
 
 const db = require('../server/db')
-const {User} = require('../server/db/models')
+const {User, Candidate, Race, Order} = require('../server/db/models')
 
 async function seed() {
   await db.sync({force: true})
   console.log('db synced!')
 
-  const users = await Promise.all([
-    User.create({email: 'cody@email.com', password: '123'}),
-    User.create({email: 'murphy@email.com', password: '123'})
-  ])
+  // const users = await Promise.all([
+  //   User.create({email: 'cody@email.com', password: '123'}),
+  //   User.create({email: 'murphy@email.com', password: '123'})
+  // ])
 
-  console.log(`seeded ${users.length} users`)
+  const fourteenDistrict = await Race.create({
+    govLevel: 'Federal',
+    positionAvailable: 'Representative'
+  })
+
+  const cortez = await Candidate.create({
+    name: 'Alexandria Ocasio-Cortez',
+    bio:
+      'Alexandria Ocasio-Cortez is an American politician, educator, and political activist.',
+    inventory: '100',
+    price: '100',
+    raceId: fourteenDistrict.id
+  })
+
+  const user1 = await User.create({
+    email: 'email@email.com',
+    isAdmin: false
+  })
+
+  const order1 = await Order.create({
+    status: 'Created',
+    historicPrice: null,
+    quantity: '5',
+    userId: user1.id,
+    candidateId: cortez.id
+  })
+
+  // console.log(`seeded ${users.length} users`)
   console.log(`seeded successfully`)
 }
 
