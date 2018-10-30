@@ -28,12 +28,12 @@ async function seed() {
 
   const user1 = await User.create({
     email: 'email@email.com',
-    idAdmin: false
+    isAdmin: false
   })
 
   const order1 = await Order.create({
-    staus: 'Processing',
-    historicPrice: '100',
+    status: 'Created',
+    historicPrice: null,
     quantity: '5',
     userId: user1.id,
     candidateId: cortez.id
