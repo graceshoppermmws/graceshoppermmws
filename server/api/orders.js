@@ -36,7 +36,7 @@ router.post('/', async (req, res, next) => {
       candidateId: req.body.candidateId,
       userId: req.body.userId
     })
-    res.status(200).json(newOrder)
+    res.status(201).json(newOrder)
   } catch (err) {
     next(err)
   }
