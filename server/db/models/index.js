@@ -16,6 +16,17 @@ const Vote = require('./vote')
  * for example, we can say: const {User} = require('../db/models')
  * instead of: const User = require('../db/models/user')
  */
+
+ //ASSOCIATIONS:
+ Vote.belongsTo(Candidate)
+ Candidate.hasMany(Vote)
+
+ Vote.belongsTo(Race)
+ Race.hasMany(Vote)
+
+ Candidate.belongsTo(Race)
+ Race.hasMany(Candidate)
+
 module.exports = {
   User,
   Candidate,
