@@ -1,6 +1,7 @@
 const User = require('./user')
 const Candidate = require('./candidate');
 const Race = require('./race')
+const Vote = require('./vote')
 
 /**
  * If we had any associations to make, this would be a great place to put them!
@@ -19,4 +20,5 @@ module.exports = {
   User,
   Candidate,
   Race,
+  Vote,
 }
