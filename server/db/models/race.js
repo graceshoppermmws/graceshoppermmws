@@ -37,4 +37,4 @@ const Race = db.define('race', {
   }
 })
 
-export default Race
+module.exports = Race
