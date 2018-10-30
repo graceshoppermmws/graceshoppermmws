@@ -1,5 +1,3 @@
-// const crypto = require('crypto')
-
 const Sequelize = require('sequelize')
 const db = require('../db')
 
@@ -11,30 +9,29 @@ const Candidate = db.define('candidate', {
       notEmpty: true
     }
   },
-  positionSought: {
-    type: Sequelize.STRING,
-    allowNull: false,
-    validate: {
-      notEmpty: true
-    }
-  },
   bio: {
-    type: Sequelize.TEXT,
+    type: Sequelize.TEXT
   },
   imageUrl: {
     type: Sequelize.STRING,
-    defaultValue: 'http://theotherway.org/wp-content/uploads/2014/08/Coming-soon.jpg'
-  },
-  location: {
-    type: Sequelize.STRING,
+    defaultValue:
+      'http://theotherway.org/wp-content/uploads/2014/08/Coming-soon.jpg'
   },
   hasWon: {
     type: Sequelize.ENUM,
     values: [true, false, null]
   },
-  tags:{
+  //categories like gun control, property prices, issues
+  tags: {
     type: Sequelize.ARRAY(Sequelize.STRING)
+  },
+  inventory: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
+  price: {
+    type: Sequelize.DECIMAL
   }
 })
 
-export default Candidate;
+export default Candidate
