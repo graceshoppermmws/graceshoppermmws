@@ -12,20 +12,6 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-//Get order By userid
-router.get('/:userId', async (req, res, next) => {
-  try {
-    const singleOrder = await Order.findAll({
-      where: {
-        userId: +req.params.userId
-      }
-    })
-    res.status(200).json(singleOrder)
-  } catch (err) {
-    next(err)
-  }
-})
-
 //Post a order
 router.post('/', async (req, res, next) => {
   try {
@@ -37,6 +23,24 @@ router.post('/', async (req, res, next) => {
       userId: req.body.userId
     })
     res.status(201).json(newOrder)
+  } catch (err) {
+    next(err)
+  }
+})
+
+router.put('/:orderId', async (req, res, next) => {
+  try {
+    const singleOrder = await Order.findById(+req.params.orderId)
+    if (!singleOrder) {
+      res.sendStatus(404)
+    } else {
+      const updatedOrder = await singleOrder.update({
+        where: {
+          status: req.body.staus
+        }
+      })
+      res.status(201).json(updatedOrder)
+    }
   } catch (err) {
     next(err)
   }
