@@ -1,7 +1,7 @@
 const User = require('./user')
 const Candidate = require('./candidate')
 const Race = require('./race')
-const Order = require('/order')
+const Order = require('./order')
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
