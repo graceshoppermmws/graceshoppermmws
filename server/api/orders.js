@@ -16,8 +16,8 @@ router.get('/', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     const newOrder = await Order.create({
-      status: req.body.status,
-      historicPrice: req.body.historicPrice,
+      status: 'Created',
+      historicPrice: null, // not set until status changed to 'Processing'
       quantity: req.body.quantity,
       candidateId: req.body.candidateId,
       userId: req.body.userId
@@ -29,16 +29,15 @@ router.post('/', async (req, res, next) => {
 })
 
 router.put('/:orderId', async (req, res, next) => {
+  // the req.body should pass through all the fields that will change
+  // the front end should automatically pass through a historicPrice
+  // when status changes from Created to Processing
   try {
-    const singleOrder = await Order.findById(+req.params.orderId)
-    if (!singleOrder) {
+    const oldOrder = await Order.findById(+req.params.orderId)
+    if (!oldOrder) {
       res.sendStatus(404)
     } else {
-      const updatedOrder = await singleOrder.update({
-        where: {
-          status: req.body.staus
-        }
-      })
+      const updatedOrder = await oldOrder.update(req.body)
       res.status(201).json(updatedOrder)
     }
   } catch (err) {
