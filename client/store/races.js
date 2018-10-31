@@ -61,6 +61,7 @@ export const getRaces = () => {
 export const getSelectedRace = raceId => {
   return async dispatch => {
     try {
+      console.log('thunkk')
       const response = await axios.get(`/api/races/${raceId}`)
       const race = response.data
       const action = gotSelectedRace(race)
@@ -101,11 +102,13 @@ export const putRace = (raceId, race) => {
  * REDUCER
  */
 export default function(state = defaultRaceState, action) {
+  console.log('hit reducer')
   switch (action.type) {
     case GET_RACES: {
       return {...state, allRaces: action.races}
     }
     case SELECT_RACE: {
+      console.log('reducer', action.race)
       return {...state, selectedRace: action.race}
     }
     case ADD_RACE: {
