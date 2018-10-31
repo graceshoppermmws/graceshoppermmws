@@ -22,6 +22,7 @@ const Candidate = db.define('candidate', {
     defaultValue: false
   },
   // categories like gun control, property prices, issues
+  //we might need a validation to convert the string input into array
   tags: {
     type: Sequelize.ARRAY(Sequelize.STRING)
   },
