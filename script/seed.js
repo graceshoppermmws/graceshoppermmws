@@ -14,12 +14,14 @@ async function seed() {
 
   const fourteenDistrict = await Race.create({
     govLevel: 'Federal',
-    positionAvailable: 'Representative'
+    positionAvailable: 'Representative',
+    districtName: 'US House of Representatives District 14'
   })
 
-  const newYorkStateSenateDistrict17 = await Race.create({
+  const seventeenDistrict = await Race.create({
     govLevel: 'State',
-    positionAvailable: 'Senator'
+    positionAvailable: 'Senator',
+    districtName: 'State Senate District 17'
   })
 
   const cortez = await Candidate.create({
@@ -49,6 +51,24 @@ async function seed() {
     raceId: fourteenDistrict.id
   })
 
+  const felder = await Candidate.create({
+    name: 'Simcha Felder',
+    bio:
+      'Simcha Felder is a Democratic member of the New York State Senate, representing District 17. Felder is also running in the 2018 election as a Republican Party, Conservative Party, and Independence Party candidate.',
+    inventory: '100',
+    price: '100',
+    raceId: seventeenDistrict.id
+  })
+
+  const williams = await Candidate.create({
+    name: 'Jumaane Williams',
+    bio:
+      'Jumaane Williams is a Working Families Party candidate seeking election to the New York State Senate to represent District 17. Williams is the Democratic and Working Families Party District 45 representative on the New York City Council in New York.',
+    inventory: '100',
+    price: '10',
+    raceId: seventeenDistrict.id
+  })
+
   const littleShopper = await User.create({
     email: 'email@email.com',
     isAdmin: false,
@@ -57,6 +77,12 @@ async function seed() {
 
   const lobbyistShopper = await User.create({
     email: 'email@anymail.com',
+    isAdmin: false,
+    password: '123'
+  })
+
+  const boredShopper = await User.create({
+    email: 'email@moremail.com',
     isAdmin: false,
     password: '123'
   })
@@ -89,6 +115,22 @@ async function seed() {
     quantity: '75',
     userId: lobbyistShopper.id,
     candidateId: pappas.id
+  })
+
+  const order4 = await Order.create({
+    status: 'Created',
+    historicPrice: null,
+    quantity: '10',
+    userId: boredShopper.id,
+    candidateId: williams.id
+  })
+
+  const order5 = await Order.create({
+    status: 'Created',
+    historicPrice: null,
+    quantity: '10',
+    userId: lobbyistShopper.id,
+    candidateId: felder.id
   })
 
   // console.log(`seeded ${users.length} users`)
