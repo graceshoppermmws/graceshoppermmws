@@ -88,7 +88,7 @@ async function seed() {
   })
 
   const graceAdmin = await User.create({
-    email: 'email@email.com',
+    email: 'email@someemail.com',
     isAdmin: true,
     password: '123'
   })
