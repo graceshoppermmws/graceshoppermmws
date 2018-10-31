@@ -29,6 +29,10 @@ const Poduct = db.define('candidate', {
   },
   price: {
     type: Sequelize.DECIMAL
+  },
+  govLevel: {
+    type: Sequelize.ENUM('Municipal', 'State', 'Federal'),
+    allowNull: false
   }
 })
 
