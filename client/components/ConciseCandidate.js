@@ -13,7 +13,6 @@ export class ConsiseCandidate extends Component {
       <div>
         <h2>{this.props.candidate.name}</h2>
         <br />
-
         <Link to={`allraces/candidates/${this.props.candidate.id}`}>
           <img src={this.props.candidate.name} width="300" />
         </Link>
