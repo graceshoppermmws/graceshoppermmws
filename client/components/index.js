@@ -6,5 +6,5 @@
 export {default as Navbar} from './navbar'
 export {default as UserHome} from './user-home'
 export {Login, Signup} from './auth-form'
-export {default as AllRaces} from './AllRaces'
-export {default as SingleRace} from './SingleRace'
+// export {default as AllRaces} from './AllRaces'
+// export {default as SingleRace} from './SingleRace'
