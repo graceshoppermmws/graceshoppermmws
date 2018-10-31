@@ -1,7 +1,7 @@
 const User = require('./user')
-const Candidate = require('./candidate')
-const Race = require('./race')
-const Order = require('./order')
+// const Candidate = require('./candidate')
+// const Race = require('./race')
+// const Order = require('./order')
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
@@ -18,20 +18,20 @@ const Order = require('./order')
 
 //ASSOCIATIONS:
 
-Candidate.belongsTo(Race)
-Race.hasMany(Candidate)
+// Candidate.belongsTo(Race)
+// Race.hasMany(Candidate)
 
-User.hasMany(Order)
-Order.belongsTo(User)
+// User.hasMany(Order)
+// Order.belongsTo(User)
 
-Order.belongsTo(Candidate)
-Candidate.hasMany(Order)
+// Order.belongsTo(Candidate)
+// Candidate.hasMany(Order)
 
 // methods:
 
 module.exports = {
-  User,
-  Candidate,
-  Race,
-  Order
+  User
+  // Candidate,
+  // Race,
+  // Order
 }

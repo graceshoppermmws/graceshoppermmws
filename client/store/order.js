@@ -1,6 +1,6 @@
-import axios from 'axios'
+// import axios from 'axios'
 
-/**
- * ACTION TYPES
- */
-const GET_ORDERS = 'GET_ORDERS'
+// /**
+//  * ACTION TYPES
+//  */
+// const GET_ORDERS = 'GET_ORDERS'

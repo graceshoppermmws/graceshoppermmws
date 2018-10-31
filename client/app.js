@@ -2,7 +2,7 @@ import React from 'react'
 
 import {Navbar} from './components'
 import Routes from './routes'
-import {Login, Signup, UserHome, AllRaces} from './components'
+import {Login, Signup, UserHome} from './components'
 
 const App = () => {
   return (
