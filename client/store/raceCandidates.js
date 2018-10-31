@@ -10,7 +10,7 @@ const EDIT_CANDIDATE = 'EDIT_CANDIDATE'
 /**
  * INITIAL STATE
  */
-const defaultRaceDataState = []
+const defaultRaceCandidatesState = []
 
 /**
  * ACTION CREATORS
@@ -83,7 +83,7 @@ export const putCandidate = (raceId, candidateId, candidate) => {
 /**
  * REDUCER
  */
-export default function(state = defaultRaceDataState, action) {
+export default function(state = defaultRaceCandidatesState, action) {
   switch (action.type) {
     case GET_CANDIDATES: {
       return action.candidates
@@ -98,7 +98,7 @@ export default function(state = defaultRaceDataState, action) {
         }
         return candidate
       })
-      return [...editedCandidates]
+      return editedCandidates
     }
     default:
       return state
