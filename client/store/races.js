@@ -19,22 +19,22 @@ const defaultRaceState = {
 /**
  * ACTION CREATORS
  */
-export const getRaces = races => ({
+export const gotRaces = races => ({
   type: GET_RACES,
   races
 })
 
-export const selectRace = race => ({
+export const gotSelectedRace = race => ({
   type: SELECT_RACE,
   race
 })
 
-export const createRace = race => ({
+export const createdRace = race => ({
   type: ADD_RACE,
   race
 })
 
-export const editRace = (raceId, race) => ({
+export const editedRace = (raceId, race) => ({
   type: EDIT_RACE,
   raceId,
   race
@@ -44,12 +44,12 @@ export const editRace = (raceId, race) => ({
  * THUNK CREATORS
  */
 
-export const fetchRaces = () => {
+export const getRaces = () => {
   return async dispatch => {
     try {
       const response = await axios.get('/api/races')
       const races = response.data
-      const action = getRaces(races)
+      const action = gotRaces(races)
       dispatch(action)
     } catch (err) {
       // to add toastr
@@ -58,12 +58,12 @@ export const fetchRaces = () => {
   }
 }
 
-export const fetchSelectedRace = raceId => {
+export const getSelectedRace = raceId => {
   return async dispatch => {
     try {
       const response = await axios.get(`/api/races/${raceId}`)
       const race = response.data
-      const action = selectRace(race)
+      const action = gotSelectedRace(race)
       dispatch(action)
     } catch (err) {
       console.error(err)
@@ -76,7 +76,7 @@ export const postRace = race => {
     try {
       const response = await axios.post('api/races', race)
       const newRace = response.data
-      const action = createRace(newRace)
+      const action = createdRace(newRace)
       dispatch(action)
     } catch (err) {
       console.error(err)
@@ -84,12 +84,12 @@ export const postRace = race => {
   }
 }
 
-export const updateRace = (raceId, race) => {
+export const putRace = (raceId, race) => {
   return async dispatch => {
     try {
       const response = await axios.put(`api/races/${raceId}`, race)
       const updatedRace = response.data
-      const action = editRace(updatedRace)
+      const action = editedRace(updatedRace)
       dispatch(action)
     } catch (err) {
       console.error(err)

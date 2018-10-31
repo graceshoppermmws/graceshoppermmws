@@ -14,12 +14,12 @@ const defaultCandidatesState = []
 /**
  * ACTION CREATORS
  */
-export const createCandidate = candidate => ({
+export const createdCandidate = candidate => ({
   type: ADD_CANDIDATE,
   candidate
 })
 
-export const editCandidate = (candidateId, candidate) => ({
+export const editedCandidate = (candidateId, candidate) => ({
   type: EDIT_CANDIDATE,
   candidateId,
   candidate
@@ -36,7 +36,7 @@ export const postCandidate = (raceId, candidate) => {
         candidate
       )
       const newCandidate = response.data
-      const action = createCandidate(newCandidate)
+      const action = createdCandidate(newCandidate)
       dispatch(action)
     } catch (err) {
       console.error(err)
@@ -44,7 +44,7 @@ export const postCandidate = (raceId, candidate) => {
   }
 }
 
-export const updateCandidate = (raceId, candidateId, candidate) => {
+export const putCandidate = (raceId, candidateId, candidate) => {
   return async dispatch => {
     try {
       const response = await axios.put(
@@ -52,7 +52,7 @@ export const updateCandidate = (raceId, candidateId, candidate) => {
         candidate
       )
       const updatedCandidate = response.data
-      const action = editCandidate(candidateId, updatedCandidate)
+      const action = editedCandidate(candidateId, updatedCandidate)
       dispatch(action)
     } catch (err) {
       console.error(err)
