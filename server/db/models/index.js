@@ -1,4 +1,7 @@
 const User = require('./user')
+const Order = require('./order')
+const Product = require('./product')
+
 // const Candidate = require('./candidate')
 // const Race = require('./race')
 // const Order = require('./order')
@@ -18,6 +21,12 @@ const User = require('./user')
 
 //ASSOCIATIONS:
 
+User.hasMany(Order)
+Order.belongsTo(User)
+
+Order.belongsToMany(Product)
+Product.belongsToMany(Order)
+
 // Candidate.belongsTo(Race)
 // Race.hasMany(Candidate)
 
@@ -30,8 +39,9 @@ const User = require('./user')
 // methods:
 
 module.exports = {
-  User
+  User,
+  Order,
+  Product
   // Candidate,
   // Race,
-  // Order
 }
