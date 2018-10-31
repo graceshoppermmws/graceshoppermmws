@@ -28,8 +28,8 @@ async function seed() {
     name: 'Alexandria Ocasio-Cortez',
     bio:
       'Alexandria Ocasio-Cortez is an American politician, educator, and political activist.',
-    inventory: '100',
-    price: '100',
+    inventory: 100,
+    price: 100.0,
     raceId: fourteenDistrict.id
   })
 
@@ -37,8 +37,8 @@ async function seed() {
     name: 'Joseph Crowley',
     bio:
       "Joseph Crowley is an outgoing Democratic representative from New York's 14th Congressional District in the U.S. House. Crowley lost the primary on June 26, 2018. Joseph Crowley is the Working Families Party representative from New York's 14th Congressional District in the U.S. House. Crowley is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.",
-    inventory: '100',
-    price: '50',
+    inventory: 100,
+    price: 50.0,
     raceId: fourteenDistrict.id
   })
 
@@ -46,8 +46,8 @@ async function seed() {
     name: 'Anthony Pappas',
     bio:
       "Anthony Pappas is a Republican candidate for New York's 14th Congressional District in the U.S. House. Pappas is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.",
-    inventory: '100',
-    price: '10',
+    inventory: 100,
+    price: 10.0,
     raceId: fourteenDistrict.id
   })
 
@@ -55,8 +55,8 @@ async function seed() {
     name: 'Simcha Felder',
     bio:
       'Simcha Felder is a Democratic member of the New York State Senate, representing District 17. Felder is also running in the 2018 election as a Republican Party, Conservative Party, and Independence Party candidate.',
-    inventory: '100',
-    price: '100',
+    inventory: 100,
+    price: 100.0,
     raceId: seventeenDistrict.id
   })
 
@@ -64,8 +64,8 @@ async function seed() {
     name: 'Jumaane Williams',
     bio:
       'Jumaane Williams is a Working Families Party candidate seeking election to the New York State Senate to represent District 17. Williams is the Democratic and Working Families Party District 45 representative on the New York City Council in New York.',
-    inventory: '100',
-    price: '10',
+    inventory: 100,
+    price: 10.0,
     raceId: seventeenDistrict.id
   })
 
@@ -96,7 +96,7 @@ async function seed() {
   const order1 = await Order.create({
     status: 'Created',
     historicPrice: null,
-    quantity: '5',
+    quantity: 5,
     userId: littleShopper.id,
     candidateId: cortez.id
   })
@@ -104,7 +104,7 @@ async function seed() {
   const order2 = await Order.create({
     status: 'Created',
     historicPrice: null,
-    quantity: '50',
+    quantity: 50,
     userId: lobbyistShopper.id,
     candidateId: crowley.id
   })
@@ -112,7 +112,7 @@ async function seed() {
   const order3 = await Order.create({
     status: 'Created',
     historicPrice: null,
-    quantity: '75',
+    quantity: 75,
     userId: lobbyistShopper.id,
     candidateId: pappas.id
   })
@@ -120,7 +120,7 @@ async function seed() {
   const order4 = await Order.create({
     status: 'Created',
     historicPrice: null,
-    quantity: '10',
+    quantity: 10,
     userId: boredShopper.id,
     candidateId: williams.id
   })
@@ -128,7 +128,7 @@ async function seed() {
   const order5 = await Order.create({
     status: 'Created',
     historicPrice: null,
-    quantity: '10',
+    quantity: 10,
     userId: lobbyistShopper.id,
     candidateId: felder.id
   })
