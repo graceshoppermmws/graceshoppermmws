@@ -34,10 +34,10 @@ export const editedCandidate = (candidateId, candidate) => ({
 /**
  * THUNK CREATORS
  */
-export const getCandidates = () => {
+export const getCandidates = raceId => {
   return async dispatch => {
     try {
-      const response = await axios.get('/api/races')
+      const response = await axios.get(`/api/races/${raceId}`)
       const candidates = response.data
       const action = gotCandidates(candidates)
       dispatch(action)
