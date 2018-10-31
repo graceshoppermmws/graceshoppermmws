@@ -72,19 +72,20 @@ const mapEditRace = state => {
     name: 'editRace',
     displayName: 'Edit Race',
     error: 'some error' //state.user.error
-    /* other properties to prepopulate fields */
   }
 }
 
-const mapAddDispatch = dispatch => {
+const mapDispatch = dispatch => {
   return {
     handleSubmit(evt) {
       evt.preventDefault()
+      const formName = evt.target.name
       const govLevel = evt.target.govLevel.value
       const positionAvailable = evt.target.positionAvailable.value
       const districtName = evt.target.districtName.value
+      const myThunk = formName === 'editRace' ? putRace : postRace
       dispatch(
-        postRace({
+        myThunk({
           govLevel,
           positionAvailable,
           districtName
@@ -94,26 +95,8 @@ const mapAddDispatch = dispatch => {
   }
 }
 
-const mapEditDispatch = dispatch => {
-  return {
-    handleSubmit(evt) {
-      evt.preventDefault()
-      const govLevel = evt.target.govLevel.value
-      const positionAvailable = evt.target.positionAvailable.value
-      const districtName = evt.target.districtName.value
-      dispatch(
-        putRace({
-          govLevel,
-          positionAvailable,
-          districtName
-        })
-      )
-    }
-  }
-}
-
-export const AddRaceForm = connect(mapAddRace, mapAddDispatch)(RaceForm)
-export const EditRaceForm = connect(mapEditRace, mapEditDispatch)(RaceForm)
+export const AddRaceForm = connect(mapAddRace, mapDispatch)(RaceForm)
+export const EditRaceForm = connect(mapEditRace, mapDispatch)(RaceForm)
 
 /**
  * PROP TYPES
