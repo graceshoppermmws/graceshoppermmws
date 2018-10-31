@@ -1,13 +1,14 @@
 import React from 'react'
 import {connect} from 'react-redux'
 import PropTypes from 'prop-types'
-import {someRaceFormFunction} from '../store'
+import {postRace, putRace} from '../store'
 
 /**
  * COMPONENT
  */
 const RaceForm = props => {
   const {name, displayName, handleSubmit, error} = props
+  const {govLevel, positionAvailable, districtName} = props.race // assume passed through from singleRaceView?
   // need to collect govLevel, positionAvailable, districtName at a minimum
 
   return (
@@ -17,7 +18,7 @@ const RaceForm = props => {
           <label htmlFor="govLevel">
             <small>Government Level</small>
           </label>
-          <select name="govLevel">
+          <select name="govLevel" value={govLevel}>
             <option value="Municipal">Municipal</option>
             <option value="State">State</option>
             <option value="Federal">Federal</option>
@@ -27,13 +28,17 @@ const RaceForm = props => {
           <label htmlFor="positionAvailable">
             <small>Office</small>
           </label>
-          <input name="positionAvailable" type="text" />
+          <input
+            name="positionAvailable"
+            type="text"
+            value={positionAvailable}
+          />
         </div>
         <div>
           <label htmlFor="districtName">
             <small>District</small>
           </label>
-          <input name="districtName" type="text" />
+          <input name="districtName" type="text" value={districtName} />
         </div>
         <div>
           <button type="submit">
@@ -58,7 +63,7 @@ const mapAddRace = state => {
   return {
     name: 'addRace',
     displayName: 'Add Race',
-    error: state.user.error
+    error: 'some error' //state.user.error
   }
 }
 
@@ -66,33 +71,49 @@ const mapEditRace = state => {
   return {
     name: 'editRace',
     displayName: 'Edit Race',
-    error: state.user.error
+    error: 'some error' //state.user.error
     /* other properties to prepopulate fields */
   }
 }
 
-const mapDispatch = dispatch => {
+const mapAddDispatch = dispatch => {
   return {
     handleSubmit(evt) {
       evt.preventDefault()
-      const formName = evt.target.name
       const govLevel = evt.target.govLevel.value
       const positionAvailable = evt.target.positionAvailable.value
       const districtName = evt.target.districtName.value
       dispatch(
-        someRaceFormFunction(
+        postRace({
           govLevel,
           positionAvailable,
-          districtName,
-          formName
-        )
+          districtName
+        })
       )
     }
   }
 }
 
-export const AddRaceForm = connect(mapAddRace, mapDispatch)(RaceForm)
-export const EditRaceForm = connect(mapEditRace, mapDispatch)(RaceForm)
+const mapEditDispatch = dispatch => {
+  return {
+    handleSubmit(evt) {
+      evt.preventDefault()
+      const govLevel = evt.target.govLevel.value
+      const positionAvailable = evt.target.positionAvailable.value
+      const districtName = evt.target.districtName.value
+      dispatch(
+        putRace({
+          govLevel,
+          positionAvailable,
+          districtName
+        })
+      )
+    }
+  }
+}
+
+export const AddRaceForm = connect(mapAddRace, mapAddDispatch)(RaceForm)
+export const EditRaceForm = connect(mapEditRace, mapEditDispatch)(RaceForm)
 
 /**
  * PROP TYPES
