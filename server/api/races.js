@@ -34,7 +34,8 @@ router.post('/', async (req, res, next) => {
     const newRace = await Race.create({
       govLevel: req.body.govLevel,
       positionAvailable: req.body.positionAvailable,
-      address: req.body.address
+      address: req.body.address,
+      districtName: req.body.districtName
     })
     res.status(201).json(newRace)
   } catch (error) {
