@@ -14,6 +14,14 @@ const Race = db.define('race', {
       notEmpty: true
     }
   },
+  districtName: {
+    // State Senate District 17, US House of Representatives District 14
+    type: Sequelize.STRING,
+    allowNull: false,
+    validate: {
+      notEmpty: true
+    }
+  },
   address: {
     type: Sequelize.STRING
   },
