@@ -1,20 +1,23 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {putProduct} from '../store/products'
+import {getProducts, putProduct} from '../store/products'
+import ProductForm from './ProductForm'
+
+const defaultState = {
+  name: '',
+  bio: '',
+  imageUrl: '',
+  districtName: '',
+  position: '',
+  inventory: '',
+  price: '',
+  govLevel: ''
+}
 
 class EditProduct extends Component {
   constructor() {
     super()
-    this.state = {
-      name: '',
-      bio: '',
-      imageUrl: '',
-      districtName: '',
-      postition: '',
-      inventory: 0,
-      price: 0,
-      govLevel: ''
-    }
+    this.state = defaultState
     this.changeHandler = this.changeHandler.bind(this)
     this.submitHandler = this.submitHandler.bind(this)
   }
@@ -27,78 +30,42 @@ class EditProduct extends Component {
 
   async submitHandler(event) {
     event.preventDefault()
-    const updateProduct = await this.props.putProduct(this.props.id, {
-      id: this.props.id,
-      name: this.state.name,
-      bio: this.state.bio,
-      imageUrl: this.state.imageUrl,
-      districtName: this.state.districtName,
-      postition: this.state.position,
-      inventory: this.state.inventory,
-      price: this.state.price,
-      govLevel: this.state.govLevel
-    })
-    console.log(updateProduct)
+    try {
+      const updateProduct = await this.props.putProduct(this.props.id, {
+        id: this.props.id,
+        name: this.state.name,
+        bio: this.state.bio,
+        imageUrl: this.state.imageUrl,
+        districtName: this.state.districtName,
+        position: this.state.position,
+        inventory: this.state.inventory,
+        price: this.state.price,
+        govLevel: this.state.govLevel
+      })
+      await this.props.getProducts()
+    } catch (err) {
+      console.error(err)
+    }
+    // const updateProduct = await this.props.putProduct(this.props.id, this.state)
+    this.setState(defaultState)
+    // console.log(updateProduct)
   }
 
   render() {
     return (
-      <form onSubmit={this.submitHandler} name={name}>
-        <div>
-          <label htmlFor="name">
-            <small>Name</small>
-            <input
-              name="name"
-              type="text"
-              value={this.state.name}
-              onChange={this.changeHandler}
-            />
-          </label>
-          <label htmlFor="bio">
-            <small>Bio</small>
-            <input
-              name="bio"
-              type="text"
-              value={this.state.bio}
-              onChange={this.changeHandler}
-            />
-          </label>
-          <label htmlFor="district">
-            <small>District</small>
-            <input
-              name="district"
-              type="text"
-              value={this.state.district}
-              onChange={this.changeHandler}
-            />
-          </label>
-          <label htmlFor="inventory">
-            <small>Inventory</small>
-            <input
-              name="inventory"
-              type="text"
-              value={this.state.inventory}
-              onChange={this.changeHandler}
-            />
-          </label>
-          <label htmlFor="govLevel">
-            <small>Level</small>
-            <select name="govLevel" onChange={this.changeHandler}>
-              <option value="Municipal">Municipal</option>
-              <option value="State">State</option>
-              <option value="Federal">Federal</option>
-            </select>
-          </label>
-        </div>
-        <button type="submit">Submit</button>
-      </form>
+      <ProductForm
+        product={this.state}
+        changeHandler={this.changeHandler}
+        submitHandler={this.submitHandler}
+      />
     )
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    putProduct: (id, updateProduct) => dispatch(putProduct(id, updateProduct))
+    putProduct: (id, updateProduct) => dispatch(putProduct(id, updateProduct)),
+    getProducts: () => dispatch(getProducts())
   }
 }
 

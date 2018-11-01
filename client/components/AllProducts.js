@@ -37,6 +37,8 @@ class AllProducts extends Component {
   }
   render() {
     const filterView = this.state.filter
+    const admin = this.props.user.isAdmin
+    console.log('admin', admin)
     return (
       <div>
         <h2>Candidates For Sale</h2>
@@ -66,34 +68,36 @@ class AllProducts extends Component {
                 .map((product, i) => (
                   <li key={i}>
                     <Product product={product} />
+                    {!admin ? (
+                      <button
+                        type="button"
+                        onClick={() => this.handleChange(product)}
+                      >
+                        Buy!
+                      </button>
+                    ) : (
+                      <EditProduct id={product.id} />
+                    )}
+                  </li>
+                ))
+            : this.props.allProducts.map((product, i) => (
+                <li key={i}>
+                  <Product product={product} />
+                  {!admin ? (
                     <button
                       type="button"
                       onClick={() => this.handleChange(product)}
                     >
                       Buy!
                     </button>
-                  </li>
-                ))
-            : this.props.allProducts.map((product, i) => (
-                <li key={i}>
-                  <Product product={product} />
-                  <button
-                    type="button"
-                    onClick={() => this.handleChange(product)}
-                  >
-                    Buy!
-                  </button>
-                  <EditProduct id={product.id} />
-                  <Link
-                    to={`/products/
-                  ${product.id}`}
-                  >
-                    Single View
-                  </Link>
+                  ) : (
+                    <EditProduct id={product.id} />
+                  )}
+                  <Link to={`/products/${product.id}`}>Single View</Link>
                 </li>
               ))}
         </ul>
-        <AddProduct />
+        {admin ? <AddProduct /> : ' '}
       </div>
     )
   }
@@ -101,7 +105,8 @@ class AllProducts extends Component {
 
 const mapStateToProps = state => {
   return {
-    allProducts: state.products.allProducts
+    allProducts: state.products.allProducts,
+    user: state.user
   }
 }
 
