@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {getProducts, putProduct} from '../store/products'
+import {getProducts, putProduct, getSelectedProduct} from '../store/products'
 import ProductForm from './ProductForm'
 
 const defaultState = {
@@ -43,6 +43,7 @@ class EditProduct extends Component {
         govLevel: this.state.govLevel
       })
       await this.props.getProducts()
+      await this.props.getSelectedProduct(this.props.id)
     } catch (err) {
       console.error(err)
     }
@@ -65,7 +66,8 @@ class EditProduct extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     putProduct: (id, updateProduct) => dispatch(putProduct(id, updateProduct)),
-    getProducts: () => dispatch(getProducts())
+    getProducts: () => dispatch(getProducts()),
+    getSelectedProduct: id => dispatch(getSelectedProduct(id))
   }
 }
 

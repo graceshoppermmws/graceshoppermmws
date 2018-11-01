@@ -76,7 +76,8 @@ class AllProducts extends Component {
                         Buy!
                       </button>
                     ) : (
-                      <EditProduct id={product.id} />
+                      ' '
+                      // <EditProduct id={product.id} />
                     )}
                   </li>
                 ))
@@ -91,7 +92,8 @@ class AllProducts extends Component {
                       Buy!
                     </button>
                   ) : (
-                    <EditProduct id={product.id} />
+                    ' '
+                    // <EditProduct id={product.id} />
                   )}
                   <Link to={`/products/${product.id}`}>Single View</Link>
                 </li>
