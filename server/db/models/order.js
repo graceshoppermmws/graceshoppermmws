@@ -2,10 +2,14 @@ const Sequelize = require('sequelize')
 const db = require('../db')
 
 const Order = db.define('order', {
+  isCart: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: true
+  },
   status: {
-    type: Sequelize.ENUM('Created', 'Processing', 'Cancelled', 'Completed'),
+    type: Sequelize.ENUM('Cart', 'Cancelled', 'Completed'),
     allowNull: false,
-    defaultValue: 'Created'
+    defaultValue: 'Cart'
   },
   historicPrice: {
     type: Sequelize.DECIMAL,
