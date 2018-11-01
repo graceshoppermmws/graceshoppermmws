@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Product from './Product'
+import AddProduct from './AddProduct'
 import {getProducts} from '../store/products'
 
 const defaultState = {
@@ -82,8 +83,8 @@ class AllProducts extends Component {
                   </button>
                 </li>
               ))}
-          }
         </ul>
+        <AddProduct />
       </div>
     )
   }
