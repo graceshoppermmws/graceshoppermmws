@@ -15,7 +15,7 @@ const Product = props => {
     <div>
       <ul>
         <li>Name: {name}</li>
-        <img src={imageUrl} />
+        <img src={imageUrl} width="80px" />
         <li>Bio: {bio}</li>
         <li>District: {districtName}</li>
         <li>Level: {govLevel}</li>

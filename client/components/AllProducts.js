@@ -3,23 +3,9 @@ import {connect} from 'react-redux'
 import Product from './Product'
 import {getProducts} from '../store/products'
 
-// const allProducts = [
-//   {
-//     govLevel: 'Federal',
-//     positionAvailable: 'Representative',
-//     districtName: 'US House of Representatives District 14',
-//     id: 1
-//   },
-//   {
-//     govLevel: 'State',
-//     positionAvailable: 'Senator',
-//     districtName: 'State Senate District 17',
-//     id: 2
-//   }
-// ]
-
 const defaultState = {
-  cart: []
+  cart: [],
+  filter: ''
 }
 
 class AllProducts extends Component {
@@ -27,6 +13,7 @@ class AllProducts extends Component {
     super()
     this.state = defaultState
     this.handleChange = this.handleChange.bind(this)
+    this.handleFilter = this.handleFilter.bind(this)
   }
 
   componentDidMount() {
@@ -40,17 +27,62 @@ class AllProducts extends Component {
     })
   }
 
+  handleFilter(evt) {
+    this.setState({
+      filter: evt.target.value
+    })
+  }
   render() {
+    const filterView = this.state.filter
     return (
       <div>
-        <p>Candidates For Sale</p>
+        <h2>Candidates For Sale</h2>
+        {this.state.cart.length ? (
+          <h5>
+            Your Cart Contains:{this.state.cart.map((cart, i) => (
+              <span key={i}>{cart.name}, </span>
+            ))}
+          </h5>
+        ) : (
+          <h5>Your Cart is Currently Empty</h5>
+        )}
+        <h4>Filter By District</h4>
+        <select onChange={evt => this.handleFilter(evt)}>
+          <option value="">View All</option>
+          <option value="US House of Representatives District 14">
+            US House of Representatives District 14
+          </option>
+          <option value="State Senate District 17">
+            State Senate District 17
+          </option>
+        </select>
         <ul>
-          {this.props.allProducts.map((product, i) => (
-            <li key={i}>
-              <Product product={product} />
-              <button onClick={() => this.handleChange(product)}>Buy!</button>
-            </li>
-          ))}
+          {filterView
+            ? this.props.allProducts
+                .filter(product => filterView === product.districtName)
+                .map((product, i) => (
+                  <li key={i}>
+                    <Product product={product} />
+                    <button
+                      type="button"
+                      onClick={() => this.handleChange(product)}
+                    >
+                      Buy!
+                    </button>
+                  </li>
+                ))
+            : this.props.allProducts.map((product, i) => (
+                <li key={i}>
+                  <Product product={product} />
+                  <button
+                    type="button"
+                    onClick={() => this.handleChange(product)}
+                  >
+                    Buy!
+                  </button>
+                </li>
+              ))}
+          }
         </ul>
       </div>
     )
