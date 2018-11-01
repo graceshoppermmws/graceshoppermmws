@@ -31,6 +31,7 @@ router.get('/:productId', async (req, res, next) => {
 // POST a Product
 router.post('/', async (req, res, next) => {
   try {
+    // check isAdmin
     const {
       name,
       bio,

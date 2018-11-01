@@ -11,10 +11,6 @@ const Order = db.define('order', {
     allowNull: false,
     defaultValue: 'Cart'
   },
-  historicPrice: {
-    type: Sequelize.DECIMAL,
-    allowNull: true // captures the current price when status -> processing
-  },
   quantity: {
     type: Sequelize.INTEGER
   }

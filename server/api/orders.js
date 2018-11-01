@@ -12,7 +12,7 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-//Post a order
+//Post one order
 router.post('/', async (req, res, next) => {
   try {
     const newOrder = await Order.create({
