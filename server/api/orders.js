@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Order} = require('../db/models')
+const {Order, Product, OrderProduct} = require('../db/models')
 module.exports = router
 
 //Get all orders
@@ -19,40 +19,39 @@ router.get('/', async (req, res, next) => {
 //Post one order
 router.post('/', async (req, res, next) => {
   try {
+    const {quantity, productId, userId} = req.body
+    const productToBuy = await Product.findById(productId)
     const newOrder = await Order.create({
       isCart: true,
       status: 'Cart',
-      historicPrice: null, // not set until status changed to 'Processing'
-      quantity: req.body.quantity,
-      userId: req.body.userId
+      userId
     })
-    // product relation is through a pivot table
-    // TODO setProducts
+    newOrder.addProduct(productToBuy, {through: {quantity}})
     res.status(201).json(newOrder)
   } catch (err) {
     next(err)
   }
 })
 
-router.put('/:orderId', async (req, res, next) => {
-  try {
-    // check userID is userID on the order, or user isAdmin
-    // req.body could pass in quantity, isCart, status
-    const oldOrder = await Order.findById(+req.params.orderId)
-    if (!oldOrder) {
-      res.sendStatus(404)
-    } else {
-      let {isCart, status, quantity} = req.body
-      // the front end should automatically pass through a historicPrice
-      // when status changes to Processing
-      const updatedOrder = await oldOrder.update({
-        isCart,
-        status,
-        quantity
-      })
-      res.status(201).json(updatedOrder)
-    }
-  } catch (err) {
-    next(err)
-  }
-})
+// router.put('/:orderId', async (req, res, next) => {
+//   try {
+//     const {quantity, status, isCart, historicPrice} = req.body
+//     // update historicPrice when status changes to Processing
+//     const oldOrder = await Order.findById(+req.params.orderId, {
+//       include: [{model: OrderProduct}]
+//     })
+//     if (!oldOrder) {
+//       res.sendStatus(404)
+//     } else {
+//       const updatedOrder = await oldOrder.update({
+//         isCart: isCart || oldOrder.isCart,
+//         status: status || oldOrder.status,
+//         quantity: quantity || oldOrder.quantity,
+//         historicPrice: historicPrice || oldOrder.historicPrice
+//       })
+//       res.status(201).json(updatedOrder)
+//     }
+//   } catch (err) {
+//     next(err)
+//   }
+// })
