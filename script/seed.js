@@ -112,7 +112,7 @@ async function seed() {
     quantity: 5,
     userId: littleShopper.id
   })
-  // order1.setProducts([cortez, crowley])
+  await order1.setProducts([cortez, crowley])
 
   const order2 = await Order.create({
     status: 'Cart',
@@ -120,12 +120,12 @@ async function seed() {
     quantity: 5,
     userId: lobbyistShopper.id
   })
-  // order1.setProducts([crowley])
+  await order2.setProducts([crowley])
 
-  const orderTable = await Promise.all([
-    order1.setProducts([cortez, crowley]),
-    order2.setProducts([crowley])
-  ])
+  // const orderTable = await Promise.all([
+  //   order1.setProducts([cortez, crowley]),
+  //   order2.setProducts([crowley])
+  // ])
 
   // const fourteenDistrict = await Race.create({
   //   govLevel: 'Federal',
