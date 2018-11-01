@@ -34,6 +34,7 @@ const ProductForm = props => {
         <label htmlFor="district">
           <small>District</small>
           <select name="districtName" onChange={props.changeHandler}>
+            <option value=""> -- </option>
             <option value="US House of Representatives District 14">
               US House of Representatives District 14
             </option>
@@ -72,6 +73,7 @@ const ProductForm = props => {
         <label htmlFor="govLevel">
           <small>Level</small>
           <select name="govLevel" onChange={props.changeHandler}>
+            <option value=""> -- </option>
             <option value="Municipal">Municipal</option>
             <option value="State">State</option>
             <option value="Federal">Federal</option>

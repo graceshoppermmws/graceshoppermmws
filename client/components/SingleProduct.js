@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Product from './Product'
+import EditProduct from './EditProduct'
 import {getSelectedProduct} from '../store/products'
 
 class SingleProduct extends Component {
@@ -19,6 +20,11 @@ class SingleProduct extends Component {
       this.props.selectedProduct && (
         <div>
           <Product product={this.props.selectedProduct} />
+          {this.props.selectedProduct.id ? (
+            <EditProduct id={this.props.selectedProduct.id} />
+          ) : (
+            ' '
+          )}
         </div>
       )
     )
