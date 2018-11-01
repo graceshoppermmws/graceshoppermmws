@@ -82,10 +82,28 @@ async function seed() {
     password: '123'
   })
 
-  const graceAdmin = await User.create({
+  const graceAdmin1 = await User.create({
     email: 'email@someemail.com',
     isAdmin: true,
     password: '123'
+  })
+
+  const graceAdmin2 = await User.create({
+    email: 'grace@someemail.com',
+    isAdmin: true,
+    password: 'grace'
+  })
+
+  const graceAdmin3 = await User.create({
+    email: 'hopper@someemail.com',
+    isAdmin: true,
+    password: 'hopper'
+  })
+
+  const graceAdmin4 = await User.create({
+    email: 'graccceee@someemail.com',
+    isAdmin: true,
+    password: 'graccceee'
   })
 
   const order1 = await Order.create({
