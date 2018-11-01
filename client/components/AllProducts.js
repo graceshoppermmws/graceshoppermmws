@@ -1,7 +1,10 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {Link} from 'react-router-dom'
 import Product from './Product'
+import AddProduct from './AddProduct'
 import {getProducts} from '../store/products'
+import EditProduct from './EditProduct'
 
 const defaultState = {
   cart: [],
@@ -80,10 +83,17 @@ class AllProducts extends Component {
                   >
                     Buy!
                   </button>
+                  <EditProduct id={product.id} />
+                  <Link
+                    to={`/products/
+                  ${product.id}`}
+                  >
+                    Single View
+                  </Link>
                 </li>
               ))}
-          }
         </ul>
+        <AddProduct />
       </div>
     )
   }

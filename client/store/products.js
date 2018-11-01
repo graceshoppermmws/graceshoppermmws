@@ -4,7 +4,7 @@ import axios from 'axios'
  * ACTION TYPES
  */
 const GET_PRODUCTS = 'GET_PRODUCTS'
-// const SELECT_PRODUCT = 'SELECT_PRODUCT'
+const SELECT_PRODUCT = 'SELECT_PRODUCT'
 const ADD_PRODUCT = 'ADD_PRODUCT'
 const EDIT_PRODUCT = 'EDIT_PRODUCT'
 
@@ -12,8 +12,8 @@ const EDIT_PRODUCT = 'EDIT_PRODUCT'
  * INITIAL STATE
  */
 const defaultProductState = {
-  allProducts: []
-  // selectedProduct: {}
+  allProducts: [],
+  selectedProduct: {}
 }
 
 /**
@@ -24,10 +24,10 @@ export const gotProducts = products => ({
   products
 })
 
-// export const gotSelectedProduct = product => ({
-//   type: SELECT_PRODUCT,
-//   product
-// })
+export const gotSelectedProduct = product => ({
+  type: SELECT_PRODUCT,
+  product
+})
 
 export const createdProduct = product => ({
   type: ADD_PRODUCT,
@@ -58,18 +58,18 @@ export const getProducts = () => {
   }
 }
 
-// export const getSelectedProduct = productId => {
-//   return async dispatch => {
-//     try {
-//       const response = await axios.get(`/api/products/${productId}`)
-//       const product = response.data
-//       const action = gotSelectedProduct(product)
-//       dispatch(action)
-//     } catch (err) {
-//       console.error(err)
-//     }
-//   }
-// }
+export const getSelectedProduct = productId => {
+  return async dispatch => {
+    try {
+      const response = await axios.get(`/api/products/${productId}`)
+      const product = response.data
+      const action = gotSelectedProduct(product)
+      dispatch(action)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
 
 export const postProduct = product => {
   return async dispatch => {
@@ -105,9 +105,9 @@ export default function(state = defaultProductState, action) {
     case GET_PRODUCTS: {
       return {...state, allProducts: action.products}
     }
-    // case SELECT_PRODUCT: {
-    //   return {...state, selectedProduct: action.Product}
-    // }
+    case SELECT_PRODUCT: {
+      return {...state, selectedProduct: action.product}
+    }
     case ADD_PRODUCT: {
       return {...state, allProducts: [...state.allProducts, action.product]}
     }

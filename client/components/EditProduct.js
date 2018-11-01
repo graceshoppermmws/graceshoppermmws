@@ -1,8 +1,8 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {postProduct} from '../store/products'
+import {putProduct} from '../store/products'
 
-class AddProduct extends Component {
+class EditProduct extends Component {
   constructor() {
     super()
     this.state = {
@@ -27,8 +27,18 @@ class AddProduct extends Component {
 
   async submitHandler(event) {
     event.preventDefault()
-    const newProduct = await this.props.postProduct(this.state)
-    console.log(newProduct)
+    const updateProduct = await this.props.putProduct(this.props.id, {
+      id: this.props.id,
+      name: this.state.name,
+      bio: this.state.bio,
+      imageUrl: this.state.imageUrl,
+      districtName: this.state.districtName,
+      postition: this.state.position,
+      inventory: this.state.inventory,
+      price: this.state.price,
+      govLevel: this.state.govLevel
+    })
+    console.log(updateProduct)
   }
 
   render() {
@@ -88,8 +98,8 @@ class AddProduct extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    postProduct: newProduct => dispatch(postProduct(newProduct))
+    putProduct: (id, updateProduct) => dispatch(putProduct(id, updateProduct))
   }
 }
 
-export default connect(null, mapDispatchToProps)(AddProduct)
+export default connect(null, mapDispatchToProps)(EditProduct)
