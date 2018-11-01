@@ -55,3 +55,18 @@ if (!process.env.GOOGLE_CLIENT_ID || !process.env.GOOGLE_CLIENT_SECRET) {
     })
   )
 }
+
+//To keep a user loggedin, use serialize/deserialize
+// passport.serializeUser((user, done)=>{
+//   done(null, user.id)
+// })
+
+// passport.deserializeUser((id, done) => {
+//   User.findById(id)
+//   .then((user) => {
+//     done(null, user)
+//   })
+//   .catch((err) => {
+//     done(err)
+//   })
+// })
