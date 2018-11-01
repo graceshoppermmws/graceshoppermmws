@@ -12,11 +12,9 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-// boredOrder.addProduct(williams, {
-//  through: {quantity: 400, historicPrice: williams.price}
-// })
-
 //Post one order
+
+// pass in a quantity, a productId, and a userId
 router.post('/', async (req, res, next) => {
   try {
     const {quantity, productId, userId} = req.body
