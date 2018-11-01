@@ -1,5 +1,6 @@
 body {
   font-family: sans-serif;
+  background: lightblue;
 }
 
 a {
@@ -10,9 +11,23 @@ label {
   display: block;
 }
 
+nav {
+  display: flex;
+  background: lightcoral;
+  padding: 0.5em;
+  font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+  box-shadow: black 2px 2px 2px 2px;
+}
+
+nav h3 {
+  color: white;
+  text-shadow: black 2px 2px;
+  font-size: 150%;
+}
+
 nav a {
-  display: inline-block;
-  margin: 1em;
+  align-items: baseline;
+  margin: 1.3em;
 }
 
 form div {
