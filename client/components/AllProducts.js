@@ -99,7 +99,14 @@ class AllProducts extends Component {
                 </li>
               ))}
         </ul>
-        {admin ? <AddProduct /> : ' '}
+        {admin ? (
+          <div>
+            <a>Add Candidate</a>
+            <AddProduct />{' '}
+          </div>
+        ) : (
+          ' '
+        )}
       </div>
     )
   }
