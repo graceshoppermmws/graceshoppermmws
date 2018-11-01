@@ -1,7 +1,6 @@
 const router = require('express').Router()
 const {Order} = require('../db/models')
 module.exports = router
-//const Product = 'foo'
 
 //Get all orders
 router.get('/', async (req, res, next) => {
@@ -18,7 +17,7 @@ router.post('/', async (req, res, next) => {
   try {
     const newOrder = await Order.create({
       isCart: true,
-      status: 'Created',
+      status: 'Cart',
       historicPrice: null, // not set until status changed to 'Processing'
       quantity: req.body.quantity,
       userId: req.body.userId
