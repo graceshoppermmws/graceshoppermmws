@@ -24,8 +24,7 @@ router.post('/', async (req, res, next) => {
       userId: req.body.userId
     })
     // product relation is through a pivot table
-    // const product = await Product.
-    // await newOrder.setProducts()
+    // TODO setProducts
     res.status(201).json(newOrder)
   } catch (err) {
     next(err)
