@@ -10,13 +10,6 @@ const Order = db.define('order', {
     type: Sequelize.ENUM('Cart', 'Cancelled', 'Completed'),
     allowNull: false,
     defaultValue: 'Cart'
-  },
-  historicPrice: {
-    type: Sequelize.DECIMAL,
-    allowNull: true // captures the current price when status -> processing
-  },
-  quantity: {
-    type: Sequelize.INTEGER
   }
 })
 

@@ -106,26 +106,39 @@ async function seed() {
     password: 'graccceee'
   })
 
-  const order1 = await Order.create({
+  const littleOrder = await Order.create({
     status: 'Cart',
-    historicPrice: null,
-    quantity: 5,
     userId: littleShopper.id
   })
-  // order1.setProducts([cortez, crowley])
+  await littleOrder.addProduct(cortez, {
+    through: {quantity: 10, historicPrice: cortez.price}
+  })
+  await littleOrder.addProduct(crowley, {
+    through: {quantity: 15, historicPrice: crowley.price}
+  })
 
-  const order2 = await Order.create({
+  const lobbyistOrder = await Order.create({
     status: 'Cart',
-    historicPrice: null,
-    quantity: 5,
     userId: lobbyistShopper.id
   })
-  // order1.setProducts([crowley])
+  await lobbyistOrder.addProduct(pappas, {
+    through: {quantity: 17, historicPrice: pappas.price}
+  })
+  await lobbyistOrder.addProduct(felder, {
+    through: {quantity: 12, historicPrice: felder.price}
+  })
 
-  const orderTable = await Promise.all([
-    order1.setProducts([cortez, crowley]),
-    order2.setProducts([crowley])
-  ])
+  const boredOrder = await Order.create({
+    status: 'Cart',
+    userId: lobbyistShopper.id
+  })
+  await boredOrder.addProduct(williams, {
+    through: {quantity: 400, historicPrice: williams.price}
+  })
+  // const orderTable = await Promise.all([
+  //   order1.setProducts([cortez, crowley]),
+  //   order2.setProducts([crowley])
+  // ])
 
   // const fourteenDistrict = await Race.create({
   //   govLevel: 'Federal',

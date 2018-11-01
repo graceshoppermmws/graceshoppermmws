@@ -74,7 +74,7 @@ export const getSelectedProduct = productId => {
 export const postProduct = product => {
   return async dispatch => {
     try {
-      const response = await axios.post('api/products', product)
+      const response = await axios.post('/api/products', product)
       const newProduct = response.data
       const action = createdProduct(newProduct)
       dispatch(action)
@@ -87,7 +87,7 @@ export const postProduct = product => {
 export const putProduct = (productId, product) => {
   return async dispatch => {
     try {
-      const response = await axios.put(`api/products/${productId}`, product)
+      const response = await axios.put(`/api/products/${productId}`, product)
       const updatedProduct = response.data
       const action = editedProduct(productId, updatedProduct)
       dispatch(action)

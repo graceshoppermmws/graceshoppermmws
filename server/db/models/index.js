@@ -1,8 +1,9 @@
 const User = require('./user')
 const Order = require('./order')
 const Product = require('./product')
+const OrderProduct = require('./orderproduct')
 
-// const Candidate = require('./candidate')
+//const Candidate = require('./candidate')
 // const Race = require('./race')
 // const Order = require('./order')
 /**
@@ -24,8 +25,8 @@ const Product = require('./product')
 User.hasMany(Order)
 Order.belongsTo(User)
 
-Order.belongsToMany(Product, {through: 'OrderProduct'})
-Product.belongsToMany(Order, {through: 'OrderProduct'})
+Order.belongsToMany(Product, {through: OrderProduct})
+Product.belongsToMany(Order, {through: OrderProduct})
 
 // Candidate.belongsTo(Race)
 // Race.hasMany(Candidate)
@@ -41,7 +42,8 @@ Product.belongsToMany(Order, {through: 'OrderProduct'})
 module.exports = {
   User,
   Order,
-  Product
-  // Candidate,
+  Product,
+  OrderProduct
+  // Candidate
   // Race,
 }
