@@ -13,7 +13,7 @@ class Cart extends Component {
           districtName: 'US House of Representatives District 14',
           position: 'Representative',
           govLevel: 'Federal',
-          inventory: 100,
+          inventory: 1000,
           price: 100.0
         },
         {
@@ -22,7 +22,7 @@ class Cart extends Component {
           districtName: 'US House of Representatives District 14',
           position: 'Representative',
           govLevel: 'Federal',
-          inventory: 100,
+          inventory: 400,
           price: 50.0
         }
       ]
@@ -40,8 +40,9 @@ class Cart extends Component {
               <Link to={`/products/${product.id}`}>
                 <h4>{`Candidate: ${product.name}`}</h4>
               </Link>
-              <p>{`Price: $ ${product.price} `}</p>
-
+              <p>{`Price: $${product.price} `}</p>
+              <p>Quanity: $ ??? </p>
+              <p>{`Only ${product.inventory} left in stock!`}</p>
               <form>
                 <label>
                   Change Quantity:
@@ -55,7 +56,7 @@ class Cart extends Component {
             </div>
           )
         })}
-        <h5>{`Total: ${total}`}</h5>
+        <h5>{`Total: $${total}`}</h5>
       </div>
     )
   }
