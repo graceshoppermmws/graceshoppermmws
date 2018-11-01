@@ -10,9 +10,6 @@ const Order = db.define('order', {
     type: Sequelize.ENUM('Cart', 'Cancelled', 'Completed'),
     allowNull: false,
     defaultValue: 'Cart'
-  },
-  quantity: {
-    type: Sequelize.INTEGER
   }
 })
 

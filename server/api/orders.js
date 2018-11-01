@@ -12,6 +12,10 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+// boredOrder.addProduct(williams, {
+//  through: {quantity: 400, historicPrice: williams.price}
+// })
+
 //Post one order
 router.post('/', async (req, res, next) => {
   try {
@@ -32,16 +36,18 @@ router.post('/', async (req, res, next) => {
 
 router.put('/:orderId', async (req, res, next) => {
   try {
+    // check userID is userID on the order, or user isAdmin
+    // req.body could pass in quantity, isCart, status
     const oldOrder = await Order.findById(+req.params.orderId)
     if (!oldOrder) {
       res.sendStatus(404)
     } else {
-      let {status, historicPrice, quantity} = req.body
+      let {isCart, status, quantity} = req.body
       // the front end should automatically pass through a historicPrice
       // when status changes to Processing
       const updatedOrder = await oldOrder.update({
+        isCart,
         status,
-        historicPrice,
         quantity
       })
       res.status(201).json(updatedOrder)

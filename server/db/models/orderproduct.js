@@ -5,6 +5,11 @@ const OrderProduct = db.define('order_product', {
   historicPrice: {
     type: Sequelize.DECIMAL,
     allowNull: true
+  },
+  quantity: {
+    type: Sequelize.INTEGER,
+    allowNull: false,
+    defaultValue: 0
   }
 })
 
