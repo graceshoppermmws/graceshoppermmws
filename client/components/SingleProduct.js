@@ -19,7 +19,6 @@ class SingleProduct extends Component {
       this.props.selectedProduct && (
         <div>
           <Product product={this.props.selectedProduct} />
-          <h2>Candidates </h2>
         </div>
       )
     )
