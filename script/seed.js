@@ -108,6 +108,7 @@ async function seed() {
 
   const littleOrder = await Order.create({
     status: 'Cart',
+    isCart: true,
     userId: littleShopper.id
   })
   await littleOrder.addProduct(cortez, {
@@ -115,6 +116,30 @@ async function seed() {
   })
   await littleOrder.addProduct(crowley, {
     through: {quantity: 15, historicPrice: crowley.price}
+  })
+
+  const littleOrder2 = await Order.create({
+    status: 'Cart',
+    isCart: false,
+    userId: littleShopper.id
+  })
+  await littleOrder2.addProduct(cortez, {
+    through: {quantity: 80, historicPrice: cortez.price}
+  })
+  await littleOrder2.addProduct(crowley, {
+    through: {quantity: 90, historicPrice: crowley.price}
+  })
+
+  const littleOrder3 = await Order.create({
+    status: 'Cart',
+    isCart: false,
+    userId: littleShopper.id
+  })
+  await littleOrder3.addProduct(cortez, {
+    through: {quantity: 500, historicPrice: cortez.price}
+  })
+  await littleOrder3.addProduct(crowley, {
+    through: {quantity: 1500, historicPrice: crowley.price}
   })
 
   const lobbyistOrder = await Order.create({
