@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {postProduct} from '../store/products'
+import {postProduct} from '../store'
 import ProductForm from './ProductForm'
 
 const defaultState = {
