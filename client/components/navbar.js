@@ -6,6 +6,7 @@ import {logout} from '../store'
 
 const Navbar = ({handleClick, isLoggedIn, user}) => {
   const pastOrdersLink = `/pastorders/${user.id}`
+  const cartLink = `/cart/${user.id}`
   return (
     <div>
       <nav>
@@ -18,7 +19,7 @@ const Navbar = ({handleClick, isLoggedIn, user}) => {
               Logout
             </a>
             <Link to="/products">All Candidates</Link>
-            <Link to="/cart">Your Cart</Link>
+            <Link to={cartLink}>Your Cart</Link>
             <Link to={pastOrdersLink}>Your Past Orders</Link>
           </div>
         ) : (

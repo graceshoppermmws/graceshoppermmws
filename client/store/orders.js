@@ -5,6 +5,7 @@ import axios from 'axios'
  */
 const GET_ORDERS = 'GET_ORDERS'
 const CREATE_ORDER = 'CREATE_ORDER'
+const GET_CART = 'GET_CART'
 const GET_PAST_ORDERS = 'GET_PAST_ORDERS'
 
 /**
@@ -13,6 +14,7 @@ const GET_PAST_ORDERS = 'GET_PAST_ORDERS'
 
 const defaultOrderState = {
   allOrders: [],
+  cart: {},
   pastOrders: []
 }
 
@@ -27,6 +29,11 @@ export const gotOrders = allOrders => ({
 export const createdOrder = order => ({
   type: CREATE_ORDER,
   order
+})
+
+export const gotCart = cart => ({
+  type: GET_CART,
+  cart
 })
 
 export const gotPastOrders = pastOrders => ({
@@ -48,6 +55,21 @@ export const getOrders = () => {
       }
     } catch (err) {
       // to add toastr
+      console.error(err)
+    }
+  }
+}
+
+export const getCart = userId => {
+  return async dispatch => {
+    try {
+      const response = await axios.get(`/api/orders/cart/${userId}`)
+      if (response) {
+        const cart = response.data
+        const action = gotCart(cart)
+        dispatch(action)
+      }
+    } catch (err) {
       console.error(err)
     }
   }
@@ -92,6 +114,9 @@ export default function(state = defaultOrderState, action) {
     }
     case CREATE_ORDER: {
       return {...state, allOrders: [...state.allOrders, action.order]}
+    }
+    case GET_CART: {
+      return {...state, cart: action.cart}
     }
     case GET_PAST_ORDERS: {
       return {...state, pastOrders: action.pastOrders}
