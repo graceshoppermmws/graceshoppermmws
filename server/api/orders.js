@@ -18,7 +18,22 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-//Post one order
+//GET past order
+router.get('/past/:userId', async (req, res, next) => {
+  if (req.user.id === +req.params.userId) {
+    try {
+      const pastOrders = await Order.findAll({
+        where: {userId: +req.params.userId, isCart: false},
+        include: [{model: Product}]
+      })
+      res.status(200).json(pastOrders)
+    } catch (error) {
+      next(error)
+    }
+  } else {
+    res.sendStatus(403)
+  }
+})
 
 // pass in a quantity, a productId, and a userId
 router.post('/', async (req, res, next) => {

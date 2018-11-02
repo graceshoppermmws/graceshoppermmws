@@ -5,21 +5,23 @@ import axios from 'axios'
  */
 const GET_ORDERS = 'GET_ORDERS'
 const CREATE_ORDER = 'CREATE_ORDER'
+const GET_PAST_ORDERS = 'GET_PAST_ORDERS'
 
 /**
  * INITIAL STATE
  */
 
 const defaultOrderState = {
-  allOrders: []
+  allOrders: [],
+  pastOrders: []
 }
 
 /**
  * ACTION CREATORS
  */
-export const gotOrders = orders => ({
+export const gotOrders = allOrders => ({
   type: GET_ORDERS,
-  orders
+  allOrders
 })
 
 export const createdOrder = order => ({
@@ -27,6 +29,10 @@ export const createdOrder = order => ({
   order
 })
 
+export const gotPastOrders = pastOrders => ({
+  type: GET_PAST_ORDERS,
+  pastOrders
+})
 /**
  * THUNK CREATORS
  */
@@ -61,16 +67,34 @@ export const postOrder = order => {
   }
 }
 
+export const getPastOrders = userId => {
+  return async dispatch => {
+    try {
+      const response = await axios.get(`/api/orders/past/${userId}`)
+      if (response) {
+        const orders = response.data
+        const action = gotPastOrders(orders)
+        dispatch(action)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
 /**
  * REDUCER
  */
 export default function(state = defaultOrderState, action) {
   switch (action.type) {
     case GET_ORDERS: {
-      return {...state, allOrders: action.orders}
+      return {...state, allOrders: action.allOrders}
     }
     case CREATE_ORDER: {
       return {...state, allOrders: [...state.allOrders, action.order]}
+    }
+    case GET_PAST_ORDERS: {
+      return {...state, pastOrders: action.pastOrders}
     }
     default:
       return state
