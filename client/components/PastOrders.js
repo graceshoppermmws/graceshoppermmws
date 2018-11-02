@@ -40,7 +40,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    getPastOrders: () => dispatch(getPastOrders(1))
+    getPastOrders: () => dispatch(getPastOrders(ownProps.match.params.userId))
   }
 }
 
