@@ -10,12 +10,10 @@ class Cart extends Component {
   // }
 
   componentDidMount() {
-    console.log('MOUNTED')
     this.props.getCart()
   }
 
   render() {
-    console.log('LLLLLL', this.props.cart[0])
     return (
       <div>{this.props.cart[0] && <Order order={this.props.cart[0]} />}</div>
     )
