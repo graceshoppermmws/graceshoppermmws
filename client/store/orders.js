@@ -35,9 +35,11 @@ export const getOrders = () => {
   return async dispatch => {
     try {
       const response = await axios.get('/api/orders')
-      const orders = response.data
-      const action = gotOrders(orders)
-      dispatch(action)
+      if (response) {
+        const orders = response.data
+        const action = gotOrders(orders)
+        dispatch(action)
+      }
     } catch (err) {
       // to add toastr
       console.error(err)
