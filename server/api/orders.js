@@ -18,6 +18,24 @@ router.get('/', async (req, res, next) => {
   }
 })
 
+//Get cart
+router.get('/cart/:userId', async (req, res, next) => {
+  const userId = req.user.id || null
+  if (userId === +req.params.userId) {
+    try {
+      const cart = await Order.findAll({
+        where: {isCart: true, userId: +req.params.userId},
+        include: [{model: Product}]
+      })
+      res.status(200).json(cart)
+    } catch (err) {
+      next(err)
+    }
+  } else {
+    res.sendStatus(403)
+  }
+})
+
 //Post one order
 
 // pass in a quantity, a productId, and a userId
