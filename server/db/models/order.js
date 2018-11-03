@@ -21,7 +21,25 @@ const Order = db.define('order', {
 /**
  * instanceMethods
  */
-
+Order.prototype.checkout = function() {
+  if (this.isCart) {
+    this.isCart = false
+    this.status = 'Processing'
+    let updatedProducts = this.products.map(product => {
+      return {
+        ...product,
+        order_product: {
+          ...product.order_product,
+          dataValues: {
+            ...product.order_product.dataValues,
+            historicPrice: product.price
+          }
+        }
+      }
+    })
+    this.products = updatedProducts
+  }
+}
 /**
  * classMethods
  */
