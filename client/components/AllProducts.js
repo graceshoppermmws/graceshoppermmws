@@ -103,9 +103,6 @@ class AllProducts extends Component {
                       >
                         Buy!
                       </button>
-                      <button onClick={() => this.handleCheckout(product)}>
-                        Checkout
-                      </button>
                     </div>
                   ) : (
                     ' '

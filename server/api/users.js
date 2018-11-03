@@ -61,9 +61,14 @@ router.put('/:userId/cart', async (req, res, next) => {
         where: {orderId: cart.id, productId: product.id}
       })
       const newCart = await updateQuantity.update({
-        quantity: updateQuantity.quantity + 1
+        quantity: updateQuantity.quantity + 1,
+        historicPrice: req.body.price
       })
-      res.status(201).json(newCart)
+      let returnCart = await Order.findOne({
+        where: {isCart: true, userId: +req.params.userId},
+        include: [{model: Product}]
+      })
+      res.status(201).json(returnCart)
     } catch (err) {
       next(err)
     }
@@ -84,13 +89,6 @@ router.put('/:userId/checkout', async (req, res, next) => {
         isCart: false,
         status: 'Completed'
       })
-
-      // const setPrice = await OrderProduct.findOne({
-      //   where: {orderId: cart.id, productId: +req.body.id}
-      // })
-      // const newCart = await setPrice.update({
-      //   historicPrice: req.body.price
-      // })
       await Order.findOrCreate({
         where: {userId: +req.params.userId, isCart: true},
         include: [{model: Product}]
