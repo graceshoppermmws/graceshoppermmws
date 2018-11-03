@@ -28,7 +28,8 @@ const Product = db.define('product', {
     allowNull: false
   },
   price: {
-    type: Sequelize.DECIMAL
+    type: Sequelize.DECIMAL,
+    allowNull: false
   },
   govLevel: {
     type: Sequelize.ENUM('Municipal', 'State', 'Federal'),

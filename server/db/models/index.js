@@ -38,6 +38,18 @@ Product.belongsToMany(Order, {through: OrderProduct})
 // Candidate.hasMany(Order)
 
 // methods:
+Order.prototype.checkout = function() {
+  if (this.isCart) {
+    this.isCart = false
+    this.status = 'Processing'
+    //console.log('products', this.products)
+    this.products.forEach(product => {
+      let historicPrice = product.price
+      let quantity = product.order_product.quantity
+      this.addProduct(product, {through: {quantity, historicPrice}})
+    })
+  }
+}
 
 module.exports = {
   User,

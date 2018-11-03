@@ -10,10 +10,13 @@ const Order = db.define('order', {
     type: Sequelize.ENUM('Cart', 'Cancelled', 'Completed'),
     allowNull: false,
     defaultValue: 'Cart'
+  },
+  isShipped: {
+    type: Sequelize.BOOLEAN,
+    defaultValue: false,
+    allowNull: false
   }
 })
-
-module.exports = Order
 
 /**
  * instanceMethods
@@ -23,6 +26,12 @@ module.exports = Order
  * classMethods
  */
 
+// Order.findPast = function(userId) {
+//   return Order.findAll({where: {isCart: false, userId}})
+// }
+
 /**
  * hooks
  */
+
+module.exports = Order
