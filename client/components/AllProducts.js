@@ -3,11 +3,11 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import Product from './Product'
 import AddProduct from './AddProduct'
-import {getProducts} from '../store/products'
+import {getProducts, putCart} from '../store'
 import EditProduct from './EditProduct'
 
 const defaultState = {
-  cart: [],
+  // cart: [],
   filter: ''
 }
 
@@ -24,10 +24,11 @@ class AllProducts extends Component {
   }
 
   handleChange(item) {
-    const newCart = [...this.state.cart, item]
-    this.setState({
-      cart: newCart
-    })
+    // const newCart = [...this.state.cart, item]
+    // this.setState({
+    //   cart: newCart
+    // })
+    this.props.putCart(item, this.props.user.id)
   }
 
   handleFilter(evt) {
@@ -42,7 +43,7 @@ class AllProducts extends Component {
     return (
       <div>
         <h2>Candidates For Sale</h2>
-        {this.state.cart.length ? (
+        {/* {this.state.cart.length ? (
           <h5>
             Your Cart Contains:{this.state.cart.map((cart, i) => (
               <span key={i}>{cart.name}, </span>
@@ -50,7 +51,7 @@ class AllProducts extends Component {
           </h5>
         ) : (
           <h5>Your Cart is Currently Empty</h5>
-        )}
+        )} */}
         <h4>Filter By District</h4>
         <select onChange={evt => this.handleFilter(evt)}>
           <option value="">View All</option>
@@ -115,13 +116,15 @@ class AllProducts extends Component {
 const mapStateToProps = state => {
   return {
     allProducts: state.products.allProducts,
-    user: state.user
+    user: state.user,
+    cart: state.orders.cart
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
-    getProducts: () => dispatch(getProducts())
+    getProducts: () => dispatch(getProducts()),
+    putCart: (product, user) => dispatch(putCart(product, user))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AllProducts)

@@ -7,7 +7,7 @@ const GET_ORDERS = 'GET_ORDERS'
 const CREATE_ORDER = 'CREATE_ORDER'
 const GET_CART = 'GET_CART'
 const GET_PAST_ORDERS = 'GET_PAST_ORDERS'
-
+const EDIT_CART = 'EDIT_CART'
 /**
  * INITIAL STATE
  */
@@ -40,6 +40,11 @@ export const gotPastOrders = pastOrders => ({
   type: GET_PAST_ORDERS,
   pastOrders
 })
+
+export const editCart = cart => ({
+  type: EDIT_CART,
+  cart
+})
 /**
  * THUNK CREATORS
  */
@@ -71,6 +76,22 @@ export const getCart = userId => {
       }
     } catch (err) {
       console.error(err)
+    }
+  }
+}
+
+export const putCart = (product, userId) => {
+  return async dispatch => {
+    try {
+      console.log(product)
+      console.log('user', userId)
+      const response = await axios.put(`/api/users/${userId}/cart`, product)
+      const cart = response.data
+      console.log('cart', cart)
+      // const action = editCart(cart)
+      // dispatch(action)
+    } catch (err) {
+      console.log(err)
     }
   }
 }
@@ -120,6 +141,9 @@ export default function(state = defaultOrderState, action) {
     }
     case GET_PAST_ORDERS: {
       return {...state, pastOrders: action.pastOrders}
+    }
+    case EDIT_CART: {
+      return {...state, cart: action.cart}
     }
     default:
       return state
