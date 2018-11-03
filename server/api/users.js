@@ -72,6 +72,39 @@ router.put('/:userId/cart', async (req, res, next) => {
   }
 })
 
+router.put('/:userId/checkout', async (req, res, next) => {
+  const userId = req.user.id || null
+  if (userId === +req.params.userId) {
+    try {
+      let cart = await Order.findOne({
+        where: {isCart: true, userId: +req.params.userId},
+        include: [{model: Product}]
+      })
+      const checkout = await cart.update({
+        isCart: false,
+        status: 'Completed'
+      })
+
+      // const setPrice = await OrderProduct.findOne({
+      //   where: {orderId: cart.id, productId: +req.body.id}
+      // })
+      // const newCart = await setPrice.update({
+      //   historicPrice: req.body.price
+      // })
+      await Order.findOrCreate({
+        where: {userId: +req.params.userId, isCart: true},
+        include: [{model: Product}]
+      })
+
+      res.status(201).json(checkout)
+    } catch (err) {
+      next(err)
+    }
+  } else {
+    res.sendStatus(403)
+  }
+})
+
 router.get('/', async (req, res, next) => {
   try {
     const users = await User.findAll({

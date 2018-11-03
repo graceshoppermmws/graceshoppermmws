@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import Product from './Product'
 import AddProduct from './AddProduct'
-import {getProducts, putCart} from '../store'
+import {getProducts, putCart, putCheckout} from '../store'
 import EditProduct from './EditProduct'
 
 const defaultState = {
@@ -36,6 +36,11 @@ class AllProducts extends Component {
       filter: evt.target.value
     })
   }
+
+  handleCheckout(item) {
+    this.props.putCheckout(item, this.props.user.id)
+  }
+
   render() {
     const filterView = this.state.filter
     const admin = this.props.user.isAdmin
@@ -70,12 +75,17 @@ class AllProducts extends Component {
                   <li key={i}>
                     <Product product={product} />
                     {!admin ? (
-                      <button
-                        type="button"
-                        onClick={() => this.handleChange(product)}
-                      >
-                        Buy!
-                      </button>
+                      <div>
+                        <button
+                          type="button"
+                          onClick={() => this.handleChange(product)}
+                        >
+                          Buy!
+                        </button>
+                        <button onClick={() => this.handleCheckout(product)}>
+                          Checkout
+                        </button>
+                      </div>
                     ) : (
                       ' '
                       // <EditProduct id={product.id} />
@@ -86,12 +96,17 @@ class AllProducts extends Component {
                 <li key={i}>
                   <Product product={product} />
                   {!admin ? (
-                    <button
-                      type="button"
-                      onClick={() => this.handleChange(product)}
-                    >
-                      Buy!
-                    </button>
+                    <div>
+                      <button
+                        type="button"
+                        onClick={() => this.handleChange(product)}
+                      >
+                        Buy!
+                      </button>
+                      <button onClick={() => this.handleCheckout(product)}>
+                        Checkout
+                      </button>
+                    </div>
                   ) : (
                     ' '
                     // <EditProduct id={product.id} />
@@ -124,7 +139,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getProducts: () => dispatch(getProducts()),
-    putCart: (product, user) => dispatch(putCart(product, user))
+    putCart: (product, user) => dispatch(putCart(product, user)),
+    putCheckout: (product, user) => dispatch(putCheckout(product, user))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AllProducts)
