@@ -42,12 +42,37 @@ Order.prototype.checkout = function() {
   if (this.isCart) {
     this.isCart = false
     this.status = 'Processing'
-    //console.log('products', this.products)
-    this.products.forEach(product => {
-      let historicPrice = product.price
-      let quantity = product.order_product.quantity
-      this.addProduct(product, {through: {quantity, historicPrice}})
+    let updatedProducts = this.products.map(product => {
+      return {
+        ...product,
+        order_product: {
+          ...product.order_product,
+          dataValues: {
+            ...product.order_product.dataValues,
+            historicPrice: product.price
+          }
+        }
+      }
     })
+    // console.log(
+    //   '****PEN****PINEAPPLE****APPLE****PEN****',
+    //   product.order_product.dataValues,
+    //   '****PEN****PINEAPPLE****APPLE****PEN****'
+    // )
+    // productToUpdate.update({inventory: newInventory})
+    // let historicPrice = +product.price
+    // let quantity = product.order_product.quantity
+    // this.addProduct(product, {through: {quantity, historicPrice}})
+    this.products = updatedProducts
+
+    // [
+    //   {
+    //     name: 'apple',
+    //     price: 99,
+    //     order_product: {historicPrice: 30}
+    //   },
+    //   {name: 'banana', order_product: {historicPrice: 12}}
+    // ]
   }
 }
 

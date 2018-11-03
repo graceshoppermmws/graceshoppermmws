@@ -39,12 +39,8 @@ describe('Order model', () => {
           status: 'Cart',
           userId: testShopper.id
         })
-        await testOrder.addProduct(
-          testProduct /*.id, {through: {quantity: 44}}*/
-        )
-        await testOrder.addProduct(
-          lazyProduct /*.id, {through: {quantity: 55}}*/
-        )
+        await testOrder.addProduct(testProduct, {through: {quantity: 44}})
+        await testOrder.addProduct(lazyProduct, {through: {quantity: 55}})
         associatedOrder = await Order.findById(testOrder.id, {
           include: {model: Product}
         })
