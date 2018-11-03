@@ -16,12 +16,12 @@ install:
 before_script:
   - psql -c 'create database "votes_for_sale_test";' -U postgres # remember to change this name if you change it elsewhere (e.g. package.json)
 
-# before_deploy:
-#   - npm run build-client # make the bundle
-#   - rm -rf node_modules # omit from the tarball, since we skip cleanup
-# deploy:
-#   skip_cleanup: true # prevents travis from deleting the build
-#   provider: heroku
-#   app: YOUR-HEROKU-APP-NAME-HERE # see README
-#   api_key:
-#     secure: YOUR-***ENCRYPTED***-API-KEY-HERE # see README
+before_deploy:
+  - npm run build-client # make the bundle
+  - rm -rf node_modules # omit from the tarball, since we skip cleanup
+deploy:
+  skip_cleanup: true # prevents travis from deleting the build
+  provider: heroku
+  app: 'candidates-for-sale' # see README
+  api_key:
+    secure: 'VGyBxdzmlnlL8OYGlVeOZvhxc9X7KSUTp4Tn1D5a2NOyZ1pYWyRKqX+x55Zx/Q9UJ35lsuAWIKy/biMmhdeDDzxV/qP3lqBb16R2glbRaTwT+IYMaykfvVU4AcOugfr7X4CI//crOabZr+KSp+860APKjBuOu4htpss/8dGf3x79go/vtq/rS9S6YfkWAKesTNVjQGaSCYwsnw6NkoZFDkA+6aqwkfgbMZWeLHpsWcSYbOE30j3ty6+5hYxcxRTwMVdw3+pApNcEXMV1WbFYN6kI08HSt9AdZW4A3O9jkjTooN1g8qxnU+WqGyRtWE3QjlVleMSjG+TTdNyRb2E88U1h79EGCMHlwnBDMmoiGkNVPk+k+xUjulA1yu/U3AHyYP1I3gw4zcxb8qAToLiSsdh+gD6Y57u8xPtnpwy7p+dNxnTViDWTMnUr+NbGh+uWGzOF0CpkDWC3T2fI5NqBQNREyHur7MCUsgjjEUd6O1XAs23BfUWwwxh9TIglnmPcb0fc4LXd38EIRjdiUHfTfYTeG8Rw/G85dtlmLQ1W2DMMl48TCBTcD4oZlc9nhqpWpF//lTbbFgXRlFd3Kq1kx6QxKU3R0W3UBCxsAxfPsg+tFgWGTe1uVaN8rTT9SOrgbDDQV0/PTECquaVrGPkpSfjbONiNN+cvpoghrABbRPU=' # see README
