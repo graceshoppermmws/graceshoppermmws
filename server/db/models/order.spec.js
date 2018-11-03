@@ -51,16 +51,15 @@ describe('Order model', () => {
         expect(associatedOrder.isCart).to.be.equal(false)
         expect(associatedOrder.status).to.be.equal('Processing')
       })
-      it('saves historic price', () => {
+      it('saves historic line item price for the order', () => {
         associatedOrder.checkout()
         expect(associatedOrder.products.length).to.be.equal(2)
         expect(
           associatedOrder.products[0].order_product.historicPrice
         ).to.be.equal(associatedOrder.products[0].price)
-      })
-      it('decrements product inventory', () => {
-        associatedOrder.checkout()
-        expect(testProduct.inventory).to.be.equal(400)
+        expect(
+          associatedOrder.products[1].order_product.historicPrice
+        ).to.be.equal(associatedOrder.products[1].price)
       })
     }) // end describe('findCart')
   }) // end describe('classMethods')
