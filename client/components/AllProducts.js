@@ -131,7 +131,6 @@ class AllProducts extends Component {
                   ) : (
                     ' '
                   )}
-                  <Link to={`/products/${product.id}`}>Single View</Link>
                 </li>
               ))}
         </ul>
