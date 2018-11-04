@@ -15,12 +15,12 @@ class SingleProduct extends Component {
   }
 
   render() {
-    console.log(this.props)
+    const admin = this.props.user.isAdmin
     return (
       this.props.selectedProduct && (
         <div>
           <Product product={this.props.selectedProduct} />
-          {this.props.selectedProduct.id ? (
+          {this.props.selectedProduct.id && admin ? (
             <EditProduct id={this.props.selectedProduct.id} />
           ) : (
             ' '
@@ -33,7 +33,8 @@ class SingleProduct extends Component {
 
 const mapStateToProps = state => {
   return {
-    selectedProduct: state.products.selectedProduct
+    selectedProduct: state.products.selectedProduct,
+    user: state.user
   }
 }
 
