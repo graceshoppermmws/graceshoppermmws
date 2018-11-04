@@ -8,8 +8,10 @@ const Order = props => {
       <h3>Order: {id}</h3>
       <ul>
         <li>User: {userId}</li>
-        <li>staus: {status}</li>
-        <li>created: {createdAt}</li>
+        <li>Status: {status}</li>
+        <li>Created: {createdAt}</li>
+      </ul>
+      <ul>
         <li>
           <ul>
             {products.map(product => (
@@ -17,9 +19,16 @@ const Order = props => {
                 <li>Name: {product.name}</li>
                 <li>
                   Purchase Price:{' '}
-                  {product.order_product.historicPrice || product.price}
+                  {product.order_product
+                    ? product.order_product.historicPrice
+                    : product.price}
                 </li>
-                <li>Quantity: {product.order_product.quantity}</li>
+                <li>
+                  Quantity:{' '}
+                  {product.order_product
+                    ? product.order_product.quantity
+                    : product.quantity}
+                </li>
               </div>
             ))}
           </ul>

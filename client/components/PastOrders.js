@@ -21,9 +21,8 @@ class PastOrders extends Component {
   render() {
     return (
       <div>
-        <h1>HI!!!</h1>
+        <h1>Your Past Orders</h1>
         {this.props.pastOrders.map(order => (
-          // <div key={order.id}>{order.id}</div>
           <Order key={order.id} order={order} />
         ))}
       </div>
