@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import store, {getCart, putCheckout} from '../store'
+import {getCart, putCheckout} from '../store'
 import Order from './Order'
 
 let defaultState = {
@@ -9,17 +9,6 @@ let defaultState = {
     products: []
   }
 }
-
-/* move to navbar? creates locals torage cart for first time */
-
-/*let localCart = localStorage.getItem('cart')
-  ? JSON.parse(localStorage.getItem('cart'))
-  : {isCart: true, products: []}
-
-localStorage.setItem('cart', JSON.stringify(localCart))*/
-
-let data = JSON.parse(localStorage.getItem('cart'))
-console.log('strawberry cream pie cart.js data', data)
 
 class Cart extends Component {
   constructor() {
@@ -37,24 +26,26 @@ class Cart extends Component {
         cart: localStorageCart
       })
     }
-    console.log('state', this.state)
   }
 
   handleCheckout() {
     if (this.props.user.id) {
       this.props.putCheckout(this.props.user.id)
     } else {
-      console.log('handle checkout local storage cart', data)
+      localStorage.setItem('cart', JSON.stringify({products: []}))
+      let emptyCart = JSON.parse(localStorage.getItem('cart'))
+      this.setState({
+        cart: emptyCart
+      })
     }
   }
 
   render() {
-    console.log('render', this.state)
     return (
       <div>
         {this.props.user.id
           ? this.props.cart[0] && <Order order={this.props.cart[0]} />
-          : data.products && <Order order={this.state.cart} />}
+          : this.state.cart.products && <Order order={this.state.cart} />}
         <button onClick={() => this.handleCheckout()}>Checkout</button>
       </div>
     )

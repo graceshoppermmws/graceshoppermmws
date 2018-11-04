@@ -13,15 +13,6 @@ const defaultState = {
   filter: ''
 }
 
-let localCart = localStorage.getItem('cart')
-  ? JSON.parse(localStorage.getItem('cart'))
-  : {products: []}
-
-localStorage.setItem('cart', JSON.stringify(localCart))
-
-let data = JSON.parse(localStorage.getItem('cart'))
-console.log('funky banana data all products.js', data)
-
 class AllProducts extends Component {
   constructor() {
     super()
@@ -31,18 +22,23 @@ class AllProducts extends Component {
   }
 
   componentDidMount() {
+    let localCart = localStorage.getItem('cart')
+      ? JSON.parse(localStorage.getItem('cart'))
+      : {products: []}
+
+    localStorage.setItem('cart', JSON.stringify(localCart))
+    let data = JSON.parse(localStorage.getItem('cart'))
     this.props.getProducts()
     if (!this.props.user.id) {
       this.setState({
         cart: data
       })
-      console.log('component did mount')
     }
   }
 
   handleClick(product) {
     if (!this.props.user.id) {
-      const products = data.products
+      const products = this.state.cart.products
       // check if product is already in cart
       if (products.some(item => item.id === product.id)) {
         // if so update product quantity by 1
@@ -72,7 +68,6 @@ class AllProducts extends Component {
       })
       localStorage.setItem('cart', JSON.stringify(this.state.cart))
       const dataInMount = JSON.parse(localStorage.getItem('cart'))
-      console.log('handle click: dataInMount', dataInMount)
     } else {
       this.props.putCart(product, this.props.user.id)
     }
@@ -87,19 +82,9 @@ class AllProducts extends Component {
   render() {
     const filterView = this.state.filter
     const admin = this.props.user.isAdmin
-    console.log('render allproducts.js : this.state', this.state)
     return (
       <div>
         <h2>Candidates For Sale</h2>
-        {/* {this.state.cart.length ? (
-          <h5>
-            Your Cart Contains:{this.state.cart.map((cart, i) => (
-              <span key={i}>{cart.name}, </span>
-            ))}
-          </h5>
-        ) : (
-          <h5>Your Cart is Currently Empty</h5>
-        )} */}
         <h4>Filter By District</h4>
         <select onChange={evt => this.handleFilter(evt)}>
           <option value="">View All</option>
@@ -128,7 +113,6 @@ class AllProducts extends Component {
                       </div>
                     ) : (
                       ' '
-                      // <EditProduct id={product.id} />
                     )}
                   </li>
                 ))
@@ -146,7 +130,6 @@ class AllProducts extends Component {
                     </div>
                   ) : (
                     ' '
-                    // <EditProduct id={product.id} />
                   )}
                   <Link to={`/products/${product.id}`}>Single View</Link>
                 </li>
