@@ -2,14 +2,20 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
 const Order = props => {
-  const {id, userId, status, createdAt, products} = props.order
+  const {id, userId, status, createdAt, products, isCart} = props.order
   return (
     <div>
       <h3>Order: {id}</h3>
+      {isCart ? (
+        ' '
+      ) : (
+        <ul>
+          <li>User: {userId}</li>
+          <li>Status: {status}</li>
+          <li>Created: {createdAt}</li>
+        </ul>
+      )}
       <ul>
-        <li>User: {userId}</li>
-        <li>staus: {status}</li>
-        <li>created: {createdAt}</li>
         <li>
           <ul>
             {products.map(product => (
@@ -17,9 +23,16 @@ const Order = props => {
                 <li>Name: {product.name}</li>
                 <li>
                   Purchase Price:{' '}
-                  {product.order_product.historicPrice || product.price}
+                  {product.order_product
+                    ? product.order_product.historicPrice
+                    : product.price}
                 </li>
-                <li>Quantity: {product.order_product.quantity}</li>
+                <li>
+                  Quantity:{' '}
+                  {product.order_product
+                    ? product.order_product.quantity
+                    : product.quantity}
+                </li>
               </div>
             ))}
           </ul>

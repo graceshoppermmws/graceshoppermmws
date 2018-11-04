@@ -31,27 +31,27 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    if (this.props.user) {
+    if (this.props.user.id) {
       this.props.getCart()
-    } else {
-      store.getState()
     }
     console.log('state', this.state)
   }
 
   handleCheckout() {
-    if (this.props.user) {
+    if (this.props.user.id) {
       this.props.putCheckout(this.props.user.id)
+    } else {
+      console.log('handle checkout local storage cart', data)
     }
   }
 
   render() {
-    console.log('render')
+    console.log('render', this.state)
     return (
       <div>
         {this.props.user.id
           ? this.props.cart[0] && <Order order={this.props.cart[0]} />
-          : ''}
+          : data.products && <Order order={data} />}
         <button onClick={() => this.handleCheckout()}>Checkout</button>
       </div>
     )

@@ -68,7 +68,7 @@ export const getOrders = () => {
 export const getCart = userId => {
   return async dispatch => {
     try {
-      const response = await axios.get(`/api/orders/cart/${userId}`)
+      const response = await axios.get(`/api/users/${userId}/cart`)
       if (response) {
         const cart = response.data
         const action = gotCart(cart)
