@@ -46,7 +46,9 @@ class Cart extends Component {
         {this.props.user.id
           ? this.props.cart[0] && <Order order={this.props.cart[0]} />
           : this.state.cart.products && <Order order={this.state.cart} />}
-        <button onClick={() => this.handleCheckout()}>Checkout</button>
+        <Link to="/thankyou">
+          <button onClick={() => this.handleCheckout()}>Checkout</button>
+        </Link>
       </div>
     )
   }

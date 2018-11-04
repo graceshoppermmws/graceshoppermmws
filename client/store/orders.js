@@ -90,11 +90,8 @@ export const getCart = userId => {
 export const putCart = (product, userId) => {
   return async dispatch => {
     try {
-      console.log(product)
-      console.log('user', userId)
       const response = await axios.put(`/api/users/${userId}/cart`, product)
       const cart = response.data
-      console.log('cart', cart)
       const action = editCart(cart)
       dispatch(action)
     } catch (err) {
