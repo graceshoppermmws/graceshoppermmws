@@ -1,26 +1,57 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {getCart, putCheckout} from '../store'
+import store, {getCart, putCheckout} from '../store'
 import Order from './Order'
 
+let defaultState = {
+  orders: {
+    cart: {
+      products: []
+    }
+  }
+}
+
+/* move to navbar? creates locals torage cart for first time
+
+let localCart = localStorage.getItem('cart')
+  ? JSON.parse(localStorage.getItem('cart'))
+  : {products: []}
+
+localStorage.setItem('cart', JSON.stringify(localCart)) */
+
+const data = JSON.parse(localStorage.getItem('cart'))
+console.log('strawberry cream pie cart.js data', data)
+
 class Cart extends Component {
-  // constructor() {
-  //   super()
-  // }
+  constructor() {
+    super()
+    this.state = defaultState
+    this.handleCheckout = this.handleCheckout.bind(this)
+  }
 
   componentDidMount() {
-    this.props.getCart()
+    if (this.props.user) {
+      this.props.getCart()
+    } else {
+      store.getState()
+    }
+    console.log('state', this.state)
   }
 
   handleCheckout() {
-    this.props.putCheckout(this.props.user.id)
+    if (this.props.user) {
+      this.props.putCheckout(this.props.user.id)
+    }
   }
 
   render() {
+    console.log('render')
     return (
       <div>
-        {this.props.cart[0] && <Order order={this.props.cart[0]} />}
+        {this.props.user.id
+          ? this.props.cart[0] && <Order order={this.props.cart[0]} />
+          : ''}
         <button onClick={() => this.handleCheckout()}>Checkout</button>
       </div>
     )

@@ -3,35 +3,79 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import Product from './Product'
 import AddProduct from './AddProduct'
-import {getProducts, putCart, putCheckout} from '../store'
+import {getProducts, putCart, putCheckout, editCart} from '../store'
 import EditProduct from './EditProduct'
 
 const defaultState = {
-  cart: [],
+  cart: {
+    products: []
+  },
   filter: ''
 }
+
+let localCart = localStorage.getItem('cart')
+  ? JSON.parse(localStorage.getItem('cart'))
+  : {products: []}
+
+localStorage.setItem('cart', JSON.stringify(localCart))
+let data = JSON.parse(localStorage.getItem('cart'))
+console.log('funky banana data all products.js', data)
 
 class AllProducts extends Component {
   constructor() {
     super()
     this.state = defaultState
-    this.handleChange = this.handleChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
     this.handleFilter = this.handleFilter.bind(this)
   }
 
   componentDidMount() {
     this.props.getProducts()
+    if (!this.props.user.id) {
+      this.setState({
+        cart: data
+      })
+      console.log('component did mount')
+    }
   }
 
-  handleChange(item) {
+  handleClick(product) {
     if (!this.props.user.id) {
-      const newCart = [...this.state.cart, item]
-      console.log('newCart', newCart)
+      const products = this.state.cart.products.slice()
+      // check if product is already in cart
+      if (products.some(item => item.id === product.id)) {
+        // if so update product quantity by 1
+        products.map(item => {
+          if (item.id === product.id) {
+            item.quantity++
+            return item
+          } else {
+            return item
+          }
+        })
+        // if product does not exist in cart, push to cart
+      } else {
+        products.push({
+          id: product.id,
+          name: product.name,
+          bio: product.bio,
+          districtName: product.districtName,
+          price: product.price,
+          quantity: 1
+        })
+      }
       this.setState({
-        cart: newCart
+        cart: {
+          products
+        }
       })
+      localStorage.setItem('cart', JSON.stringify(this.state.cart))
+      const dataInMount = JSON.parse(localStorage.getItem('cart'))
+      console.log('handle click: dataInMount', dataInMount)
+      //this.props.editCart({products})
+      //console.log(this.state.cart.products)
     } else {
-      this.props.putCart(item, this.props.user.id)
+      this.props.putCart(product, this.props.user.id)
     }
   }
 
@@ -41,14 +85,10 @@ class AllProducts extends Component {
     })
   }
 
-  handleCheckout(item) {
-    this.props.putCheckout(item, this.props.user.id)
-  }
-
   render() {
     const filterView = this.state.filter
     const admin = this.props.user.isAdmin
-    console.log('admin', admin)
+    console.log('render allproducts.js : this.state', this.state)
     return (
       <div>
         <h2>Candidates For Sale</h2>
@@ -82,12 +122,9 @@ class AllProducts extends Component {
                       <div>
                         <button
                           type="button"
-                          onClick={() => this.handleChange(product)}
+                          onClick={() => this.handleClick(product)}
                         >
                           Buy!
-                        </button>
-                        <button onClick={() => this.handleCheckout(product)}>
-                          Checkout
                         </button>
                       </div>
                     ) : (
@@ -103,7 +140,7 @@ class AllProducts extends Component {
                     <div>
                       <button
                         type="button"
-                        onClick={() => this.handleChange(product)}
+                        onClick={() => this.handleClick(product)}
                       >
                         Buy!
                       </button>
@@ -141,7 +178,8 @@ const mapDispatchToProps = dispatch => {
   return {
     getProducts: () => dispatch(getProducts()),
     putCart: (product, user) => dispatch(putCart(product, user)),
-    putCheckout: (product, user) => dispatch(putCheckout(product, user))
+    putCheckout: (product, user) => dispatch(putCheckout(product, user)),
+    editCart: cart => dispatch(editCart(cart))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AllProducts)
