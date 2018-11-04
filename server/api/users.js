@@ -46,22 +46,17 @@ router.put('/:userId/cart', async (req, res, next) => {
   if (userId === +req.params.userId) {
     try {
       let cart = await Order.findOne({
-        where: {isCart: true, userId: +req.params.userId},
-        include: [{model: Product}]
+        where: {isCart: true, userId: +req.params.userId}
       })
-      //cart.id
-      // console.log(cart)
-      //find one orderproducts
-      //find one for req.body.product
       let product = await Product.findOne({
         where: {id: productId}
       })
-      const updateCart = await cart.addProduct(product)
-      const updateQuantity = await OrderProduct.findOne({
+      await cart.addProduct(product)
+      const updateJoinTable = await OrderProduct.findOne({
         where: {orderId: cart.id, productId: product.id}
       })
-      const newCart = await updateQuantity.update({
-        quantity: updateQuantity.quantity + 1,
+      await updateJoinTable.update({
+        quantity: updateJoinTable.quantity + 1,
         historicPrice: req.body.price
       })
       let returnCart = await Order.findOne({
