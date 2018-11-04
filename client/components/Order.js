@@ -15,7 +15,10 @@ const Order = props => {
             {products.map(product => (
               <div key={product.id}>
                 <li>Name: {product.name}</li>
-                <li>Purchase Price: {product.order_product.historicPrice}</li>
+                <li>
+                  Purchase Price:{' '}
+                  {product.order_product.historicPrice || product.price}
+                </li>
                 <li>Quantity: {product.order_product.quantity}</li>
               </div>
             ))}
