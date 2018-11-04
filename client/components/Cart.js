@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {getCart} from '../store'
+import {getCart, putCheckout} from '../store'
 import Order from './Order'
 
 class Cart extends Component {
@@ -13,9 +13,16 @@ class Cart extends Component {
     this.props.getCart()
   }
 
+  handleCheckout() {
+    this.props.putCheckout(this.props.user.id)
+  }
+
   render() {
     return (
-      <div>{this.props.cart[0] && <Order order={this.props.cart[0]} />}</div>
+      <div>
+        {this.props.cart[0] && <Order order={this.props.cart[0]} />}
+        <button onClick={() => this.handleCheckout()}>Checkout</button>
+      </div>
     )
   }
 }
@@ -29,7 +36,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    getCart: () => dispatch(getCart(ownProps.match.params.userId))
+    getCart: () => dispatch(getCart(ownProps.match.params.userId)),
+    putCheckout: user => dispatch(putCheckout(user))
   }
 }
 

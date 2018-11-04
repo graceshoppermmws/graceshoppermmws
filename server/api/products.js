@@ -58,8 +58,8 @@ router.post('/', async (req, res, next) => {
   }
 })
 
-// PUT by ProductId
-router.put('/:ProductId', async (req, res, next) => {
+// PUT by productId
+router.put('/:productId', async (req, res, next) => {
   try {
     const oldProduct = await Product.findById(+req.params.ProductId)
     if (!oldProduct) {
