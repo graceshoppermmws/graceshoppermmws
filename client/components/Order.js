@@ -2,13 +2,15 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
 const Order = props => {
-  const {id, userId, status, createdAt, products} = props.order
+  const {id, userId, isCart, isShipped, createdAt, products} = props.order
+  console.log('mapped order passed down props', props)
   return (
     <div>
       <h3>Order: {id}</h3>
       <ul>
         <li>User: {userId}</li>
-        <li>Status: {status}</li>
+        <li>is Cart: {isCart ? 'true' : 'false'}</li>
+        <li>is Shipped: {isShipped ? 'true' : 'false'}</li>
         <li>Created: {createdAt}</li>
       </ul>
       <ul>
