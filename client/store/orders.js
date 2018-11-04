@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {Certificate} from 'crypto'
 
 /**
  * ACTION TYPES
@@ -8,6 +9,7 @@ const CREATE_ORDER = 'CREATE_ORDER'
 const GET_CART = 'GET_CART'
 const GET_PAST_ORDERS = 'GET_PAST_ORDERS'
 const EDIT_CART = 'EDIT_CART'
+const CHECKOUT = 'CHECKOUT'
 /**
  * INITIAL STATE
  */
@@ -43,6 +45,11 @@ export const gotPastOrders = pastOrders => ({
 
 export const editCart = cart => ({
   type: EDIT_CART,
+  cart
+})
+
+export const checkedOut = cart => ({
+  type: CHECKOUT,
   cart
 })
 /**
@@ -102,9 +109,8 @@ export const putCheckout = userId => {
       console.log('user', userId)
       const response = await axios.put(`/api/users/${userId}/checkout`)
       const cart = response.data
-      console.log('cart', cart)
-      // const action = editCart(cart)
-      // dispatch(action)
+      const action = checkedOut(cart)
+      dispatch(action)
     } catch (err) {
       console.log(err)
     }
@@ -159,6 +165,13 @@ export default function(state = defaultOrderState, action) {
     }
     case EDIT_CART: {
       return {...state, cart: action.cart}
+    }
+    case CHECKOUT: {
+      return {
+        ...state,
+        pastOrders: [...state.pastOrders, action.cart],
+        cart: {}
+      }
     }
     default:
       return state
