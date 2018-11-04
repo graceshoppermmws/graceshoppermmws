@@ -131,7 +131,7 @@ export const postOrder = order => {
 export const getPastOrders = userId => {
   return async dispatch => {
     try {
-      const response = await axios.get(`/api/orders/past/${userId}`)
+      const response = await axios.get(`/api/users/${userId}/past`)
       if (response) {
         const orders = response.data
         const action = gotPastOrders(orders)

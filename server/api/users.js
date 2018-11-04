@@ -23,22 +23,45 @@ router.get('/:userId', async (req, res, next) => {
   }
 })
 
+// get current cart
+
 router.get('/:userId/cart', async (req, res, next) => {
-  // const userId = req.user.id || null
-  // if (userId === +req.params.userId) {
-  try {
-    const cart = await Order.findAll({
-      where: {isCart: true, userId: +req.params.userId},
-      include: [{model: Product}]
-    })
-    res.status(200).json(cart)
-  } catch (err) {
-    next(err)
+  const userId = req.user.id || null
+  if (userId === +req.params.userId) {
+    try {
+      const cart = await Order.findAll({
+        where: {isCart: true, userId: +req.params.userId},
+        include: [{model: Product}]
+      })
+      res.status(200).json(cart)
+    } catch (err) {
+      next(err)
+    }
+  } else {
+    res.sendStatus(403)
   }
-  // } else {
-  //   res.sendStatus(403)
-  // }
 })
+
+// get past orders
+
+router.get('/:userId/past', async (req, res, next) => {
+  const userId = req.user.id || null
+  if (userId === +req.params.userId) {
+    try {
+      const cart = await Order.findAll({
+        where: {isCart: false, userId: +req.params.userId},
+        include: [{model: Product}]
+      })
+      res.status(200).json(cart)
+    } catch (err) {
+      next(err)
+    }
+  } else {
+    res.sendStatus(403)
+  }
+})
+
+// update cart
 
 router.put('/:userId/cart', async (req, res, next) => {
   const userId = req.user.id || null
@@ -72,6 +95,8 @@ router.put('/:userId/cart', async (req, res, next) => {
   }
 })
 
+// checkout
+
 router.put('/:userId/checkout', async (req, res, next) => {
   const userId = req.user.id || null
   if (userId === +req.params.userId) {
@@ -82,7 +107,7 @@ router.put('/:userId/checkout', async (req, res, next) => {
       })
       const checkout = await cart.update({
         isCart: false,
-        status: 'Completed'
+        isShipped: false
       })
       await Order.findOrCreate({
         where: {userId: +req.params.userId, isCart: true},
@@ -98,15 +123,21 @@ router.put('/:userId/checkout', async (req, res, next) => {
   }
 })
 
+// get all users
+
 router.get('/', async (req, res, next) => {
   try {
-    const users = await User.findAll({
-      // explicitly select only the id and email fields - even though
-      // users' passwords are encrypted, it won't help if we just
-      // send everything to anyone who asks!
-      attributes: ['id', 'email']
-    })
-    res.json(users)
+    if (req.user.isAdmin) {
+      const users = await User.findAll({
+        // explicitly select only the id and email fields - even though
+        // users' passwords are encrypted, it won't help if we just
+        // send everything to anyone who asks!
+        attributes: ['id', 'email']
+      })
+      res.json(users)
+    } else {
+      res.sendStatus(403)
+    }
   } catch (err) {
     next(err)
   }
