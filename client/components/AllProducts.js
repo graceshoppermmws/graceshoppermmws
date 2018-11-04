@@ -7,7 +7,7 @@ import {getProducts, putCart, putCheckout} from '../store'
 import EditProduct from './EditProduct'
 
 const defaultState = {
-  // cart: [],
+  cart: [],
   filter: ''
 }
 
@@ -24,11 +24,15 @@ class AllProducts extends Component {
   }
 
   handleChange(item) {
-    // const newCart = [...this.state.cart, item]
-    // this.setState({
-    //   cart: newCart
-    // })
-    this.props.putCart(item, this.props.user.id)
+    if (!this.props.user.id) {
+      const newCart = [...this.state.cart, item]
+      console.log('newCart', newCart)
+      this.setState({
+        cart: newCart
+      })
+    } else {
+      this.props.putCart(item, this.props.user.id)
+    }
   }
 
   handleFilter(evt) {
