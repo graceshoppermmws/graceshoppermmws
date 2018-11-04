@@ -18,6 +18,7 @@ let localCart = localStorage.getItem('cart')
   : {products: []}
 
 localStorage.setItem('cart', JSON.stringify(localCart))
+
 let data = JSON.parse(localStorage.getItem('cart'))
 console.log('funky banana data all products.js', data)
 
@@ -41,7 +42,7 @@ class AllProducts extends Component {
 
   handleClick(product) {
     if (!this.props.user.id) {
-      const products = this.state.cart.products.slice()
+      const products = data.products
       // check if product is already in cart
       if (products.some(item => item.id === product.id)) {
         // if so update product quantity by 1
@@ -72,8 +73,6 @@ class AllProducts extends Component {
       localStorage.setItem('cart', JSON.stringify(this.state.cart))
       const dataInMount = JSON.parse(localStorage.getItem('cart'))
       console.log('handle click: dataInMount', dataInMount)
-      //this.props.editCart({products})
-      //console.log(this.state.cart.products)
     } else {
       this.props.putCart(product, this.props.user.id)
     }

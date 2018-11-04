@@ -5,22 +5,20 @@ import store, {getCart, putCheckout} from '../store'
 import Order from './Order'
 
 let defaultState = {
-  orders: {
-    cart: {
-      products: []
-    }
+  cart: {
+    products: []
   }
 }
 
-/* move to navbar? creates locals torage cart for first time
+/* move to navbar? creates locals torage cart for first time */
 
-let localCart = localStorage.getItem('cart')
+/*let localCart = localStorage.getItem('cart')
   ? JSON.parse(localStorage.getItem('cart'))
-  : {products: []}
+  : {isCart: true, products: []}
 
-localStorage.setItem('cart', JSON.stringify(localCart)) */
+localStorage.setItem('cart', JSON.stringify(localCart))*/
 
-const data = JSON.parse(localStorage.getItem('cart'))
+let data = JSON.parse(localStorage.getItem('cart'))
 console.log('strawberry cream pie cart.js data', data)
 
 class Cart extends Component {
@@ -33,6 +31,11 @@ class Cart extends Component {
   componentDidMount() {
     if (this.props.user.id) {
       this.props.getCart()
+    } else {
+      let localStorageCart = JSON.parse(localStorage.getItem('cart'))
+      this.setState({
+        cart: localStorageCart
+      })
     }
     console.log('state', this.state)
   }
@@ -51,7 +54,7 @@ class Cart extends Component {
       <div>
         {this.props.user.id
           ? this.props.cart[0] && <Order order={this.props.cart[0]} />
-          : data.products && <Order order={data} />}
+          : data.products && <Order order={this.state.cart} />}
         <button onClick={() => this.handleCheckout()}>Checkout</button>
       </div>
     )
