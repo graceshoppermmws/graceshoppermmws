@@ -65,7 +65,7 @@ router.get('/:userId/past', async (req, res, next) => {
 
 router.put('/:userId/cart', async (req, res, next) => {
   const userId = req.user.id || null
-  const productId = +req.body.id || null
+  const productId = +req.body.product.id || null
   if (userId === +req.params.userId) {
     try {
       let cart = await Order.findOne({
@@ -75,12 +75,14 @@ router.put('/:userId/cart', async (req, res, next) => {
         where: {id: productId}
       })
       await cart.addProduct(product)
+      console.log('cart', cart.id)
+      console.log('product', product.id)
       const updateJoinTable = await OrderProduct.findOne({
         where: {orderId: cart.id, productId: product.id}
       })
       await updateJoinTable.update({
-        quantity: updateJoinTable.quantity + 1,
-        historicPrice: req.body.price
+        quantity: updateJoinTable.quantity + +req.body.quantity,
+        historicPrice: req.body.product.price
       })
       let returnCart = await Order.findOne({
         where: {isCart: true, userId: +req.params.userId},
