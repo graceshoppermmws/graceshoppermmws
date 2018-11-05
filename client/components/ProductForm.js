@@ -79,6 +79,15 @@ const ProductForm = props => {
             <option value="Federal">Federal</option>
           </select>
         </label>
+        <label htmlFor="tags">
+          <small>Tags</small>
+          <input
+            name="tags"
+            type="text"
+            value={props.product.tags}
+            onChange={props.changeHandler}
+          />
+        </label>
       </div>
       <button type="submit">Submit</button>
     </form>
