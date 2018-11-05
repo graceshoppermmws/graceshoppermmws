@@ -41,7 +41,6 @@ class Cart extends Component {
   handleDeleteProduct(userId, productId) {
     if (this.props.user.id) {
       this.props.deletedProductFromCart(userId, productId)
-      // this.props.history.push(`orders/cart/${userId}`)
     } else {
       const products = this.state.cart.products
       // check if product is already in cart
