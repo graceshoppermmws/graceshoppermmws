@@ -9,6 +9,7 @@ const Order = props => {
       <h3>Order: {id}</h3>
       <ul>
         <li>User: {userId}</li>
+        <li>created: {createdAt}</li>
         <li>is Cart: {isCart ? 'true' : 'false'}</li>
         <li>is Shipped: {isShipped ? 'true' : 'false'}</li>
         <li>Created: {createdAt}</li>
@@ -31,6 +32,17 @@ const Order = props => {
                     ? product.order_product.quantity
                     : product.quantity}
                 </li>
+                <li>Quantity: {product.order_product.quantity}</li>
+                {isCart && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      props.handleDeleteProduct(userId, product.id)
+                    }
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             ))}
           </ul>
