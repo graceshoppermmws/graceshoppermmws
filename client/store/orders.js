@@ -139,6 +139,7 @@ export const getPastOrders = userId => {
 export const postUnauthOrder = order => {
   return async dispatch => {
     try {
+      console.log('input order', order)
       const response = await axios.post('/api/orders/checkout', order)
       const newOrder = response.data
       const action = createdOrder(newOrder)

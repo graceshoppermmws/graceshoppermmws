@@ -32,6 +32,8 @@ class Cart extends Component {
     if (this.props.user.id) {
       this.props.putCheckout(this.props.user.id)
     } else {
+      let localStorageCart = JSON.parse(localStorage.getItem('cart'))
+      this.props.postUnauthOrder(localStorageCart)
       localStorage.setItem('cart', JSON.stringify({products: []}))
       let emptyCart = JSON.parse(localStorage.getItem('cart'))
       this.setState({

@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {User, Order, Product} = require('../db/models')
+const {User, Order, Product, OrderProduct} = require('../db/models')
 module.exports = router
 
 //Get all orders
@@ -23,17 +23,25 @@ router.get('/', async (req, res, next) => {
 router.post('/checkout', async (req, res, next) => {
   try {
     // check if payment processed ? req.payment === true? who knows.
-    const [testUser] = User.findAll({where: {email: 'test@user.com'}})
     const products = req.body.products
+    console.log('BANANA SERVER PRODUCTS', products)
     const newOrder = await Order.create({
-      where: {userId: testUser.id, isCart: false, isShipped: false}
+      userId: 1,
+      isCart: false,
+      isShipped: false
     })
-    products.forEach(product => {
-      newOrder.addProduct(product, {
-        through: {quantity: product.quantity, historicPrice: product.price}
+    products.forEach(async product => {
+      const tempProduct = await Product.findOne({where: {id: product.id}})
+      await newOrder.addProduct(tempProduct)
+      const updateJoinTable = await OrderProduct.findOne({
+        where: {orderId: newOrder.id, productId: tempProduct.id}
+      })
+      await updateJoinTable.update({
+        quantity: product.quantity,
+        historicPrice: product.price
       })
     })
-    const completedOrder = await Order.find({
+    const completedOrder = await Order.findOne({
       where: {id: newOrder.id},
       include: [{model: Product}]
     })
