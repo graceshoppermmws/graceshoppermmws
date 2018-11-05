@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {getCart, putCheckout} from '../store'
+import {getCart, putCheckout, postUnauthOrder} from '../store'
 import Order from './Order'
 
 let defaultState = {
@@ -64,7 +64,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getCart: () => dispatch(getCart(ownProps.match.params.userId)),
-    putCheckout: user => dispatch(putCheckout(user))
+    putCheckout: user => dispatch(putCheckout(user)),
+    postUnauthOrder: cart => dispatch(postUnauthOrder(cart))
   }
 }
 

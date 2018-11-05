@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Order, Product, OrderProduct} = require('../db/models')
+const {User, Order, Product} = require('../db/models')
 module.exports = router
 
 //Get all orders
@@ -18,37 +18,27 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-//Get cart
-router.get('/cart/:userId', async (req, res, next) => {
-  const userId = req.user.id || null
-  if (userId === +req.params.userId) {
-    try {
-      const cart = await Order.findAll({
-        where: {isCart: true, userId: +req.params.userId},
-        include: [{model: Product}]
-      })
-      res.status(200).json(cart)
-    } catch (err) {
-      next(err)
-    }
-  } else {
-    res.sendStatus(403)
-  }
-})
+// Create an order for an unauthenticated user after payment
 
-//GET past order
-router.get('/past/:userId', async (req, res, next) => {
-  if (req.user.id === +req.params.userId) {
-    try {
-      const pastOrders = await Order.findAll({
-        where: {userId: +req.params.userId, isCart: false},
-        include: [{model: Product}]
+router.post('/checkout', async (req, res, next) => {
+  try {
+    // check if payment processed ? req.payment === true? who knows.
+    const [testUser] = User.findAll({where: {email: 'test@user.com'}})
+    const products = req.body.products
+    const newOrder = await Order.create({
+      where: {userId: testUser.id, isCart: false, isShipped: false}
+    })
+    products.forEach(product => {
+      newOrder.addProduct(product, {
+        through: {quantity: product.quantity, historicPrice: product.price}
       })
-      res.status(200).json(pastOrders)
-    } catch (error) {
-      next(error)
-    }
-  } else {
-    res.sendStatus(403)
+    })
+    const completedOrder = await Order.find({
+      where: {id: newOrder.id},
+      include: [{model: Product}]
+    })
+    res.status(200).json(completedOrder)
+  } catch (error) {
+    next(error)
   }
 })
