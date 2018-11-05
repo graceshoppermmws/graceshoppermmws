@@ -40,6 +40,7 @@ class AllProducts extends Component {
 
   handleClick(product) {
     if (!this.props.user.id) {
+      toastr.success('Item added to cart!')
       const products = this.state.cart.products
       // check if product is already in cart
       if (products.some(item => item.id === product.id)) {

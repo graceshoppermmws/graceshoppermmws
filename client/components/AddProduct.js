@@ -23,6 +23,7 @@ class AddProduct extends Component {
   }
 
   changeHandler(event) {
+    window.alert('Item added to cart!')
     this.setState({
       [event.target.name]: event.target.value
     })
