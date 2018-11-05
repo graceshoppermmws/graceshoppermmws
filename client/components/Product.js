@@ -41,7 +41,7 @@ class Product extends Component {
           <li>District: {districtName}</li>
           <li>Level: {govLevel}</li>
           <li>Position: {position}</li>
-          <li>Price: {price}</li>
+          <li>Price: ${price}</li>
         </ul>
         <div>
           {!this.props.user.isAdmin && (
