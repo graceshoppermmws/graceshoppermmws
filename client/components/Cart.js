@@ -39,6 +39,7 @@ class Cart extends Component {
   }
 
   handleDeleteProduct(userId, productId) {
+    toastr.success('Item removed!')
     if (this.props.user.id) {
       this.props.deletedProductFromCart(userId, productId)
       // this.props.history.push(`orders/cart/${userId}`)

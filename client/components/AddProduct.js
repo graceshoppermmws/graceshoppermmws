@@ -23,13 +23,13 @@ class AddProduct extends Component {
   }
 
   changeHandler(event) {
-    window.alert('Item added to cart!')
     this.setState({
       [event.target.name]: event.target.value
     })
   }
 
   async submitHandler(event) {
+    toastr.success('New product added!')
     event.preventDefault()
     const newProduct = await this.props.postProduct(this.state)
     this.setState(defaultState)
