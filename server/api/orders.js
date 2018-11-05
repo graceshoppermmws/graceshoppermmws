@@ -72,6 +72,37 @@ router.post('/', async (req, res, next) => {
   }
 })
 
+//Delete a product from cart (pass in productId, userId)
+router.put('/:userId/removeitem', async (req, res, next) => {
+  // const userId = req.user.id || null
+
+  const productId = +req.body.id || null
+
+  // if (userId === +req.params.userId)
+  // {
+  try {
+    let cart = await Order.findOne({
+      where: {isCart: true, userId: +req.params.userId},
+      include: [{model: Product}]
+    })
+    let product = await Product.findOne({
+      where: {id: productId}
+    })
+    // console.log('----', product);
+    await cart.removeProduct(product)
+    let returnCart = await Order.findOne({
+      where: {isCart: true, userId: +req.params.userId},
+      include: [{model: Product}]
+    })
+    res.status(201).json(returnCart)
+  } catch (err) {
+    next(err)
+  }
+  // } else {
+  //   res.sendStatus(403)
+  // }
+})
+
 // router.put('/:orderId', async (req, res, next) => {
 //   try {
 //     const {quantity, status, isCart, historicPrice} = req.body

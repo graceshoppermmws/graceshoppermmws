@@ -2,13 +2,13 @@ import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 
 const Order = props => {
-  const {id, userId, status, createdAt, products} = props.order
+  const {id, userId, isCart, status, createdAt, products} = props.order
   return (
     <div>
       <h3>Order: {id}</h3>
       <ul>
         <li>User: {userId}</li>
-        <li>staus: {status}</li>
+        <li>status: {status}</li>
         <li>created: {createdAt}</li>
         <li>
           <ul>
@@ -20,6 +20,16 @@ const Order = props => {
                   {product.order_product.historicPrice || product.price}
                 </li>
                 <li>Quantity: {product.order_product.quantity}</li>
+                {isCart && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      props.handleDeleteProduct(userId, product.id)
+                    }
+                  >
+                    Delete
+                  </button>
+                )}
               </div>
             ))}
           </ul>
