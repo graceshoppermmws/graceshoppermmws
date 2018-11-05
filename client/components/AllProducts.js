@@ -8,7 +8,8 @@ import EditProduct from './EditProduct'
 
 const defaultState = {
   cart: {
-    products: []
+    products: [],
+    isCart: true
   },
   filter: ''
 }
@@ -24,7 +25,7 @@ class AllProducts extends Component {
   componentDidMount() {
     let localCart = localStorage.getItem('cart')
       ? JSON.parse(localStorage.getItem('cart'))
-      : {products: []}
+      : {products: [], isCart: true}
 
     localStorage.setItem('cart', JSON.stringify(localCart))
     let data = JSON.parse(localStorage.getItem('cart'))
@@ -64,11 +65,11 @@ class AllProducts extends Component {
       }
       this.setState({
         cart: {
-          products
+          products,
+          isCart: true
         }
       })
       localStorage.setItem('cart', JSON.stringify(this.state.cart))
-      const dataInMount = JSON.parse(localStorage.getItem('cart'))
     } else {
       this.props.putCart(product, this.props.user.id)
     }

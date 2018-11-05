@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 
 const Order = props => {
   const {id, userId, isCart, isShipped, createdAt, products} = props.order
+  const {isAdmin} = props.user || false
   return (
     <div>
       <h3>Order: {id}</h3>
@@ -31,7 +32,9 @@ const Order = props => {
                     : product.quantity}
                 </li>
 
-                {isCart && (
+                {isAdmin ? (
+                  ' '
+                ) : isCart ? (
                   <button
                     type="button"
                     onClick={() =>
@@ -40,6 +43,8 @@ const Order = props => {
                   >
                     Remove Item From Cart
                   </button>
+                ) : (
+                  ' '
                 )}
               </div>
             ))}
