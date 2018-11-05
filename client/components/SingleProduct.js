@@ -33,7 +33,8 @@ class SingleProduct extends Component {
     }
   }
 
-  handleClick(product) {
+  handleClick(event, product, quantity) {
+    event.preventDefault()
     toastr.success('Item added to cart!')
     if (!this.props.user.id) {
       const products = this.state.cart.products
@@ -42,7 +43,7 @@ class SingleProduct extends Component {
         // if so update product quantity by 1
         products.map(item => {
           if (item.id === product.id) {
-            item.quantity++
+            item.quantity = Number(item.quantity) + Number(quantity)
             return item
           } else {
             return item
@@ -56,7 +57,7 @@ class SingleProduct extends Component {
           bio: product.bio,
           districtName: product.districtName,
           price: product.price,
-          quantity: 1
+          quantity: quantity
         })
       }
       this.setState({
@@ -67,7 +68,7 @@ class SingleProduct extends Component {
       })
       localStorage.setItem('cart', JSON.stringify(this.state.cart))
     } else {
-      this.props.putCart(product, this.props.user.id)
+      this.props.putCart({product, quantity}, this.props.user.id)
     }
   }
 

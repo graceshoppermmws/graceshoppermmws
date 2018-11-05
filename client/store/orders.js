@@ -101,10 +101,13 @@ export const getCart = userId => {
   }
 }
 
-export const putCart = (product, userId) => {
+export const putCart = ({product, quantity}, userId) => {
   return async dispatch => {
     try {
-      const response = await axios.put(`/api/users/${userId}/cart`, product)
+      const response = await axios.put(`/api/users/${userId}/cart`, {
+        product,
+        quantity
+      })
       const cart = response.data
       const action = editCart(cart)
       dispatch(action)
