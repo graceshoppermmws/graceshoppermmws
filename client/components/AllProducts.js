@@ -3,7 +3,7 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import Product from './Product'
 import AddProduct from './AddProduct'
-import {getProducts, putCart, putCheckout, editCart} from '../store'
+import {getProducts, putCart, putCheckout, editCart, getTags} from '../store'
 import EditProduct from './EditProduct'
 
 const defaultState = {
@@ -29,6 +29,7 @@ class AllProducts extends Component {
     localStorage.setItem('cart', JSON.stringify(localCart))
     let data = JSON.parse(localStorage.getItem('cart'))
     this.props.getProducts()
+    this.props.getTags()
     if (!this.props.user.id) {
       this.setState({
         cart: data
@@ -82,23 +83,28 @@ class AllProducts extends Component {
   render() {
     const filterView = this.state.filter
     const admin = this.props.user.isAdmin
+    console.log(this.props.tags)
     return (
       <div>
         <h2>Candidates For Sale</h2>
-        <h4>Filter By District</h4>
+        <h4>Filter By Category</h4>
         <select onChange={evt => this.handleFilter(evt)}>
           <option value="">View All</option>
-          <option value="US House of Representatives District 14">
-            US House of Representatives District 14
-          </option>
-          <option value="State Senate District 17">
-            State Senate District 17
-          </option>
+          {this.props.tags.map((tag, i) => (
+            <option value={tag} key={i}>
+              {tag}
+            </option>
+          ))}
         </select>
         <ul>
           {filterView
             ? this.props.allProducts
-                .filter(product => filterView === product.districtName)
+                .filter(
+                  product =>
+                    filterView === product.districtName ||
+                    filterView === product.govLevel ||
+                    filterView === product.position
+                )
                 .map((product, i) => (
                   <li key={i}>
                     <Product product={product} />
@@ -151,7 +157,8 @@ const mapStateToProps = state => {
   return {
     allProducts: state.products.allProducts,
     user: state.user,
-    cart: state.orders.cart
+    cart: state.orders.cart,
+    tags: state.products.allTags
   }
 }
 
@@ -160,7 +167,8 @@ const mapDispatchToProps = dispatch => {
     getProducts: () => dispatch(getProducts()),
     putCart: (product, user) => dispatch(putCart(product, user)),
     putCheckout: (product, user) => dispatch(putCheckout(product, user)),
-    editCart: cart => dispatch(editCart(cart))
+    editCart: cart => dispatch(editCart(cart)),
+    getTags: () => dispatch(getTags())
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AllProducts)
