@@ -90,9 +90,11 @@ class Cart extends Component {
                 handleDeleteProduct={this.handleDeleteProduct}
               />
             )}
-        <Elements>
-          <CheckoutForm handleCheckout={this.handleCheckout} />
-        </Elements>
+        
+          <Elements>
+            <CheckoutForm handleCheckout={this.handleCheckout} />
+          </Elements>
+        
       </div>
     )
   }
