@@ -88,7 +88,6 @@ router.put('/:userId/removeitem', async (req, res, next) => {
     let product = await Product.findOne({
       where: {id: productId}
     })
-    // console.log('----', product);
     await cart.removeProduct(product)
     let returnCart = await Order.findOne({
       where: {isCart: true, userId: +req.params.userId},

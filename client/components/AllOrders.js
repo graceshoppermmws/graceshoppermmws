@@ -12,17 +12,49 @@ class AllOrders extends Component {
   constructor() {
     super()
     this.state = defaultState
+    this.handleFilter = this.handleFilter.bind(this)
   }
 
   componentDidMount() {
     this.props.getOrders()
   }
 
+  handleFilter(evt) {
+    this.setState({
+      filter: evt.target.value
+    })
+    console.log('filter view in handle filter', this.state.filter)
+  }
+
   render() {
-    return this.props.allOrders.map(order => (
-      // <div key={order.id}>{order.id}</div>
-      <Order key={order.id} order={order} />
-    ))
+    console.log('render', this.props.allOrders)
+    const filterView = this.state.filter
+    return (
+      <div>
+        <h1>User Orders</h1>
+        <h4>Filter By Status</h4>
+        <select onChange={evt => this.handleFilter(evt)}>
+          <option value="">View All</option>
+          <option value="notshipped">Not Shipped</option>
+        </select>
+
+        {filterView === 'notshipped' ? (
+          <div>
+            <h1>Not Shipped</h1>
+            {this.props.allOrders
+              .filter(order => !order.isShipped)
+              .map(order => <Order order={order} key={order.id} />)}
+          </div>
+        ) : (
+          <div>
+            <h1>All Orders</h1>{' '}
+            {this.props.allOrders.map(order => (
+              <Order order={order} key={order.id} />
+            ))}
+          </div>
+        )}
+      </div>
+    )
   }
 }
 

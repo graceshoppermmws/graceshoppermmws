@@ -14,8 +14,12 @@ const Product = props => {
   return (
     <div>
       <ul>
+        <Link to={`/products/${id}`}>
+          <img src={imageUrl} width="80px" />
+          <br />
+          <small>click for details</small>
+        </Link>
         <li>Name: {name}</li>
-        <img src={imageUrl} width="80px" />
         <li>Bio: {bio}</li>
         <li>District: {districtName}</li>
         <li>Level: {govLevel}</li>
