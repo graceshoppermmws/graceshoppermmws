@@ -34,6 +34,7 @@ class SingleProduct extends Component {
   }
 
   handleClick(product) {
+    toastr.success('Item added to cart!')
     if (!this.props.user.id) {
       const products = this.state.cart.products
       // check if product is already in cart

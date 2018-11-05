@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {Elements, StripeProvider} from 'react-stripe-elements'
+import {Elements} from 'react-stripe-elements'
 import CheckoutForm from './CheckoutForm'
 
 import {
@@ -21,8 +21,8 @@ let defaultState = {
 class Cart extends Component {
   constructor() {
     super()
-    this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
     this.state = defaultState
+    this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
     this.handleCheckout = this.handleCheckout.bind(this)
     this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
   }
@@ -39,9 +39,9 @@ class Cart extends Component {
   }
 
   handleDeleteProduct(userId, productId) {
+    toastr.success('Item removed!')
     if (this.props.user.id) {
       this.props.deletedProductFromCart(userId, productId)
-      // this.props.history.push(`orders/cart/${userId}`)
     } else {
       const products = this.state.cart.products
       // check if product is already in cart

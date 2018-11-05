@@ -29,6 +29,7 @@ class AddProduct extends Component {
   }
 
   async submitHandler(event) {
+    toastr.success('New product added!')
     event.preventDefault()
     const newProduct = await this.props.postProduct(this.state)
     this.setState(defaultState)

@@ -17,13 +17,13 @@ class CheckoutForm extends Component {
       body: token.id
     })
     if (response.ok) {
+      toastr.success('Thank you for your purchase!')
       this.setState({complete: true})
       this.props.handleCheckout()
     }
   }
 
   render() {
-    if (this.state.complete) return <h1>Purchase Complete</h1>
     return (
       <div className="checkout">
         <p>Would you like to complete the purchase?</p>
