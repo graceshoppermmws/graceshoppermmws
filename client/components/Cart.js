@@ -73,7 +73,7 @@ class Cart extends Component {
               />
             )}
         <Elements>
-          <CheckoutForm />
+          <CheckoutForm handleCheckout={this.handleCheckout} />
         </Elements>
       </div>
     )

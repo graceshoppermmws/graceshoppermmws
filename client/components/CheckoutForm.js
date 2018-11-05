@@ -16,7 +16,10 @@ class CheckoutForm extends Component {
       headers: {'Content-Type': 'text/plain'},
       body: token.id
     })
-    if (response.ok) this.setState({complete: true})
+    if (response.ok) {
+      this.setState({complete: true})
+      this.props.handleCheckout()
+    }
   }
 
   render() {
@@ -25,10 +28,7 @@ class CheckoutForm extends Component {
       <div className="checkout">
         <p>Would you like to complete the purchase?</p>
         <CardElement />
-        <button onClick={this.submit}>Send</button>
-        <Link to="/paysuccess">
-          <button>Checkout</button>
-        </Link>
+        <button onClick={this.submit}>Complete Purchase</button>
       </div>
     )
   }
