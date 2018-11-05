@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
-import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
+import {Elements, StripeProvider} from 'react-stripe-elements'
+import CheckoutForm from './CheckoutForm'
 
 import {
   getCart,
@@ -71,9 +72,9 @@ class Cart extends Component {
                 handleDeleteProduct={this.handleDeleteProduct}
               />
             )}
-        <Link to="/thankyou">
-          <button onClick={() => this.handleCheckout()}>Checkout</button>
-        </Link>
+        <Elements>
+          <CheckoutForm handleCheckout={this.handleCheckout} />
+        </Elements>
       </div>
     )
   }

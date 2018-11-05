@@ -6,6 +6,7 @@ router.use('/orders', require('./orders'))
 // router.use('/races', require('./races'))
 // router.use('/candidates', require('./candidates'))
 router.use('/products', require('./products'))
+router.use('/stripe', require('./stripe'))
 
 router.use((req, res, next) => {
   const error = new Error('Not Found')
