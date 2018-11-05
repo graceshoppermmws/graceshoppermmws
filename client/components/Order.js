@@ -3,13 +3,11 @@ import {Link} from 'react-router-dom'
 
 const Order = props => {
   const {id, userId, isCart, isShipped, createdAt, products} = props.order
-  console.log('mapped order passed down props', props)
   return (
     <div>
       <h3>Order: {id}</h3>
       <ul>
         <li>User: {userId}</li>
-        <li>created: {createdAt}</li>
         <li>is Cart: {isCart ? 'true' : 'false'}</li>
         <li>is Shipped: {isShipped ? 'true' : 'false'}</li>
         <li>Created: {createdAt}</li>
@@ -32,7 +30,7 @@ const Order = props => {
                     ? product.order_product.quantity
                     : product.quantity}
                 </li>
-                <li>Quantity: {product.order_product.quantity}</li>
+
                 {isCart && (
                   <button
                     type="button"
@@ -40,7 +38,7 @@ const Order = props => {
                       props.handleDeleteProduct(userId, product.id)
                     }
                   >
-                    Delete
+                    Remove Item From Cart
                   </button>
                 )}
               </div>

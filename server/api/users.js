@@ -95,6 +95,35 @@ router.put('/:userId/cart', async (req, res, next) => {
   }
 })
 
+// delete item from cart
+
+router.put('/:userId/removeitem', async (req, res, next) => {
+  try {
+    const userId = req.user.id || null
+    if (userId === +req.params.userId) {
+      let cart = await Order.findOne({
+        where: {isCart: true, userId: +req.params.userId},
+        include: [{model: Product}]
+      })
+      console.log('POTATO CART', cart)
+      let product = await Product.findOne({
+        where: {id: +req.body.productId}
+      })
+      console.log('PRODUCT')
+      await cart.removeProduct(product)
+      let returnCart = await Order.findOne({
+        where: {isCart: true, userId: +req.params.userId},
+        include: [{model: Product}]
+      })
+      res.status(201).json(returnCart)
+    } else {
+      res.sendStatus(403)
+    }
+  } catch (err) {
+    next(err)
+  }
+})
+
 // checkout
 
 router.put('/:userId/checkout', async (req, res, next) => {
