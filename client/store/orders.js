@@ -9,9 +9,9 @@ const CREATE_ORDER = 'CREATE_ORDER'
 const GET_CART = 'GET_CART'
 const GET_PAST_ORDERS = 'GET_PAST_ORDERS'
 const EDIT_CART = 'EDIT_CART'
+const DELETE_PRODUCT_FROM_CART = 'DELETE_PRODUCT_FROM_CART'
 const CHECKOUT = 'CHECKOUT'
 const CREATE_UNAUTH_ORDER = 'CREATE_UNAUTH_ORDER'
-const DELETE_PRODUCT_FROM_CART = 'DELETE_PRODUCT_FROM_CART'
 
 /**
  * INITIAL STATE
@@ -51,6 +51,12 @@ export const editCart = cart => ({
   cart
 })
 
+export const removedProductFromCart = remainedProducts => ({
+  //rename deleteProductFromCart
+  type: DELETE_PRODUCT_FROM_CART,
+  remainedProducts
+})
+
 export const checkedOut = cart => ({
   type: CHECKOUT,
   cart
@@ -58,12 +64,6 @@ export const checkedOut = cart => ({
 export const createdUnauthOrder = cart => ({
   type: CREATE_UNAUTH_ORDER,
   cart
-})
-
-export const removedProductFromCart = remainedProducts => ({
-  //rename deleteProductFromCart
-  type: DELETE_PRODUCT_FROM_CART,
-  remainedProducts
 })
 
 /**
@@ -193,6 +193,9 @@ export default function(state = defaultOrderState, action) {
     case EDIT_CART: {
       return {...state, cart: action.cart}
     }
+    case DELETE_PRODUCT_FROM_CART: {
+      return {...state, cart: action.remainedProducts}
+    }
     case CHECKOUT: {
       return {
         ...state,
@@ -205,9 +208,6 @@ export default function(state = defaultOrderState, action) {
         ...state,
         allOrders: [...state.allOrders, action.cart]
       }
-    }
-    case DELETE_PRODUCT_FROM_CART: {
-      return {...state, cart: action.remainedProducts}
     }
     default:
       return state

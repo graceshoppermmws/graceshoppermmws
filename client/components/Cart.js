@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
+
 import {
   getCart,
   putCheckout,
@@ -18,6 +19,7 @@ let defaultState = {
 class Cart extends Component {
   constructor() {
     super()
+    this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
     this.state = defaultState
     this.handleCheckout = this.handleCheckout.bind(this)
     this.handleDeleteProduct = this.handleDeleteProduct.bind(this)

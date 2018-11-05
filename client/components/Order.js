@@ -3,7 +3,6 @@ import {Link} from 'react-router-dom'
 
 const Order = props => {
   const {id, userId, isCart, isShipped, createdAt, products} = props.order
-  console.log('mapped order passed down props', props)
   return (
     <div>
       <h3>Order: {id}</h3>
@@ -31,6 +30,7 @@ const Order = props => {
                     ? product.order_product.quantity
                     : product.quantity}
                 </li>
+
                 {isCart && (
                   <button
                     type="button"
