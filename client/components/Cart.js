@@ -115,12 +115,13 @@ class Cart extends Component {
               />
             )}
         <form onSubmit={this.handleDiscount}>
+          <label>Promo Code:</label>
           <input
             type="text"
             onChange={this.handleDiscountChange}
             value={this.state.discountCode}
           />
-          <button type="submit">Enter Code</button>
+          <button type="submit">Enter</button>
         </form>
 
         <Elements>
