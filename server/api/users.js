@@ -75,8 +75,6 @@ router.put('/:userId/cart', async (req, res, next) => {
         where: {id: productId}
       })
       await cart.addProduct(product)
-      console.log('cart', cart.id)
-      console.log('product', product.id)
       const updateJoinTable = await OrderProduct.findOne({
         where: {orderId: cart.id, productId: product.id}
       })
