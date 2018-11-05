@@ -1,5 +1,5 @@
 const router = require('express')()
-const stripe = require('stripe')('sk_test_EIkuB0XdKUEnAyWKP2mKyZlt')
+const stripe = require('stripe')(process.env.STRIPE_KEY)
 module.exports = router
 
 router.use(require('body-parser').text())

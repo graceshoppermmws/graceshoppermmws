@@ -1,13 +1,10 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
-import {connect} from 'react-redux'
-import {getCart, putCheckout} from '../store'
-import Order from './Order'
 import {CardElement, injectStripe} from 'react-stripe-elements'
 
 class CheckoutForm extends Component {
-  constructor(props) {
-    super(props)
+  constructor() {
+    super()
     this.state = {complete: false}
     this.submit = this.submit.bind(this)
   }
@@ -24,20 +21,17 @@ class CheckoutForm extends Component {
 
   render() {
     if (this.state.complete) return <h1>Purchase Complete</h1>
-
     return (
-      <div>
-        {this.props.cart[0] && <Order order={this.props.cart[0]} />}
-        <div className="checkout">
-          <p>Would you like to complete the purchase?</p>
-          <CardElement />
-          <button onClick={this.submit}>Send</button>
-        </div>
-        );
+      <div className="checkout">
+        <p>Would you like to complete the purchase?</p>
+        <CardElement />
+        <button onClick={this.submit}>Send</button>
+        <Link to="/paysuccess">
+          <button>Checkout</button>
+        </Link>
       </div>
     )
   }
 }
 
-// export default injectStripe(CheckoutForm)
-export default CheckoutForm
+export default injectStripe(CheckoutForm)

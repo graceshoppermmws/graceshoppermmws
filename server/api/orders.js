@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const {Order, Product, OrderProduct} = require('../db/models')
+const {User, Order, Product, OrderProduct} = require('../db/models')
 module.exports = router
 
 //Get all orders
@@ -18,79 +18,34 @@ router.get('/', async (req, res, next) => {
   }
 })
 
-//Get cart
-router.get('/cart/:userId', async (req, res, next) => {
-  const userId = req.user.id || null
-  if (userId === +req.params.userId) {
-    try {
-      const cart = await Order.findAll({
-        where: {isCart: true, userId: +req.params.userId},
-        include: [{model: Product}]
-      })
-      res.status(200).json(cart)
-    } catch (err) {
-      next(err)
-    }
-  } else {
-    res.sendStatus(403)
-  }
-})
+// Create an order for an unauthenticated user after payment
 
-//GET past order
-router.get('/past/:userId', async (req, res, next) => {
-  if (req.user.id === +req.params.userId) {
-    try {
-      const pastOrders = await Order.findAll({
-        where: {userId: +req.params.userId, isCart: false},
-        include: [{model: Product}]
-      })
-      res.status(200).json(pastOrders)
-    } catch (error) {
-      next(error)
-    }
-  } else {
-    res.sendStatus(403)
-  }
-})
-
-//Post one order
-
-// pass in a quantity, a productId, and a userId
-router.post('/', async (req, res, next) => {
+router.post('/checkout', async (req, res, next) => {
   try {
-    const {quantity, productId, userId} = req.body
-    const productToBuy = await Product.findById(productId)
+    // check if payment processed ? req.payment === true? who knows.
+    const products = req.body.products
     const newOrder = await Order.create({
-      isCart: true,
-      status: 'Cart',
-      userId
+      userId: 1,
+      isCart: false,
+      isShipped: false
     })
-    newOrder.addProduct(productToBuy, {through: {quantity}})
-    res.status(201).json(newOrder)
-  } catch (err) {
-    next(err)
+    products.forEach(async product => {
+      const tempProduct = await Product.findOne({where: {id: product.id}})
+      await newOrder.addProduct(tempProduct)
+      const updateJoinTable = await OrderProduct.findOne({
+        where: {orderId: newOrder.id, productId: tempProduct.id}
+      })
+      await updateJoinTable.update({
+        quantity: product.quantity,
+        historicPrice: product.price
+      })
+    })
+    const completedOrder = await Order.findOne({
+      where: {id: newOrder.id},
+      include: [{model: Product}]
+    })
+    res.status(200).json(completedOrder)
+  } catch (error) {
+    next(error)
   }
 })
-
-// router.put('/:orderId', async (req, res, next) => {
-//   try {
-//     const {quantity, status, isCart, historicPrice} = req.body
-//     // update historicPrice when status changes to Processing
-//     const oldOrder = await Order.findById(+req.params.orderId, {
-//       include: [{model: OrderProduct}]
-//     })
-//     if (!oldOrder) {
-//       res.sendStatus(404)
-//     } else {
-//       const updatedOrder = await oldOrder.update({
-//         isCart: isCart || oldOrder.isCart,
-//         status: status || oldOrder.status,
-//         quantity: quantity || oldOrder.quantity,
-//         historicPrice: historicPrice || oldOrder.historicPrice
-//       })
-//       res.status(201).json(updatedOrder)
-//     }
-//   } catch (err) {
-//     next(err)
-//   }
-// })

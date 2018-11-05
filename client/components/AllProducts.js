@@ -3,11 +3,13 @@ import {connect} from 'react-redux'
 import {Link} from 'react-router-dom'
 import Product from './Product'
 import AddProduct from './AddProduct'
-import {getProducts, putCart, putCheckout} from '../store'
+import {getProducts, putCart, putCheckout, editCart} from '../store'
 import EditProduct from './EditProduct'
 
 const defaultState = {
-  // cart: [],
+  cart: {
+    products: []
+  },
   filter: ''
 }
 
@@ -15,20 +17,60 @@ class AllProducts extends Component {
   constructor() {
     super()
     this.state = defaultState
-    this.handleChange = this.handleChange.bind(this)
+    this.handleClick = this.handleClick.bind(this)
     this.handleFilter = this.handleFilter.bind(this)
   }
 
   componentDidMount() {
+    let localCart = localStorage.getItem('cart')
+      ? JSON.parse(localStorage.getItem('cart'))
+      : {products: []}
+
+    localStorage.setItem('cart', JSON.stringify(localCart))
+    let data = JSON.parse(localStorage.getItem('cart'))
     this.props.getProducts()
+    if (!this.props.user.id) {
+      this.setState({
+        cart: data
+      })
+    }
   }
 
-  handleChange(item) {
-    // const newCart = [...this.state.cart, item]
-    // this.setState({
-    //   cart: newCart
-    // })
-    this.props.putCart(item, this.props.user.id)
+  handleClick(product) {
+    if (!this.props.user.id) {
+      const products = this.state.cart.products
+      // check if product is already in cart
+      if (products.some(item => item.id === product.id)) {
+        // if so update product quantity by 1
+        products.map(item => {
+          if (item.id === product.id) {
+            item.quantity++
+            return item
+          } else {
+            return item
+          }
+        })
+        // if product does not exist in cart, push to cart
+      } else {
+        products.push({
+          id: product.id,
+          name: product.name,
+          bio: product.bio,
+          districtName: product.districtName,
+          price: product.price,
+          quantity: 1
+        })
+      }
+      this.setState({
+        cart: {
+          products
+        }
+      })
+      localStorage.setItem('cart', JSON.stringify(this.state.cart))
+      const dataInMount = JSON.parse(localStorage.getItem('cart'))
+    } else {
+      this.props.putCart(product, this.props.user.id)
+    }
   }
 
   handleFilter(evt) {
@@ -37,26 +79,12 @@ class AllProducts extends Component {
     })
   }
 
-  handleCheckout(item) {
-    this.props.putCheckout(item, this.props.user.id)
-  }
-
   render() {
     const filterView = this.state.filter
     const admin = this.props.user.isAdmin
-    console.log('admin', admin)
     return (
       <div>
         <h2>Candidates For Sale</h2>
-        {/* {this.state.cart.length ? (
-          <h5>
-            Your Cart Contains:{this.state.cart.map((cart, i) => (
-              <span key={i}>{cart.name}, </span>
-            ))}
-          </h5>
-        ) : (
-          <h5>Your Cart is Currently Empty</h5>
-        )} */}
         <h4>Filter By District</h4>
         <select onChange={evt => this.handleFilter(evt)}>
           <option value="">View All</option>
@@ -78,17 +106,13 @@ class AllProducts extends Component {
                       <div>
                         <button
                           type="button"
-                          onClick={() => this.handleChange(product)}
+                          onClick={() => this.handleClick(product)}
                         >
                           Buy!
-                        </button>
-                        <button onClick={() => this.handleCheckout(product)}>
-                          Checkout
                         </button>
                       </div>
                     ) : (
                       ' '
-                      // <EditProduct id={product.id} />
                     )}
                   </li>
                 ))
@@ -99,16 +123,14 @@ class AllProducts extends Component {
                     <div>
                       <button
                         type="button"
-                        onClick={() => this.handleChange(product)}
+                        onClick={() => this.handleClick(product)}
                       >
                         Buy!
                       </button>
                     </div>
                   ) : (
                     ' '
-                    // <EditProduct id={product.id} />
                   )}
-                  <Link to={`/products/${product.id}`}>Single View</Link>
                 </li>
               ))}
         </ul>
@@ -137,7 +159,8 @@ const mapDispatchToProps = dispatch => {
   return {
     getProducts: () => dispatch(getProducts()),
     putCart: (product, user) => dispatch(putCart(product, user)),
-    putCheckout: (product, user) => dispatch(putCheckout(product, user))
+    putCheckout: (product, user) => dispatch(putCheckout(product, user)),
+    editCart: cart => dispatch(editCart(cart))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AllProducts)

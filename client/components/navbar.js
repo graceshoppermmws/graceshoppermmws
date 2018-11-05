@@ -12,16 +12,28 @@ const Navbar = ({handleClick, isLoggedIn, user}) => {
       <nav>
         <h3>Candidates For Sale!</h3>
         {isLoggedIn ? (
-          <div>
-            {/* The navbar will show these links after you log in */}
-            <Link to="/home">Home</Link>
-            <a href="#" onClick={handleClick}>
-              Logout
-            </a>
-            <Link to="/products">All Candidates</Link>
-            <Link to={cartLink}>Your Cart</Link>
-            <Link to={pastOrdersLink}>Your Past Orders</Link>
-          </div>
+          user.isAdmin ? (
+            <div>
+              {/* The navbar will show these links if you are an admin */}
+              <Link to="/home">Home</Link>
+              <a href="#" onClick={handleClick}>
+                Logout
+              </a>
+              <Link to="/products">All Candidates</Link>
+              <Link to="/orders">All Orders</Link>
+            </div>
+          ) : (
+            <div>
+              {/* The navbar will show these links after you log in */}
+              <Link to="/home">Home</Link>
+              <a href="#" onClick={handleClick}>
+                Logout
+              </a>
+              <Link to="/products">All Candidates</Link>
+              <Link to={cartLink}>Your Cart</Link>
+              <Link to={pastOrdersLink}>Your Past Orders</Link>
+            </div>
+          )
         ) : (
           <div>
             {/* The navbar will show these links before you log in */}

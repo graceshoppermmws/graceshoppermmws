@@ -1,4 +1,5 @@
 import axios from 'axios'
+import {Certificate} from 'crypto'
 
 /**
  * ACTION TYPES
@@ -8,6 +9,10 @@ const CREATE_ORDER = 'CREATE_ORDER'
 const GET_CART = 'GET_CART'
 const GET_PAST_ORDERS = 'GET_PAST_ORDERS'
 const EDIT_CART = 'EDIT_CART'
+const DELETE_PRODUCT_FROM_CART = 'DELETE_PRODUCT_FROM_CART'
+const CHECKOUT = 'CHECKOUT'
+const CREATE_UNAUTH_ORDER = 'CREATE_UNAUTH_ORDER'
+
 /**
  * INITIAL STATE
  */
@@ -45,6 +50,22 @@ export const editCart = cart => ({
   type: EDIT_CART,
   cart
 })
+
+export const removedProductFromCart = remainedProducts => ({
+  //rename deleteProductFromCart
+  type: DELETE_PRODUCT_FROM_CART,
+  remainedProducts
+})
+
+export const checkedOut = cart => ({
+  type: CHECKOUT,
+  cart
+})
+export const createdUnauthOrder = cart => ({
+  type: CREATE_UNAUTH_ORDER,
+  cart
+})
+
 /**
  * THUNK CREATORS
  */
@@ -68,7 +89,7 @@ export const getOrders = () => {
 export const getCart = userId => {
   return async dispatch => {
     try {
-      const response = await axios.get(`/api/orders/cart/${userId}`)
+      const response = await axios.get(`/api/users/${userId}/cart`)
       if (response) {
         const cart = response.data
         const action = gotCart(cart)
@@ -83,11 +104,8 @@ export const getCart = userId => {
 export const putCart = (product, userId) => {
   return async dispatch => {
     try {
-      console.log(product)
-      console.log('user', userId)
       const response = await axios.put(`/api/users/${userId}/cart`, product)
       const cart = response.data
-      console.log('cart', cart)
       const action = editCart(cart)
       dispatch(action)
     } catch (err) {
@@ -102,19 +120,34 @@ export const putCheckout = userId => {
       console.log('user', userId)
       const response = await axios.put(`/api/users/${userId}/checkout`)
       const cart = response.data
-      console.log('cart', cart)
-      // const action = editCart(cart)
-      // dispatch(action)
+      const action = checkedOut(cart)
+      dispatch(action)
     } catch (err) {
       console.log(err)
     }
   }
 }
 
-export const postOrder = order => {
+export const getPastOrders = userId => {
   return async dispatch => {
     try {
-      const response = await axios.post('/api/orders', order)
+      const response = await axios.get(`/api/users/${userId}/past`)
+      if (response) {
+        const orders = response.data
+        const action = gotPastOrders(orders)
+        dispatch(action)
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
+export const postUnauthOrder = order => {
+  return async dispatch => {
+    try {
+      console.log('input order', order)
+      const response = await axios.post('/api/orders/checkout', order)
       const newOrder = response.data
       const action = createdOrder(newOrder)
       dispatch(action)
@@ -125,15 +158,15 @@ export const postOrder = order => {
   }
 }
 
-export const getPastOrders = userId => {
+export const deleteProductFromCart = (userId, productId) => {
   return async dispatch => {
     try {
-      const response = await axios.get(`/api/orders/past/${userId}`)
-      if (response) {
-        const orders = response.data
-        const action = gotPastOrders(orders)
-        dispatch(action)
-      }
+      const response = await axios.put(`/api/users/${userId}/removeitem`, {
+        productId
+      })
+      const remainedProduct = response.data
+      const action = removedProductFromCart([remainedProduct])
+      dispatch(action)
     } catch (error) {
       console.log(error)
     }
@@ -159,6 +192,22 @@ export default function(state = defaultOrderState, action) {
     }
     case EDIT_CART: {
       return {...state, cart: action.cart}
+    }
+    case DELETE_PRODUCT_FROM_CART: {
+      return {...state, cart: action.remainedProducts}
+    }
+    case CHECKOUT: {
+      return {
+        ...state,
+        pastOrders: [...state.pastOrders, action.cart],
+        cart: {}
+      }
+    }
+    case CREATE_UNAUTH_ORDER: {
+      return {
+        ...state,
+        allOrders: [...state.allOrders, action.cart]
+      }
     }
     default:
       return state
