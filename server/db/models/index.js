@@ -3,9 +3,6 @@ const Order = require('./order')
 const Product = require('./product')
 const OrderProduct = require('./orderproduct')
 
-//const Candidate = require('./candidate')
-// const Race = require('./race')
-// const Order = require('./order')
 /**
  * If we had any associations to make, this would be a great place to put them!
  * ex. if we had another model called BlogPost, we might say:
@@ -28,22 +25,9 @@ Order.belongsTo(User)
 Order.belongsToMany(Product, {through: OrderProduct})
 Product.belongsToMany(Order, {through: OrderProduct})
 
-// Candidate.belongsTo(Race)
-// Race.hasMany(Candidate)
-
-// User.hasMany(Order)
-// Order.belongsTo(User)
-
-// Order.belongsTo(Candidate)
-// Candidate.hasMany(Order)
-
-// methods:
-
 module.exports = {
   User,
   Order,
   Product,
   OrderProduct
-  // Candidate
-  // Race,
 }

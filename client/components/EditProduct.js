@@ -47,9 +47,7 @@ class EditProduct extends Component {
     } catch (err) {
       console.error(err)
     }
-    // const updateProduct = await this.props.putProduct(this.props.id, this.state)
     this.setState(defaultState)
-    // console.log(updateProduct)
   }
 
   render() {
