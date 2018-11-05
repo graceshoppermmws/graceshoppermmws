@@ -13,7 +13,8 @@ import Order from './Order'
 
 let defaultState = {
   cart: {
-    products: []
+    products: [],
+    isCart: true
   }
 }
 
@@ -38,8 +39,24 @@ class Cart extends Component {
   }
 
   handleDeleteProduct(userId, productId) {
-    this.props.deletedProductFromCart(userId, productId)
-    this.props.history.push(`orders/cart/${userId}`)
+    if (this.props.user.id) {
+      this.props.deletedProductFromCart(userId, productId)
+      this.props.history.push(`orders/cart/${userId}`)
+    } else {
+      const products = this.state.cart.products
+      // check if product is already in cart
+      const newProducts = products.filter(item => item.id === productId)
+      this.setState({
+        cart: {
+          products: newProducts,
+          isCart: true
+        }
+      })
+      localStorage.setItem(
+        'cart',
+        JSON.stringify({products: newProducts, isCart: true})
+      )
+    }
   }
 
   handleCheckout() {
@@ -48,7 +65,7 @@ class Cart extends Component {
     } else {
       let localStorageCart = JSON.parse(localStorage.getItem('cart'))
       this.props.postUnauthOrder(localStorageCart)
-      localStorage.setItem('cart', JSON.stringify({products: []}))
+      localStorage.setItem('cart', JSON.stringify({isCart: true, products: []}))
       let emptyCart = JSON.parse(localStorage.getItem('cart'))
       this.setState({
         cart: emptyCart
@@ -62,6 +79,7 @@ class Cart extends Component {
         {this.props.user.id
           ? this.props.cart[0] && (
               <Order
+                user={this.props.user}
                 order={this.props.cart[0]}
                 handleDeleteProduct={this.handleDeleteProduct}
               />
