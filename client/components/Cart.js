@@ -24,7 +24,6 @@ class Cart extends Component {
   constructor() {
     super()
     this.state = defaultState
-    this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
     this.handleCheckout = this.handleCheckout.bind(this)
     this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
     this.handleDiscount = this.handleDiscount.bind(this)
@@ -49,7 +48,6 @@ class Cart extends Component {
 
   handleDiscount(evt) {
     evt.preventDefault()
-    console.log('this.state.discountCode', this.state.discountCode)
     if (this.state.discountCode === 'LUIGIWUZHERE') {
       this.setState({discount: 0.5})
       toastr.success('OUAHAHAHAHA')
