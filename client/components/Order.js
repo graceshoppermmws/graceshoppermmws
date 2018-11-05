@@ -31,6 +31,16 @@ const Order = props => {
                     ? product.order_product.quantity
                     : product.quantity}
                 </li>
+                {isCart && (
+                  <button
+                    type="button"
+                    onClick={() =>
+                      props.handleDeleteProduct(userId, product.id)
+                    }
+                  >
+                    Remove Item From Cart
+                  </button>
+                )}
               </div>
             ))}
           </ul>

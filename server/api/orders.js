@@ -24,7 +24,6 @@ router.post('/checkout', async (req, res, next) => {
   try {
     // check if payment processed ? req.payment === true? who knows.
     const products = req.body.products
-    console.log('BANANA SERVER PRODUCTS', products)
     const newOrder = await Order.create({
       userId: 1,
       isCart: false,
