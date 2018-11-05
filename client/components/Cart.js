@@ -45,7 +45,7 @@ class Cart extends Component {
     } else {
       const products = this.state.cart.products
       // check if product is already in cart
-      const newProducts = products.filter(item => item.id === productId)
+      const newProducts = products.filter(item => item.id !== productId)
       this.setState({
         cart: {
           products: newProducts,
