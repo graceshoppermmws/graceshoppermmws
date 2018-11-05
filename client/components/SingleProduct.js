@@ -2,16 +2,72 @@ import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import Product from './Product'
 import EditProduct from './EditProduct'
-import {getSelectedProduct} from '../store/products'
+import {getSelectedProduct, putCart} from '../store'
+
+const defaultState = {
+  cart: {
+    products: [],
+    isCart: true
+  }
+}
 
 class SingleProduct extends Component {
   constructor() {
     super()
+    this.state = defaultState
+    this.handleClick = this.handleClick.bind(this)
   }
 
   componentDidMount() {
     this.props.getSelectedProduct()
-    console.log(this.props.selectedProduct)
+    let localCart = localStorage.getItem('cart')
+      ? JSON.parse(localStorage.getItem('cart'))
+      : {products: [], isCart: true}
+
+    localStorage.setItem('cart', JSON.stringify(localCart))
+    let data = JSON.parse(localStorage.getItem('cart'))
+    if (!this.props.user.id) {
+      this.setState({
+        cart: data
+      })
+    }
+  }
+
+  handleClick(product) {
+    if (!this.props.user.id) {
+      const products = this.state.cart.products
+      // check if product is already in cart
+      if (products.some(item => item.id === product.id)) {
+        // if so update product quantity by 1
+        products.map(item => {
+          if (item.id === product.id) {
+            item.quantity++
+            return item
+          } else {
+            return item
+          }
+        })
+        // if product does not exist in cart, push to cart
+      } else {
+        products.push({
+          id: product.id,
+          name: product.name,
+          bio: product.bio,
+          districtName: product.districtName,
+          price: product.price,
+          quantity: 1
+        })
+      }
+      this.setState({
+        cart: {
+          products,
+          isCart: true
+        }
+      })
+      localStorage.setItem('cart', JSON.stringify(this.state.cart))
+    } else {
+      this.props.putCart(product, this.props.user.id)
+    }
   }
 
   render() {
@@ -19,7 +75,10 @@ class SingleProduct extends Component {
     return (
       this.props.selectedProduct && (
         <div>
-          <Product product={this.props.selectedProduct} />
+          <Product
+            product={this.props.selectedProduct}
+            handleClick={this.handleClick}
+          />
           {this.props.selectedProduct.id && admin ? (
             <EditProduct id={this.props.selectedProduct.id} />
           ) : (
@@ -41,7 +100,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getSelectedProduct: () =>
-      dispatch(getSelectedProduct(ownProps.match.params.productId))
+      dispatch(getSelectedProduct(ownProps.match.params.productId)),
+    putCart: (product, user) => dispatch(putCart(product, user))
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct)
