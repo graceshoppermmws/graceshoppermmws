@@ -52,3 +52,75 @@ router.get('/past/:userId', async (req, res, next) => {
     res.sendStatus(403)
   }
 })
+
+//Post one order
+
+// pass in a quantity, a productId, and a userId
+router.post('/', async (req, res, next) => {
+  try {
+    const {quantity, productId, userId} = req.body
+    const productToBuy = await Product.findById(productId)
+    const newOrder = await Order.create({
+      isCart: true,
+      status: 'Cart',
+      userId
+    })
+    newOrder.addProduct(productToBuy, {through: {quantity}})
+    res.status(201).json(newOrder)
+  } catch (err) {
+    next(err)
+  }
+})
+
+//Delete a product from cart (pass in productId, userId)
+router.put('/:userId/removeitem', async (req, res, next) => {
+  // const userId = req.user.id || null
+
+  const productId = +req.body.id || null
+
+  // if (userId === +req.params.userId)
+  // {
+  try {
+    let cart = await Order.findOne({
+      where: {isCart: true, userId: +req.params.userId},
+      include: [{model: Product}]
+    })
+    let product = await Product.findOne({
+      where: {id: productId}
+    })
+    await cart.removeProduct(product)
+    let returnCart = await Order.findOne({
+      where: {isCart: true, userId: +req.params.userId},
+      include: [{model: Product}]
+    })
+    res.status(201).json(returnCart)
+  } catch (err) {
+    next(err)
+  }
+  // } else {
+  //   res.sendStatus(403)
+  // }
+})
+
+// router.put('/:orderId', async (req, res, next) => {
+//   try {
+//     const {quantity, status, isCart, historicPrice} = req.body
+//     // update historicPrice when status changes to Processing
+//     const oldOrder = await Order.findById(+req.params.orderId, {
+//       include: [{model: OrderProduct}]
+//     })
+//     if (!oldOrder) {
+//       res.sendStatus(404)
+//     } else {
+//       const updatedOrder = await oldOrder.update({
+//         isCart: isCart || oldOrder.isCart,
+//         status: status || oldOrder.status,
+//         quantity: quantity || oldOrder.quantity,
+//         historicPrice: historicPrice || oldOrder.historicPrice
+//       })
+//       res.status(201).json(updatedOrder)
+//     }
+//   } catch (err) {
+//     next(err)
+//   }
+// })

@@ -9,6 +9,7 @@ const CREATE_ORDER = 'CREATE_ORDER'
 const GET_CART = 'GET_CART'
 const GET_PAST_ORDERS = 'GET_PAST_ORDERS'
 const EDIT_CART = 'EDIT_CART'
+const DELETE_PRODUCT_FROM_CART = 'DELETE_PRODUCT_FROM_CART'
 const CHECKOUT = 'CHECKOUT'
 /**
  * INITIAL STATE
@@ -46,6 +47,12 @@ export const gotPastOrders = pastOrders => ({
 export const editCart = cart => ({
   type: EDIT_CART,
   cart
+})
+
+export const removedProductFromCart = remainedProducts => ({
+  //rename deleteProductFromCart
+  type: DELETE_PRODUCT_FROM_CART,
+  remainedProducts
 })
 
 export const checkedOut = cart => ({
@@ -143,6 +150,20 @@ export const getPastOrders = userId => {
   }
 }
 
+export const deleteProductFromCart = (userId, id) => {
+  return async dispatch => {
+    // console.log('hit+++++++');
+    try {
+      const response = await axios.put(`/api/orders/${userId}/removeitem`, {id})
+      const remainedProduct = response.data
+      const action = removedProductFromCart(remainedProduct)
+      dispatch(action)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+}
+
 /**
  * REDUCER
  */
@@ -162,6 +183,9 @@ export default function(state = defaultOrderState, action) {
     }
     case EDIT_CART: {
       return {...state, cart: action.cart}
+    }
+    case DELETE_PRODUCT_FROM_CART: {
+      return {...state, cart: action.remainedProducts}
     }
     case CHECKOUT: {
       return {
