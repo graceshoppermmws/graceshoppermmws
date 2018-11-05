@@ -83,7 +83,6 @@ class AllProducts extends Component {
   render() {
     const filterView = this.state.filter
     const admin = this.props.user.isAdmin
-    console.log(this.props.tags)
     return (
       <div>
         <h2>Candidates For Sale</h2>
