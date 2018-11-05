@@ -6,7 +6,6 @@ module.exports = router
 router.get('/', async (req, res, next) => {
   try {
     const allProductTags = await Product.allProductTags()
-    console.log('hello', allProductTags)
     res.status(200).json(allProductTags)
   } catch (error) {
     next(error)

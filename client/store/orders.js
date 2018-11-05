@@ -117,7 +117,6 @@ export const putCart = (product, userId) => {
 export const putCheckout = userId => {
   return async dispatch => {
     try {
-      console.log('user', userId)
       const response = await axios.put(`/api/users/${userId}/checkout`)
       const cart = response.data
       const action = checkedOut(cart)
@@ -146,7 +145,6 @@ export const getPastOrders = userId => {
 export const postUnauthOrder = order => {
   return async dispatch => {
     try {
-      console.log('input order', order)
       const response = await axios.post('/api/orders/checkout', order)
       const newOrder = response.data
       const action = createdOrder(newOrder)
