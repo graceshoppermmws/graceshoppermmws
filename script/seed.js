@@ -64,6 +64,12 @@ async function seed() {
     price: 50.0
   })
 
+  const testShopper = await User.create({
+    email: 'test@user.com',
+    isAdmin: true,
+    password: '123'
+  })
+
   const littleShopper = await User.create({
     email: 'email@email.com',
     isAdmin: false,
@@ -104,6 +110,18 @@ async function seed() {
     email: 'graccceee@someemail.com',
     isAdmin: true,
     password: 'graccceee'
+  })
+
+  const testOrder = await Order.create({
+    isShipped: true,
+    isCart: false,
+    userId: testShopper.id
+  })
+  await testOrder.addProduct(cortez, {
+    through: {quantity: 99, historicPrice: cortez.price}
+  })
+  await testOrder.addProduct(crowley, {
+    through: {quantity: 99, historicPrice: crowley.price}
   })
 
   const littleOrder = await Order.create({

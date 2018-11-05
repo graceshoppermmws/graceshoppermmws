@@ -1,7 +1,13 @@
 import React, {Component} from 'react'
 import {Link} from 'react-router-dom'
 import {connect} from 'react-redux'
-import {getCart, putCheckout, deleteProductFromCart} from '../store'
+
+import {
+  getCart,
+  putCheckout,
+  postUnauthOrder,
+  deleteProductFromCart
+} from '../store'
 import Order from './Order'
 
 let defaultState = {
@@ -16,6 +22,7 @@ class Cart extends Component {
     this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
     this.state = defaultState
     this.handleCheckout = this.handleCheckout.bind(this)
+    this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
   }
 
   componentDidMount() {
@@ -29,12 +36,8 @@ class Cart extends Component {
     }
   }
 
-  async handleDeleteProduct(userId, productId) {
-    try {
-      await this.props.deletedProductFromCart(userId, productId)
-    } catch (err) {
-      console.log(err)
-    }
+  handleDeleteProduct(userId, productId) {
+    this.props.deletedProductFromCart(userId, productId)
     this.props.history.push(`orders/cart/${userId}`)
   }
 
@@ -42,6 +45,8 @@ class Cart extends Component {
     if (this.props.user.id) {
       this.props.putCheckout(this.props.user.id)
     } else {
+      let localStorageCart = JSON.parse(localStorage.getItem('cart'))
+      this.props.postUnauthOrder(localStorageCart)
       localStorage.setItem('cart', JSON.stringify({products: []}))
       let emptyCart = JSON.parse(localStorage.getItem('cart'))
       this.setState({
@@ -53,16 +58,19 @@ class Cart extends Component {
   render() {
     return (
       <div>
-        {this.props.cart[0] && (
-          <Order
-            order={this.props.cart[0]}
-            handleDeleteProduct={this.handleDeleteProduct}
-          />
-        )}
-        <button onClick={() => this.handleCheckout()}>Checkout</button>
         {this.props.user.id
-          ? this.props.cart[0] && <Order order={this.props.cart[0]} />
-          : this.state.cart.products && <Order order={this.state.cart} />}
+          ? this.props.cart[0] && (
+              <Order
+                order={this.props.cart[0]}
+                handleDeleteProduct={this.handleDeleteProduct}
+              />
+            )
+          : this.state.cart.products && (
+              <Order
+                order={this.state.cart}
+                handleDeleteProduct={this.handleDeleteProduct}
+              />
+            )}
         <Link to="/thankyou">
           <button onClick={() => this.handleCheckout()}>Checkout</button>
         </Link>
@@ -82,6 +90,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getCart: () => dispatch(getCart(ownProps.match.params.userId)),
     putCheckout: user => dispatch(putCheckout(user)),
+    postUnauthOrder: cart => dispatch(postUnauthOrder(cart)),
     deletedProductFromCart: (userId, productId) =>
       dispatch(deleteProductFromCart(userId, productId))
   }
