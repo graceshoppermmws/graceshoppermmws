@@ -7,13 +7,15 @@ const GET_PRODUCTS = 'GET_PRODUCTS'
 const SELECT_PRODUCT = 'SELECT_PRODUCT'
 const ADD_PRODUCT = 'ADD_PRODUCT'
 const EDIT_PRODUCT = 'EDIT_PRODUCT'
+const GET_TAGS = 'GET_TAGS'
 
 /**
  * INITIAL STATE
  */
 const defaultProductState = {
   allProducts: [],
-  selectedProduct: {}
+  selectedProduct: {},
+  allTags: []
 }
 
 /**
@@ -38,6 +40,11 @@ export const editedProduct = (productId, product) => ({
   type: EDIT_PRODUCT,
   productId,
   product
+})
+
+export const gotTags = tags => ({
+  type: GET_TAGS,
+  tags
 })
 
 /**
@@ -97,6 +104,19 @@ export const putProduct = (productId, product) => {
   }
 }
 
+export const getTags = () => {
+  return async dispatch => {
+    try {
+      const response = await axios.get('/api/tags')
+      const allTags = response.data
+      const action = gotTags(allTags)
+      dispatch(action)
+    } catch (err) {
+      console.error(err)
+    }
+  }
+}
+
 /**
  * REDUCER
  */
@@ -119,6 +139,9 @@ export default function(state = defaultProductState, action) {
         return product
       })
       return {...state, allProducts: editedProducts}
+    }
+    case GET_TAGS: {
+      return {...state, allTags: action.tags}
     }
     default:
       return state
