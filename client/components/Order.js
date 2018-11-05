@@ -1,73 +1,117 @@
-import React from 'react'
+import React, {Component} from 'react'
+import {connect} from 'react-redux'
+import {putQuantity} from '../store'
 
-const Order = props => {
-  const {id, userId, isCart, isShipped, createdAt, products} = props.order
-  const {isAdmin} = props.user || false
-  let subtotal = 0
+class Order extends Component {
+  constructor() {
+    super()
+    // this.state = {
+    //   quantity: product.order_product.quantity
+    // }
+    // this.handleChange = this.handleChange.bind(this)
+  }
 
-  products.forEach(product => {
-    const price = product.order_product
-      ? product.order_product.historicPrice
-      : product.price
-    const quantity = product.order_product
-      ? product.order_product.quantity
-      : product.quantity
-    subtotal += price * quantity
-  })
+  // handleChange(evt) {
+  //   this.setState({
+  //     quantity: evt.target.value
+  //   })
+  // }
 
-  return (
-    <div>
-      <h3>Order: {id}</h3>
-      {isAdmin ? (
-        <ul>
-          <li>User: {userId}</li>
-          <li>is Cart: {isCart ? 'true' : 'false'}</li>
-          <li>is Shipped: {isShipped ? 'true' : 'false'}</li>
-          <li>Created: {createdAt}</li>{' '}
-        </ul>
-      ) : (
-        ' '
-      )}
+  // const Order = props => {
+  render() {
+    const {
+      id,
+      userId,
+      isCart,
+      isShipped,
+      createdAt,
+      products
+    } = this.props.order
+    const {isAdmin} = this.props.user || false
+    let subtotal = 0
 
-      <ul>
-        <li>
+    products.forEach(product => {
+      const price = product.order_product
+        ? product.order_product.historicPrice
+        : product.price
+      const quantity = product.order_product
+        ? product.order_product.quantity
+        : product.quantity
+      subtotal += price * quantity
+    })
+
+    return (
+      <div>
+        <h3>Order: {id}</h3>
+        {isAdmin ? (
           <ul>
-            {products.map(product => {
-              const price = product.order_product
-                ? product.order_product.historicPrice
-                : product.price
-              const quantity = product.order_product
-                ? product.order_product.quantity
-                : product.quantity
-              return (
-                <div key={product.id}>
-                  <li>Name: {product.name}</li>
-                  <li>Purchase Price: {price}</li>
-                  <li>Quantity: {quantity}</li>
-
-                  {isAdmin ? (
-                    ' '
-                  ) : isCart ? (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        props.handleDeleteProduct(userId, product.id)
-                      }
-                    >
-                      Remove Item From Cart
-                    </button>
-                  ) : (
-                    ' '
-                  )}
-                </div>
-              )
-            })}
+            <li>User: {userId}</li>
+            <li>is Cart: {isCart ? 'true' : 'false'}</li>
+            <li>is Shipped: {isShipped ? 'true' : 'false'}</li>
+            <li>Created: {createdAt}</li>{' '}
           </ul>
-          Subtotal: ${subtotal}.00
-        </li>
-      </ul>
-    </div>
-  )
+        ) : (
+          ' '
+        )}
+
+        <ul>
+          <li>
+            <ul>
+              {products.map(product => {
+                const price = product.order_product
+                  ? product.order_product.historicPrice
+                  : product.price
+                const quantity = product.order_product
+                  ? product.order_product.quantity
+                  : product.quantity
+                return (
+                  <div key={product.id}>
+                    <li>Name: {product.name}</li>
+                    <li>Purchase Price: {price}</li>
+                    <li>Quantity: {quantity}</li>
+
+                    {isAdmin ? (
+                      ' '
+                    ) : isCart ? (
+                      <div>
+                        <form
+                          onSubmit={() =>
+                            this.props.putQuantity({product, quantity}, userId)
+                          }
+                        >
+                          <label>Quantity:</label>
+                          <input type="text" name="quantity" value={quantity} />
+                          <button type="submit">Update Quantity</button>
+                        </form>
+
+                        <button
+                          type="button"
+                          onClick={() =>
+                            this.props.handleDeleteProduct(userId, product.id)
+                          }
+                        >
+                          Remove Item From Cart
+                        </button>
+                      </div>
+                    ) : (
+                      <li>Quantity: {quantity}</li>
+                    )}
+                  </div>
+                )
+              })}
+            </ul>
+            Subtotal: ${subtotal}.00
+          </li>
+        </ul>
+      </div>
+    )
+  }
 }
 
-export default Order
+const mapDispatchToProps = dispatch => {
+  return {
+    putQuantity: (cartItem, userId) => dispatch(putQuantity(cartItem, userId))
+  }
+}
+
+export default connect(null, mapDispatchToProps)(Order)

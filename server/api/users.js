@@ -122,6 +122,38 @@ router.put('/:userId/removeitem', async (req, res, next) => {
   }
 })
 
+router.put('/:userId/updateQuantity', async (req, res, next) => {
+  const userId = req.user.id || null
+  const productId = +req.body.product.id || null
+  if (userId === +req.params.userId) {
+    try {
+      let cart = await Order.findOne({
+        where: {isCart: true, userId: +req.params.userId}
+      })
+      let product = await Product.findOne({
+        where: {id: productId}
+      })
+      await cart.addProduct(product)
+      const updateJoinTable = await OrderProduct.findOne({
+        where: {orderId: cart.id, productId: product.id}
+      })
+      await updateJoinTable.update({
+        quantity: req.body.quantity,
+        historicPrice: req.body.product.price
+      })
+      let returnCart = await Order.findOne({
+        where: {isCart: true, userId: +req.params.userId},
+        include: [{model: Product}]
+      })
+      res.status(201).json(returnCart)
+    } catch (err) {
+      next(err)
+    }
+  } else {
+    res.sendStatus(403)
+  }
+})
+
 // checkout
 
 router.put('/:userId/checkout', async (req, res, next) => {

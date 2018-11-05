@@ -12,6 +12,7 @@ const EDIT_CART = 'EDIT_CART'
 const DELETE_PRODUCT_FROM_CART = 'DELETE_PRODUCT_FROM_CART'
 const CHECKOUT = 'CHECKOUT'
 const CREATE_UNAUTH_ORDER = 'CREATE_UNAUTH_ORDER'
+const UPDATE_QUANTITY = 'UPDATE_QUANTITY'
 
 /**
  * INITIAL STATE
@@ -66,6 +67,11 @@ export const createdUnauthOrder = cart => ({
   cart
 })
 
+export const updatedQuantity = updatedQuantityProducts => ({
+  type: UPDATE_QUANTITY,
+  updatedQuantityProducts
+})
+
 /**
  * THUNK CREATORS
  */
@@ -110,6 +116,22 @@ export const putCart = ({product, quantity}, userId) => {
       })
       const cart = response.data
       const action = editCart(cart)
+      dispatch(action)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+export const putQuantity = ({product, quantity}, userId) => {
+  return async dispatch => {
+    try {
+      const response = await axios.put(`/api/users/${userId}/cart`, {
+        product,
+        quantity
+      })
+      const cart = response.data
+      const action = updatedQuantity(cart)
       dispatch(action)
     } catch (err) {
       console.log(err)
@@ -209,6 +231,9 @@ export default function(state = defaultOrderState, action) {
         ...state,
         allOrders: [...state.allOrders, action.cart]
       }
+    }
+    case UPDATE_QUANTITY: {
+      return {...state, cart: action.updatedQuantityProducts}
     }
     default:
       return state
