@@ -23,11 +23,9 @@ class AllOrders extends Component {
     this.setState({
       filter: evt.target.value
     })
-    console.log('filter view in handle filter', this.state.filter)
   }
 
   render() {
-    console.log('render', this.props.allOrders)
     const filterView = this.state.filter
     return (
       <div>
@@ -49,7 +47,7 @@ class AllOrders extends Component {
           <div>
             <h1>All Orders</h1>{' '}
             {this.props.allOrders.map(order => (
-              <Order order={order} key={order.id} />
+              <Order order={order} user={this.props.user} key={order.id} />
             ))}
           </div>
         )}
