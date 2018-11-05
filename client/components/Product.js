@@ -25,6 +25,11 @@ const Product = props => {
         <li>Level: {govLevel}</li>
         <li>Position: {position}</li>
       </ul>
+      <div>
+        <button type="button" onClick={() => props.handleClick(props.product)}>
+          Buy!
+        </button>
+      </div>
     </div>
   )
 }

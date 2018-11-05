@@ -124,8 +124,8 @@ class AllProducts extends Component {
                 ))
             : this.props.allProducts.map((product, i) => (
                 <li key={i}>
-                  <Product product={product} />
-                  {!admin ? (
+                  <Product product={product} handleClick={this.handleClick} />
+                  {/* {!admin ? (
                     <div>
                       <button
                         type="button"
@@ -136,7 +136,7 @@ class AllProducts extends Component {
                     </div>
                   ) : (
                     ' '
-                  )}
+                  )} */}
                 </li>
               ))}
         </ul>
