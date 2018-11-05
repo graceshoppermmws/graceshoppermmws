@@ -12,6 +12,8 @@ import {
 import Order from './Order'
 
 let defaultState = {
+  discount: 1,
+  discountCode: '',
   cart: {
     products: [],
     isCart: true
@@ -22,9 +24,10 @@ class Cart extends Component {
   constructor() {
     super()
     this.state = defaultState
-    this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
     this.handleCheckout = this.handleCheckout.bind(this)
     this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
+    this.handleDiscount = this.handleDiscount.bind(this)
+    this.handleDiscountChange = this.handleDiscountChange.bind(this)
   }
 
   componentDidMount() {
@@ -35,6 +38,21 @@ class Cart extends Component {
       this.setState({
         cart: localStorageCart
       })
+    }
+  }
+  handleDiscountChange(evt) {
+    const code = evt.target.value
+    console.log('CODE', code)
+    this.setState({discountCode: code})
+  }
+
+  handleDiscount(evt) {
+    evt.preventDefault()
+    if (this.state.discountCode === 'LUIGIWUZHERE') {
+      this.setState({discount: 0.5})
+      toastr.success('OUAHAHAHAHA')
+    } else {
+      toastr.warning('Code failed: Princess Peach 5ever!')
     }
   }
 
@@ -74,11 +92,14 @@ class Cart extends Component {
   }
 
   render() {
+    const discount = this.state.discount
+    console.log('discount', this.state.discount)
     return (
       <div>
         {this.props.user.id
           ? this.props.cart[0] && (
               <Order
+                discount={discount}
                 user={this.props.user}
                 order={this.props.cart[0]}
                 handleDeleteProduct={this.handleDeleteProduct}
@@ -86,15 +107,24 @@ class Cart extends Component {
             )
           : this.state.cart.products && (
               <Order
+                discount={discount}
                 order={this.state.cart}
                 handleDeleteProduct={this.handleDeleteProduct}
               />
             )}
-        
-          <Elements>
-            <CheckoutForm handleCheckout={this.handleCheckout} />
-          </Elements>
-        
+        <form onSubmit={this.handleDiscount}>
+          <label>Promo Code:</label>
+          <input
+            type="text"
+            onChange={this.handleDiscountChange}
+            value={this.state.discountCode}
+          />
+          <button type="submit">Enter</button>
+        </form>
+
+        <Elements>
+          <CheckoutForm handleCheckout={this.handleCheckout} />
+        </Elements>
       </div>
     )
   }
