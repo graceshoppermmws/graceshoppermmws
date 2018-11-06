@@ -31,7 +31,7 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    if (this.props.user.id) {
+    if (this.props.user) {
       this.props.getCart()
     } else {
       let localStorageCart = JSON.parse(localStorage.getItem('cart'))
