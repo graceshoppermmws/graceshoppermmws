@@ -30,7 +30,7 @@ router.post('/charge', async (req, res) => {
         lineItem.historicPrice * lineItem.quantity * 100 + subtotal,
       0
     )
-    console.log(`$${calculateTotal / 100}.00`)
+    console.log(`Total charged to stripe: $${calculateTotal / 100}.00`)
     //*****
     let {status} = await stripe.charges.create({
       amount: calculateTotal,
