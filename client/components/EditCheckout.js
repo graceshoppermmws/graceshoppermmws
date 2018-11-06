@@ -19,7 +19,6 @@ class EditCheckout extends Component {
 
   componentDidMount() {
     let localStorageCart = JSON.parse(localStorage.getItem('cart'))
-    console.log('did mount', localStorageCart)
     this.setState({
       cart: localStorageCart,
       quantity: this.state.quantity
@@ -41,9 +40,7 @@ class EditCheckout extends Component {
       this.props.putQuantity(productReturn, quantityReturn, this.props.userId)
     } else {
       let cart = JSON.parse(localStorage.getItem('cart'))
-      console.log('cart', cart)
       const products = cart.products
-      // check if product is already in cart
       const newProducts = products.map(item => {
         if (item.id !== this.props.product.id) {
           return item
@@ -52,28 +49,21 @@ class EditCheckout extends Component {
           return item
         }
       })
-      console.log('new products', newProducts)
       localStorage.setItem(
         'cart',
         JSON.stringify({products: newProducts, isCart: true})
       )
       let newCart = JSON.parse(localStorage.getItem('cart'))
-      console.log('newCart', newCart)
       this.props.editQuantity(newCart)
-      this.setState(
-        {
-          cart: newCart
-        },
-        () => console.log('new state', this.state)
-      )
-      // console.log('product', newCart.products[0].quantity)
+      this.setState({
+        cart: newCart
+      })
       let subtotal = 0
       newCart.products.forEach(product => {
         const price = product.price
         const quantity = product.quantity
         subtotal += price * quantity
       })
-      console.log('subtotal', subtotal)
       this.setState({
         subtotal: subtotal
       })
