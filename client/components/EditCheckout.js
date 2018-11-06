@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {putQuantity} from '../store'
+import {putQuantity, editQuantity} from '../store'
 
 class EditCheckout extends Component {
   constructor(props) {
@@ -17,13 +17,12 @@ class EditCheckout extends Component {
   }
 
   componentDidMount() {
-    if (!this.props.userId) {
-      let localStorageCart = JSON.parse(localStorage.getItem('cart'))
-      console.log('did mount', localStorageCart)
-      this.setState({
-        cart: localStorageCart
-      })
-    }
+    let localStorageCart = JSON.parse(localStorage.getItem('cart'))
+    console.log('did mount', localStorageCart)
+    this.setState({
+      cart: localStorageCart,
+      quantity: this.state.quantity
+    })
   }
 
   handleChange(event) {
@@ -33,6 +32,7 @@ class EditCheckout extends Component {
   }
 
   handleSubmit(event) {
+    toastr.success('Quantity updated!')
     event.preventDefault()
     if (this.props.userId) {
       const productReturn = this.props.product
@@ -58,27 +58,30 @@ class EditCheckout extends Component {
       )
       let newCart = JSON.parse(localStorage.getItem('cart'))
       console.log('newCart', newCart)
-      this.setState({
-        cart: {
-          products: newProducts,
-          isCart: true
-        }
-      })
-      console.log('new state', this.state)
+      this.props.editQuantity(newCart)
+      this.setState(
+        {
+          cart: newCart
+        },
+        () => console.log('new state', this.state)
+      )
+      console.log('product', newCart.products[0].quantity)
     }
   }
 
   render() {
     return (
       <form onSubmit={this.handleSubmit}>
-        <label>Quantity:</label>
-        <input
-          type="text"
-          name="quantity"
-          value={this.state.quantity}
-          onChange={this.handleChange}
-        />
-        <button type="submit">Update Quantity</button>
+        <li>
+          Quantity:
+          <input
+            type="text"
+            name="quantity"
+            value={this.state.quantity}
+            onChange={this.handleChange}
+          />
+          <button type="submit">Update Quantity</button>
+        </li>
       </form>
     )
   }
@@ -87,7 +90,8 @@ class EditCheckout extends Component {
 const mapDispatchToProps = dispatch => {
   return {
     putQuantity: (product, quantity, userId) =>
-      dispatch(putQuantity(product, quantity, userId))
+      dispatch(putQuantity(product, quantity, userId)),
+    editQuantity: cart => dispatch(editQuantity(cart))
   }
 }
 

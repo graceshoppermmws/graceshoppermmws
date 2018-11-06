@@ -109,8 +109,22 @@ class Cart extends Component {
     } else {
       cart = {isCart: true, products: []}
     }
+
+    let subtotal = 0
+    cart.products.forEach(product => {
+      const price = product.order_product
+        ? product.order_product.historicPrice
+        : product.price
+      const quantity = product.order_product
+        ? product.order_product.quantity
+        : product.quantity
+      subtotal += price * quantity
+    })
+    console.log('subtotal', subtotal)
+
     return (
       <div>
+        <label>{`Magic Subtotal: ${subtotal}.00`}</label>
         <Order
           discount={discount}
           user={this.props.user}

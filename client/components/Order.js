@@ -44,26 +44,27 @@ const Order = props => {
                 <div key={product.id}>
                   <li>Name: {product.name}</li>
                   <li>Purchase Price: {price}</li>
-                  <li>Quantity: {quantity}</li>
-                  <EditCheckout
-                    quantity={quantity}
-                    product={product}
-                    userId={userId}
-                  />
 
                   {isAdmin ? (
-                    ' '
+                    <li>Quantity: {quantity}</li>
                   ) : isCart ? (
-                    <button
-                      type="button"
-                      onClick={() =>
-                        props.handleDeleteProduct(userId, product.id)
-                      }
-                    >
-                      Remove Item From Cart
-                    </button>
+                    <div>
+                      <EditCheckout
+                        quantity={quantity}
+                        product={product}
+                        userId={userId}
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          props.handleDeleteProduct(userId, product.id)
+                        }
+                      >
+                        Remove Item From Cart
+                      </button>
+                    </div>
                   ) : (
-                    ' '
+                    <li>Quantity: {quantity}</li>
                   )}
                 </div>
               )

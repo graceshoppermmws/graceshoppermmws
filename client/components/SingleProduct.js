@@ -25,8 +25,8 @@ class SingleProduct extends Component {
 
     localStorage.setItem('cart', JSON.stringify(localCart))
     let data = JSON.parse(localStorage.getItem('cart'))
-    this.props.getProducts()
-    this.props.getTags()
+    this.props.getSelectedProduct()
+    // this.props.getTags()
     if (!this.props.user.id) {
       this.setState({
         cart: data

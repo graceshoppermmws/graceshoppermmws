@@ -21,7 +21,8 @@ const EDIT_QUANTITY = 'EDIT_QUANTITY'
 const defaultOrderState = {
   allOrders: [],
   cart: {},
-  pastOrders: []
+  pastOrders: [],
+  subtotal: 0
 }
 
 /**
@@ -71,6 +72,10 @@ export const createdUnauthOrder = cart => ({
   type: CREATE_UNAUTH_ORDER,
   cart
 })
+
+// export const getTotal = total => ({
+//   type:
+// })
 
 /**
  * THUNK CREATORS
