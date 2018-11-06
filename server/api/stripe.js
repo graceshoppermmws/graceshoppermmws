@@ -9,7 +9,6 @@ router.post('/charge', async (req, res) => {
   try {
     let calculateTotal = 2000
     const userId = req.user.id || null
-    const discount = req.body.discount || 1
     const cart = await Order.findOne({
       where: {isCart: true, userId},
       include: [{model: Product}]
@@ -28,10 +27,10 @@ router.post('/charge', async (req, res) => {
     const joinTableArray = await Promise.all(updateJoinTablePromises)
     calculateTotal = joinTableArray.reduce(
       (subtotal, lineItem) =>
-        lineItem.historicPrice * lineItem.quantity * discount * 100 + subtotal,
+        lineItem.historicPrice * lineItem.quantity * 100 + subtotal,
       0
     )
-    console.log(calculateTotal)
+    console.log(`$${calculateTotal / 100}.00`)
     //*****
     let {status} = await stripe.charges.create({
       amount: calculateTotal,

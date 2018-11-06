@@ -10,12 +10,13 @@ class CheckoutForm extends Component {
   }
 
   async submit(ev) {
-    let {token} = await this.props.stripe.createToken({name: 'Name'})
+    let {token} = await this.props.stripe.createToken({
+      name: 'Name'
+    })
     let response = await fetch('/api/stripe/charge', {
       method: 'POST',
       headers: {'Content-Type': 'text/plain'},
-      body: token.id,
-      discount: this.props.discount
+      body: token.id
     })
     console.log(response)
     if (response.ok) {

@@ -173,10 +173,7 @@ class Cart extends Component {
         </form>
         {cart.products.length ? (
           <Elements>
-            <CheckoutForm
-              handleCheckout={this.handleCheckout}
-              discount={this.state.discount}
-            />
+            <CheckoutForm handleCheckout={this.handleCheckout} />
           </Elements>
         ) : (
           <h2>Your Cart is Currently Empty</h2>
