@@ -23,7 +23,7 @@ router.get('/', async (req, res, next) => {
 router.post('/checkout', async (req, res, next) => {
   try {
     // check if payment processed ? req.payment === true? who knows.
-    const discount = 1
+    const discount = req.body.discount || 1
     const products = req.body.products
     const newOrder = await Order.create({
       userId: 1,
@@ -48,7 +48,7 @@ router.post('/checkout', async (req, res, next) => {
     const updatedJoinsPromises = joinTableArray.map((lineItem, i) =>
       lineItem.update({
         quantity: req.body.products[i].quantity,
-        historicPrice: +dbProductsArray[i].price /* * discount */
+        historicPrice: +dbProductsArray[i].price * discount
       })
     )
     await Promise.all(updatedJoinsPromises)
