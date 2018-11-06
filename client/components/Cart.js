@@ -162,15 +162,20 @@ class Cart extends Component {
           order={cart}
           handleDeleteProduct={this.handleDeleteProduct}
         />
-        <form onSubmit={this.handleDiscount}>
-          <label>Promo Code:</label>
-          <input
-            type="text"
-            onChange={this.handleDiscountChange}
-            value={this.state.discountCode}
-          />
-          <button type="submit">Enter</button>
-        </form>
+        {this.props.match.params.userId && cart.products.length ? (
+          <form onSubmit={this.handleDiscount}>
+            <label>Promo Code:</label>
+            <input
+              type="text"
+              onChange={this.handleDiscountChange}
+              value={this.state.discountCode}
+            />
+            <button type="submit">Enter</button>
+          </form>
+        ) : (
+          ' '
+        )}
+
         {cart.products.length ? (
           <Elements>
             <CheckoutForm handleCheckout={this.handleCheckout} />
