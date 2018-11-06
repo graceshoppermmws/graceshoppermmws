@@ -125,7 +125,7 @@ router.put('/:userId/removeitem', async (req, res, next) => {
 
 // reset quantity in cart
 
-router.put('/:userId/editcheckout', async (req, res, next) => {
+router.put('/:userId/editquantity', async (req, res, next) => {
   const userId = req.user.id || null
   const productId = +req.body.product.id || null
   if (userId === +req.params.userId) {

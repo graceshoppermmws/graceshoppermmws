@@ -1,4 +1,5 @@
 import React from 'react'
+import EditCheckout from './EditCheckout'
 
 const Order = props => {
   const {id, userId, isCart, isShipped, createdAt, products} = props.order
@@ -44,6 +45,11 @@ const Order = props => {
                   <li>Name: {product.name}</li>
                   <li>Purchase Price: {price}</li>
                   <li>Quantity: {quantity}</li>
+                  <EditCheckout
+                    quantity={quantity}
+                    product={product}
+                    userId={userId}
+                  />
 
                   {isAdmin ? (
                     ' '

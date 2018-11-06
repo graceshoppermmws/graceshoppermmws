@@ -12,6 +12,7 @@ const EDIT_CART = 'EDIT_CART'
 const DELETE_PRODUCT_FROM_CART = 'DELETE_PRODUCT_FROM_CART'
 const CHECKOUT = 'CHECKOUT'
 const CREATE_UNAUTH_ORDER = 'CREATE_UNAUTH_ORDER'
+const EDIT_QUANTITY = 'EDIT_QUANTITY'
 
 /**
  * INITIAL STATE
@@ -49,6 +50,11 @@ export const gotPastOrders = pastOrders => ({
 export const editCart = cart => ({
   type: EDIT_CART,
   cart
+})
+
+export const editQuantity = updatedQuantity => ({
+  type: EDIT_QUANTITY,
+  updatedQuantity
 })
 
 export const removedProductFromCart = remainedProducts => ({
@@ -117,6 +123,23 @@ export const putCart = ({product, quantity}, userId) => {
   }
 }
 
+export const putQuantity = (product, quantity, userId) => {
+  return async dispatch => {
+    try {
+      console.log('store', userId)
+      const response = await axios.put(`/api/users/${userId}/editquantity`, {
+        product,
+        quantity
+      })
+      const cart = response.data
+      const action = editQuantity(cart)
+      dispatch(action)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
 export const putCheckout = userId => {
   return async dispatch => {
     try {
@@ -165,8 +188,8 @@ export const deleteProductFromCart = (userId, productId) => {
       const response = await axios.put(`/api/users/${userId}/removeitem`, {
         productId
       })
-      const remainedProducts = response.data
-      const action = removedProductFromCart(remainedProducts)
+      const remainedProduct = response.data
+      const action = removedProductFromCart(remainedProduct)
       dispatch(action)
     } catch (error) {
       console.log(error)
@@ -196,6 +219,9 @@ export default function(state = defaultOrderState, action) {
     }
     case DELETE_PRODUCT_FROM_CART: {
       return {...state, cart: action.remainedProducts}
+    }
+    case EDIT_QUANTITY: {
+      return {...state, cart: action.updatedQuantity}
     }
     case CHECKOUT: {
       return {
