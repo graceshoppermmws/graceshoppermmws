@@ -31,8 +31,8 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    if (this.props.user.id) {
-      this.props.getCart()
+    if (this.props.match.params.userId) {
+      this.props.getCart(this.props.match.params.userId)
     } else {
       let localStorageCart = JSON.parse(localStorage.getItem('cart'))
       this.setState({
@@ -40,6 +40,7 @@ class Cart extends Component {
       })
     }
   }
+
   handleDiscountChange(evt) {
     const code = evt.target.value
     console.log('CODE', code)
@@ -52,7 +53,7 @@ class Cart extends Component {
       this.setState({discount: 0.5})
       toastr.success('OUAHAHAHAHA')
     } else {
-      toastr.warning('Code failed: Princess Peach 5ever!')
+      toastr.warning('Your discount code is in another castle')
     }
   }
 
@@ -93,15 +94,29 @@ class Cart extends Component {
 
   render() {
     const discount = this.state.discount
-    const cartItems = this.props.user.id
-      ? this.props.cart[0] ? this.props.cart[0] : {isCart: true, products: []}
-      : this.state.cart
+    // const cart = this.props.user.id
+    //   ? this.props.cart[0] ? this.props.cart[0] : {isCart: true, products: []}
+    //   : this.state.cart
+    let cart = {}
+    if (this.props.user.id) {
+      if (this.props.cart.products) {
+        cart = this.props.cart
+      } else {
+        cart = {isCart: true, products: []}
+      }
+    } else {
+      if (this.state.cart.products) {
+        cart = this.state.cart
+      } else {
+        cart = {isCart: true, products: []}
+      }
+    }
     return (
       <div>
         <Order
           discount={discount}
           user={this.props.user}
-          order={cartItems}
+          order={cart}
           handleDeleteProduct={this.handleDeleteProduct}
         />
         <form onSubmit={this.handleDiscount}>
@@ -113,7 +128,7 @@ class Cart extends Component {
           />
           <button type="submit">Enter</button>
         </form>
-        {cartItems.products.length ? (
+        {cart.products.length ? (
           <Elements>
             <CheckoutForm handleCheckout={this.handleCheckout} />
           </Elements>
@@ -132,9 +147,9 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = dispatch => {
   return {
-    getCart: () => dispatch(getCart(ownProps.match.params.userId)),
+    getCart: userId => dispatch(getCart(userId)),
     putCheckout: user => dispatch(putCheckout(user)),
     postUnauthOrder: cart => dispatch(postUnauthOrder(cart)),
     deletedProductFromCart: (userId, productId) =>
