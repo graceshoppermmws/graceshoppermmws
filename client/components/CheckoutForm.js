@@ -14,8 +14,10 @@ class CheckoutForm extends Component {
     let response = await fetch('/api/stripe/charge', {
       method: 'POST',
       headers: {'Content-Type': 'text/plain'},
-      body: token.id
+      body: token.id,
+      discount: this.props.discount
     })
+    console.log(response)
     if (response.ok) {
       toastr.success('Thank you for your purchase!')
       this.setState({complete: true})

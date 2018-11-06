@@ -11,26 +11,27 @@ router.post('/charge', async (req, res) => {
     const userId = req.user.id || null
     const discount = req.body.discount || 1
     const cart = await Order.findOne({
-      where: {isCart: true, userId: +req.params.userId},
+      where: {isCart: true, userId},
       include: [{model: Product}]
     })
-    // /// *** iterate through order products to find total
-    // const {products} = cart
-    // const productPromises = products.map(product =>
-    //   Product.findOne({where: {id: product.id}})
-    // )
-    // const dbProductsArray = await Promise.all(productPromises)
-    // const updateJoinTablePromises = dbProductsArray.map(product =>
-    //   OrderProduct.findOne({
-    //     where: {orderId: cart.id, productId: product.id}
-    //   })
-    // )
-    // const joinTableArray = await Promise.all(updateJoinTablePromises)
-    // calculateTotal = joinTableArray.reduce(
-    //   (subtotal, lineItem) =>
-    //     lineItem.historicPrice * lineItem.quantity * discount,
-    //   0
-    // )
+    // *** iterate through order products to find total
+    const {products} = cart
+    const productPromises = products.map(product =>
+      Product.findOne({where: {id: product.id}})
+    )
+    const dbProductsArray = await Promise.all(productPromises)
+    const updateJoinTablePromises = dbProductsArray.map(product =>
+      OrderProduct.findOne({
+        where: {orderId: cart.id, productId: product.id}
+      })
+    )
+    const joinTableArray = await Promise.all(updateJoinTablePromises)
+    calculateTotal = joinTableArray.reduce(
+      (subtotal, lineItem) =>
+        lineItem.historicPrice * lineItem.quantity * discount * 100 + subtotal,
+      0
+    )
+    console.log(calculateTotal)
     //*****
     let {status} = await stripe.charges.create({
       amount: calculateTotal,
