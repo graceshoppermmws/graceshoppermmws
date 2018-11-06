@@ -89,6 +89,13 @@ class AllProducts extends Component {
     return (
       <div>
         <h2>Candidates For Sale</h2>
+        {admin && (
+          <div>
+            <button type="submit">
+              <Link to="/new-product">Add Candidate</Link>
+            </button>
+          </div>
+        )}
         <h4>Filter By Category</h4>
         <select onChange={evt => this.handleFilter(evt)}>
           <option value="">View All</option>
@@ -110,7 +117,7 @@ class AllProducts extends Component {
                 .map((product, i) => (
                   <li key={i}>
                     <Product product={product} />
-                    {!admin ? (
+                    {!admin && (
                       <div>
                         <button
                           type="button"
@@ -119,8 +126,6 @@ class AllProducts extends Component {
                           Buy!
                         </button>
                       </div>
-                    ) : (
-                      ' '
                     )}
                   </li>
                 ))
@@ -142,14 +147,6 @@ class AllProducts extends Component {
                 </li>
               ))}
         </ul>
-        {admin ? (
-          <div>
-            <a>Add Candidate</a>
-            <AddProduct />{' '}
-          </div>
-        ) : (
-          ' '
-        )}
       </div>
     )
   }
