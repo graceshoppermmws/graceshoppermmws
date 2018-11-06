@@ -7,7 +7,9 @@ import {
   getCart,
   putCheckout,
   postUnauthOrder,
-  deleteProductFromCart
+  deleteProductFromCart,
+  gotCart,
+  getTotal
 } from '../store'
 import Order from './Order'
 
@@ -38,11 +40,38 @@ class Cart extends Component {
       this.setState({
         cart: localStorageCart
       })
+      // this.gotCart(localStorageCart)
+      let cart = {}
+      if (this.props.user.id) {
+        if (this.props.cart.products) {
+          cart = this.props.cart
+        } else {
+          cart = {isCart: true, products: []}
+        }
+      } else if (this.state.cart.products) {
+        cart = this.state.cart
+      } else {
+        cart = {isCart: true, products: []}
+      }
+
+      let subtotal = 0
+      cart.products.forEach(product => {
+        const price = product.order_product
+          ? product.order_product.historicPrice
+          : product.price
+        const quantity = product.order_product
+          ? product.order_product.quantity
+          : product.quantity
+        subtotal += price * quantity
+      })
+      this.props.getTotal(subtotal)
+      console.log('subtotal', subtotal)
     }
   }
 
   handleDiscountChange(evt) {
     const code = evt.target.value
+    console.log('CODE', code)
     this.setState({discountCode: code})
   }
 
@@ -79,10 +108,10 @@ class Cart extends Component {
 
   handleCheckout() {
     if (this.props.user.id) {
-      this.props.putCheckout(this.props.user.id, this.state.discount)
+      this.props.putCheckout(this.props.user.id)
     } else {
       let localStorageCart = JSON.parse(localStorage.getItem('cart'))
-      this.props.postUnauthOrder(localStorageCart, this.state.discount)
+      this.props.postUnauthOrder(localStorageCart)
       localStorage.setItem('cart', JSON.stringify({isCart: true, products: []}))
       let emptyCart = JSON.parse(localStorage.getItem('cart'))
       this.setState({
@@ -109,21 +138,24 @@ class Cart extends Component {
       cart = {isCart: true, products: []}
     }
 
-    let subtotal = 0
-    cart.products.forEach(product => {
-      const price = product.order_product
-        ? product.order_product.historicPrice
-        : product.price
-      const quantity = product.order_product
-        ? product.order_product.quantity
-        : product.quantity
-      subtotal += price * quantity
-    })
-    console.log('subtotal', subtotal)
+    // let subtotal = 0
+    // cart.products.forEach(product => {
+    //   const price = product.order_product
+    //     ? product.order_product.historicPrice
+    //     : product.price
+    //   const quantity = product.order_product
+    //     ? product.order_product.quantity
+    //     : product.quantity
+    //   subtotal += price * quantity
+    // })
+    // //sets redux store based local storage
+    // // this.props.getTotal(subtotal)
+    // console.log('subtotal', subtotal)
 
     return (
       <div>
-        <label>{`Magic Subtotal: ${subtotal}.00`}</label>
+        {/* <label>{`Original Subtotal: ${subtotal}.00`}</label>
+        <label>{`New Subtotal: ${this.props.total}.00`}</label> */}
         <Order
           discount={discount}
           user={this.props.user}
@@ -154,18 +186,20 @@ class Cart extends Component {
 const mapStateToProps = state => {
   return {
     cart: state.orders.cart,
-    user: state.user
+    user: state.user,
+    total: state.orders.total
   }
 }
 
 const mapDispatchToProps = dispatch => {
   return {
     getCart: userId => dispatch(getCart(userId)),
-    putCheckout: (user, discount) => dispatch(putCheckout(user, discount)),
-    postUnauthOrder: (cart, discount) =>
-      dispatch(postUnauthOrder(cart, discount)),
+    putCheckout: user => dispatch(putCheckout(user)),
+    postUnauthOrder: cart => dispatch(postUnauthOrder(cart)),
     deletedProductFromCart: (userId, productId) =>
-      dispatch(deleteProductFromCart(userId, productId))
+      dispatch(deleteProductFromCart(userId, productId)),
+    gotCart: cart => dispatch(gotCart(cart)),
+    getTotal: total => dispatch(getTotal(total))
   }
 }
 

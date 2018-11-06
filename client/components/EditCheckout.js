@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
-import {putQuantity, editQuantity} from '../store'
+import {putQuantity, editQuantity, getTotal} from '../store'
 
 class EditCheckout extends Component {
   constructor(props) {
@@ -10,7 +10,8 @@ class EditCheckout extends Component {
       cart: {
         products: [],
         isCart: true
-      }
+      },
+      subtotal: 0
     }
     this.handleChange = this.handleChange.bind(this)
     this.handleSubmit = this.handleSubmit.bind(this)
@@ -66,6 +67,17 @@ class EditCheckout extends Component {
         () => console.log('new state', this.state)
       )
       // console.log('product', newCart.products[0].quantity)
+      let subtotal = 0
+      newCart.products.forEach(product => {
+        const price = product.price
+        const quantity = product.quantity
+        subtotal += price * quantity
+      })
+      console.log('subtotal', subtotal)
+      this.setState({
+        subtotal: subtotal
+      })
+      this.props.getTotal(subtotal)
     }
   }
 
@@ -91,7 +103,8 @@ const mapDispatchToProps = dispatch => {
   return {
     putQuantity: (product, quantity, userId) =>
       dispatch(putQuantity(product, quantity, userId)),
-    editQuantity: cart => dispatch(editQuantity(cart))
+    editQuantity: cart => dispatch(editQuantity(cart)),
+    getTotal: total => dispatch(getTotal(total))
   }
 }
 

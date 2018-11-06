@@ -13,6 +13,7 @@ const DELETE_PRODUCT_FROM_CART = 'DELETE_PRODUCT_FROM_CART'
 const CHECKOUT = 'CHECKOUT'
 const CREATE_UNAUTH_ORDER = 'CREATE_UNAUTH_ORDER'
 const EDIT_QUANTITY = 'EDIT_QUANTITY'
+const GET_TOTAL = 'GET_TOTAL'
 
 /**
  * INITIAL STATE
@@ -22,7 +23,7 @@ const defaultOrderState = {
   allOrders: [],
   cart: {},
   pastOrders: [],
-  subtotal: 0
+  total: 0
 }
 
 /**
@@ -73,9 +74,10 @@ export const createdUnauthOrder = cart => ({
   cart
 })
 
-// export const getTotal = total => ({
-//   type:
-// })
+export const getTotal = total => ({
+  type: GET_TOTAL,
+  total
+})
 
 /**
  * THUNK CREATORS
@@ -242,6 +244,12 @@ export default function(state = defaultOrderState, action) {
       return {
         ...state,
         allOrders: [...state.allOrders, action.cart]
+      }
+    }
+    case GET_TOTAL: {
+      return {
+        ...state,
+        total: action.total
       }
     }
     default:
