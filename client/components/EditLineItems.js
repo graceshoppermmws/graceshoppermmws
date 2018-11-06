@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
+import {getCart} from '../store'
 
 class EditLineItems extends Component {
   constructor(props) {
@@ -9,7 +10,9 @@ class EditLineItems extends Component {
     this.handleSubmit = this.handleSubmit.bind(this)
   }
 
-  componentDidMount
+  // componentDidMount() {
+  //   this.props.getCart(this.props.userId)
+  // }
 
   handleChange(event) {
     this.setState({
@@ -24,6 +27,9 @@ class EditLineItems extends Component {
       this.state.quantity,
       this.props.userId
     )
+    this.props.handleQtyChange()
+    this.forceUpdate()
+    // this.props.history.push(`/cart/${this.props.userId}`)
   }
 
   render() {
@@ -32,6 +38,7 @@ class EditLineItems extends Component {
       <div>
         <li>Name: {product.name}</li>
         <li>Purchase Price: {product.price}</li>
+        <li>Quantity: {this.props.quantity}</li>
         <form onSubmit={this.handleSubmit}>
           <label>Quantity:</label>
           <input
@@ -54,4 +61,11 @@ class EditLineItems extends Component {
   }
 }
 
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     getCart: id => dispatch(getCart(id))
+//   }
+// }
+
+// export default connect(null, mapDispatchToProps)(EditLineItems)
 export default EditLineItems

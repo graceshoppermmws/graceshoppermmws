@@ -94,6 +94,7 @@ class Order extends Component {
                           userId={userId}
                           handleDeleteProduct={this.props.handleDeleteProduct}
                           putQuantity={this.props.putQuantity}
+                          handleQtyChange={this.props.handleQtyChange}
                         />
                       </div>
                     ) : (

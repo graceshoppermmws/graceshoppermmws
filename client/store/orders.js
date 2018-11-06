@@ -131,6 +131,7 @@ export const putQuantity = (product, quantity, userId) => {
         quantity
       })
       const cart = response.data
+      console.log('store', cart)
       const action = updatedQuantity(cart)
       dispatch(action)
     } catch (err) {

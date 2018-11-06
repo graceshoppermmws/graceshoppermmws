@@ -28,6 +28,7 @@ class Cart extends Component {
     this.handleDeleteProduct = this.handleDeleteProduct.bind(this)
     this.handleDiscount = this.handleDiscount.bind(this)
     this.handleDiscountChange = this.handleDiscountChange.bind(this)
+    this.handleQtyChange = this.handleQtyChange.bind(this)
   }
 
   componentDidMount() {
@@ -40,6 +41,15 @@ class Cart extends Component {
       })
     }
   }
+
+  handleQtyChange() {
+    // evt.preventDefault()
+    console.log('handle qty change')
+    if (this.props.user.id) {
+      this.props.getCart()
+    }
+  }
+
   handleDiscountChange(evt) {
     const code = evt.target.value
     console.log('CODE', code)
@@ -96,14 +106,22 @@ class Cart extends Component {
     const cartItems = this.props.user.id
       ? this.props.cart[0] ? this.props.cart[0] : {isCart: true, products: []}
       : this.state.cart
+    console.log('cart items', cartItems)
+    console.log('state props', this.props.cart[0])
+    console.log('state props', this.props.cart[0])
     return (
       <div>
-        <Order
-          discount={discount}
-          user={this.props.user}
-          order={cartItems}
-          handleDeleteProduct={this.handleDeleteProduct}
-        />
+        {this.props.user.id
+          ? this.props.cart[0] && (
+              <Order
+                discount={discount}
+                user={this.props.user}
+                order={this.props.cart[0]}
+                handleDeleteProduct={this.handleDeleteProduct}
+                handleQtyChange={this.handleQtyChange}
+              />
+            )
+          : ' '}
         <form onSubmit={this.handleDiscount}>
           <label>Promo Code:</label>
           <input
