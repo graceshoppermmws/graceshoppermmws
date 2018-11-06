@@ -29,10 +29,11 @@ router.get('/:userId/cart', async (req, res, next) => {
   const userId = req.user.id || null
   if (userId === +req.params.userId) {
     try {
-      const cart = await Order.findAll({
+      const cart = await Order.findOne({
         where: {isCart: true, userId: +req.params.userId},
         include: [{model: Product}]
       })
+      console.log('api route', cart)
       res.status(200).json(cart)
     } catch (err) {
       next(err)
