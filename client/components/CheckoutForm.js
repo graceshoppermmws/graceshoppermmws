@@ -18,7 +18,6 @@ class CheckoutForm extends Component {
       headers: {'Content-Type': 'text/plain'},
       body: token.id
     })
-    console.log(response)
     if (response.ok) {
       toastr.success('Thank you for your purchase!')
       this.setState({complete: true})
