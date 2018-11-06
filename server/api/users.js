@@ -80,8 +80,8 @@ router.put('/:userId/cart', async (req, res, next) => {
         where: {orderId: cart.id, productId: product.id}
       })
       await updateJoinTable.update({
-        quantity: updateJoinTable.quantity + +req.body.quantity,
-        historicPrice: req.body.product.price
+        quantity: updateJoinTable.quantity + +req.body.quantity
+        //historicPrice: req.body.product.price
       })
       let returnCart = await Order.findOne({
         where: {isCart: true, userId: +req.params.userId},
