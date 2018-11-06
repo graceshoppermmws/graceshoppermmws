@@ -1,17 +1,41 @@
 const router = require('express')()
 const stripe = require('stripe')(process.env.STRIPE_KEY)
+const {Order, Product, OrderProduct} = require('../db/models')
 module.exports = router
 
 router.use(require('body-parser').text())
 
 router.post('/charge', async (req, res) => {
   try {
-    const calculateTotal = 0
-
+    let calculateTotal = 2000
+    const userId = req.user.id || null
+    const discount = req.body.discount || 1
+    const cart = await Order.findOne({
+      where: {isCart: true, userId: +req.params.userId},
+      include: [{model: Product}]
+    })
+    // /// *** iterate through order products to find total
+    // const {products} = cart
+    // const productPromises = products.map(product =>
+    //   Product.findOne({where: {id: product.id}})
+    // )
+    // const dbProductsArray = await Promise.all(productPromises)
+    // const updateJoinTablePromises = dbProductsArray.map(product =>
+    //   OrderProduct.findOne({
+    //     where: {orderId: cart.id, productId: product.id}
+    //   })
+    // )
+    // const joinTableArray = await Promise.all(updateJoinTablePromises)
+    // calculateTotal = joinTableArray.reduce(
+    //   (subtotal, lineItem) =>
+    //     lineItem.historicPrice * lineItem.quantity * discount,
+    //   0
+    // )
+    //*****
     let {status} = await stripe.charges.create({
       amount: calculateTotal,
       currency: 'usd',
-      description: 'An example charge',
+      description: 'candidates',
       source: req.body
     })
     res.json({status})
