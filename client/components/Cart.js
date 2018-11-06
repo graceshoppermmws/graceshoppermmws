@@ -93,11 +93,9 @@ class Cart extends Component {
 
   render() {
     const discount = this.state.discount
-    console.log('discount', this.state.discount)
     const cartItems = this.props.user.id
       ? this.props.cart[0] ? this.props.cart[0] : {isCart: true, products: []}
       : this.state.cart
-    console.log(cartItems)
     return (
       <div>
         <Order
