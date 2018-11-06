@@ -4,7 +4,6 @@ const Order = props => {
   const {id, userId, isCart, isShipped, createdAt, products} = props.order
   const {isAdmin} = props.user || false
   const discount = props.discount
-  console.log('banana', discount)
   let subtotal = 0
 
   products.forEach(product => {
