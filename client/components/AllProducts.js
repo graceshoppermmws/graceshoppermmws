@@ -88,7 +88,7 @@ class AllProducts extends Component {
     const admin = this.props.user.isAdmin
     return (
       <div>
-        <div className="jumbotron text-center">
+        <div className="container text-center">
           <div className="container">
             <h2 className="text-center">Candidates For Sale</h2>
             <h4>Filter By Category</h4>
@@ -103,45 +103,43 @@ class AllProducts extends Component {
           </div>
         </div>
         <div className="album py-5">
-          {filterView
-            ? this.props.allProducts
-                .filter(
-                  product =>
-                    filterView === product.districtName ||
-                    filterView === product.govLevel ||
-                    filterView === product.position
-                )
-                .map((product, i) => (
-                  <div className="" key={i}>
-                    <Product product={product} />
-                    {!admin ? (
-                      <div>
-                        <button
-                          type="button"
-                          onClick={() => this.handleClick(product)}
-                        >
-                          Buy!
-                        </button>
+          <div className="container">
+            <div className="row">
+              {filterView
+                ? this.props.allProducts
+                    .filter(
+                      product =>
+                        filterView === product.districtName ||
+                        filterView === product.govLevel ||
+                        filterView === product.position
+                    )
+                    .map((product, i) => (
+                      <div className="col-md-4" key={i}>
+                        <Product
+                          product={product}
+                          handleClick={this.handleClick}
+                        />
                       </div>
-                    ) : (
-                      ' '
-                    )}
-                  </div>
-                ))
-            : this.props.allProducts.map((product, i) => (
-                <li key={i}>
-                  <Product product={product} handleClick={this.handleClick} />
-                </li>
-              ))}
-        </div>
-        {admin ? (
-          <div>
-            <a>Add Candidate</a>
-            <AddProduct />{' '}
+                    ))
+                : this.props.allProducts.map((product, i) => (
+                    <div className="col-md-4" key={i}>
+                      <Product
+                        product={product}
+                        handleClick={this.handleClick}
+                      />
+                    </div>
+                  ))}
+            </div>
+            {admin ? (
+              <div>
+                <a>Add Candidate</a>
+                <AddProduct />{' '}
+              </div>
+            ) : (
+              ' '
+            )}
           </div>
-        ) : (
-          ' '
-        )}
+        </div>
       </div>
     )
   }
