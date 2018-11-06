@@ -33,7 +33,6 @@ router.get('/:userId/cart', async (req, res, next) => {
         where: {isCart: true, userId: +req.params.userId},
         include: [{model: Product}]
       })
-      console.log('api route', cart)
       res.status(200).json(cart)
     } catch (err) {
       next(err)
@@ -163,19 +162,40 @@ router.put('/:userId/checkout', async (req, res, next) => {
   const userId = req.user.id || null
   if (userId === +req.params.userId) {
     try {
+      const discount = req.body.discount || 1
       let cart = await Order.findOne({
         where: {isCart: true, userId: +req.params.userId},
         include: [{model: Product}]
       })
+      // **** Update historic price on checkout ****
+      const {products} = cart
+      const productPromises = products.map(product =>
+        Product.findOne({where: {id: product.id}})
+      )
+      const dbProductsArray = await Promise.all(productPromises)
+      // turn fetched products into promises of added products
+      const updateJoinTablePromises = dbProductsArray.map(product =>
+        OrderProduct.findOne({
+          where: {orderId: cart.id, productId: product.id}
+        })
+      )
+      const joinTableArray = await Promise.all(updateJoinTablePromises)
+      const updatedJoinsPromises = joinTableArray.map((lineItem, i) =>
+        lineItem.update({
+          historicPrice: +dbProductsArray[i].price * discount
+        })
+      )
+      await Promise.all(updatedJoinsPromises)
+      // ***** find updated order and set to past
       const checkout = await cart.update({
         isCart: false,
         isShipped: false
       })
+      // ***** create new cart
       await Order.findOrCreate({
         where: {userId: +req.params.userId, isCart: true},
         include: [{model: Product}]
       })
-
       res.status(201).json(checkout)
     } catch (err) {
       next(err)

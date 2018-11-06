@@ -65,7 +65,7 @@ class EditCheckout extends Component {
         },
         () => console.log('new state', this.state)
       )
-      console.log('product', newCart.products[0].quantity)
+      // console.log('product', newCart.products[0].quantity)
     }
   }
 
