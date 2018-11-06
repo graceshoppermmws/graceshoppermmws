@@ -93,25 +93,17 @@ class Cart extends Component {
 
   render() {
     const discount = this.state.discount
-    console.log('discount', this.state.discount)
+    const cartItems = this.props.user.id
+      ? this.props.cart[0] ? this.props.cart[0] : {isCart: true, products: []}
+      : this.state.cart
     return (
       <div>
-        {this.props.user.id
-          ? this.props.cart[0] && (
-              <Order
-                discount={discount}
-                user={this.props.user}
-                order={this.props.cart[0]}
-                handleDeleteProduct={this.handleDeleteProduct}
-              />
-            )
-          : this.state.cart.products && (
-              <Order
-                discount={discount}
-                order={this.state.cart}
-                handleDeleteProduct={this.handleDeleteProduct}
-              />
-            )}
+        <Order
+          discount={discount}
+          user={this.props.user}
+          order={cartItems}
+          handleDeleteProduct={this.handleDeleteProduct}
+        />
         <form onSubmit={this.handleDiscount}>
           <label>Promo Code:</label>
           <input
@@ -121,10 +113,13 @@ class Cart extends Component {
           />
           <button type="submit">Enter</button>
         </form>
-
-        <Elements>
-          <CheckoutForm handleCheckout={this.handleCheckout} />
-        </Elements>
+        {cartItems.products.length ? (
+          <Elements>
+            <CheckoutForm handleCheckout={this.handleCheckout} />
+          </Elements>
+        ) : (
+          <h2>Your Cart is Currently Empty</h2>
+        )}
       </div>
     )
   }
