@@ -30,67 +30,28 @@ router.post('/checkout', async (req, res, next) => {
       isCart: false,
       isShipped: false
     })
-
-    // products.forEach(async product => {
-    //   const tempProduct = await Product.findOne({where: {id: product.id}})
-    //   await newOrder.addProduct(tempProduct)
-    //   const updateJoinTable = await OrderProduct.findOne({
-    //     where: {orderId: newOrder.id, productId: tempProduct.id}
-    //   })
-    //   await updateJoinTable.update({
-    //     quantity: product.quantity,
-    //     historicPrice: product.price
-    //   })
-    // })
-    const promisesArray = []
-    products.forEach(product => {
-      promisesArray.push(
-        Product.findOne({where: {id: product.id}})
-          .then(lineItem => newOrder.addProduct(lineItem))
-          .then(lineItem =>
-            OrderProduct.findOne({
-              where: {orderId: newOrder.id, productId: product.id}
-            })
-          )
-          .then(lineItem =>
-            product.update({
-              quantity: lineItem.quantity + +req.body.quantity,
-              historicPrice: req.body.product.price * discount
-            })
-          )
-      )
-    })
-    await Promise.all(promisesArray)
-    // // turn products into promises of products
-    // const savedProducts = products.slice()
-    // products.map(product => Product.findOne({where: {id: product.id}}))
-    // const dbProductsArray = await Promise.all(products)
-
-    // // turn fetched products into promises of added products
-    // dbProductsArray.map(product => {
-    //   newOrder.addProduct(product.id)
-    // })
-    // const quantityPricePromises = []
-    // products.forEach(product => {
-    //   quantityPricePromises.push(
-    //     OrderProduct.findOne({
-    //       where: {orderId: newOrder.id, productId: product.id}
-    //     })
-    //   )
-    // })
-    // console.log(quantityPricePromises)
-    // const updateJoinTable = await Promise.all(quantityPricePromises)
-
-    // const joinUpdatePromises = []
-    // updateJoinTable.forEach((join, i) =>
-    //   joinUpdatePromises.push(
-    //     join.update({
-    //       quantity: updateJoinTable.quantity + +req.body.quantity,
-    //       historicPrice: savedProducts[i].price * discount
-    //     })
-    //   )
-    // )
-    // await Promise.all(joinUpdatePromises)
+    const productPromises = products.map(product =>
+      Product.findOne({where: {id: product.id}})
+    )
+    const dbProductsArray = await Promise.all(productPromises)
+    // turn fetched products into promises of added products
+    const addProductPromises = dbProductsArray.map(product =>
+      newOrder.addProduct(product)
+    )
+    await Promise.all(addProductPromises)
+    const updateJoinTablePromises = dbProductsArray.map(product =>
+      OrderProduct.findOne({
+        where: {orderId: newOrder.id, productId: product.id}
+      })
+    )
+    const joinTableArray = await Promise.all(updateJoinTablePromises)
+    const updatedJoinsPromises = joinTableArray.map((lineItem, i) =>
+      lineItem.update({
+        quantity: req.body.products[i].quantity,
+        historicPrice: +dbProductsArray[i].price /* * discount */
+      })
+    )
+    await Promise.all(updatedJoinsPromises)
     const completedOrder = await Order.findOne({
       where: {id: newOrder.id},
       include: [{model: Product}]
