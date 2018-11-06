@@ -31,8 +31,8 @@ class Cart extends Component {
   }
 
   componentDidMount() {
-    if (this.props.user) {
-      this.props.getCart()
+    if (this.props.match.params.userId) {
+      this.props.getCart(this.props.match.params.userId)
     } else {
       let localStorageCart = JSON.parse(localStorage.getItem('cart'))
       this.setState({
@@ -132,9 +132,9 @@ const mapStateToProps = state => {
   }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = dispatch => {
   return {
-    getCart: () => dispatch(getCart(ownProps.match.params.userId)),
+    getCart: userId => dispatch(getCart(userId)),
     putCheckout: user => dispatch(putCheckout(user)),
     postUnauthOrder: cart => dispatch(postUnauthOrder(cart)),
     deletedProductFromCart: (userId, productId) =>
