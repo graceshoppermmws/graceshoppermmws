@@ -12,6 +12,8 @@ const EDIT_CART = 'EDIT_CART'
 const DELETE_PRODUCT_FROM_CART = 'DELETE_PRODUCT_FROM_CART'
 const CHECKOUT = 'CHECKOUT'
 const CREATE_UNAUTH_ORDER = 'CREATE_UNAUTH_ORDER'
+const EDIT_QUANTITY = 'EDIT_QUANTITY'
+const GET_TOTAL = 'GET_TOTAL'
 
 /**
  * INITIAL STATE
@@ -20,7 +22,8 @@ const CREATE_UNAUTH_ORDER = 'CREATE_UNAUTH_ORDER'
 const defaultOrderState = {
   allOrders: [],
   cart: {},
-  pastOrders: []
+  pastOrders: [],
+  total: 0
 }
 
 /**
@@ -51,6 +54,11 @@ export const editCart = cart => ({
   cart
 })
 
+export const editQuantity = updatedQuantity => ({
+  type: EDIT_QUANTITY,
+  updatedQuantity
+})
+
 export const removedProductFromCart = remainedProducts => ({
   //rename deleteProductFromCart
   type: DELETE_PRODUCT_FROM_CART,
@@ -64,6 +72,11 @@ export const checkedOut = cart => ({
 export const createdUnauthOrder = cart => ({
   type: CREATE_UNAUTH_ORDER,
   cart
+})
+
+export const getTotal = total => ({
+  type: GET_TOTAL,
+  total
 })
 
 /**
@@ -110,6 +123,23 @@ export const putCart = ({product, quantity}, userId) => {
       })
       const cart = response.data
       const action = editCart(cart)
+      dispatch(action)
+    } catch (err) {
+      console.log(err)
+    }
+  }
+}
+
+export const putQuantity = (product, quantity, userId) => {
+  return async dispatch => {
+    try {
+      console.log('store', userId)
+      const response = await axios.put(`/api/users/${userId}/editquantity`, {
+        product,
+        quantity
+      })
+      const cart = response.data
+      const action = editQuantity(cart)
       dispatch(action)
     } catch (err) {
       console.log(err)
@@ -168,8 +198,8 @@ export const deleteProductFromCart = (userId, productId) => {
       const response = await axios.put(`/api/users/${userId}/removeitem`, {
         productId
       })
-      const remainedProducts = response.data
-      const action = removedProductFromCart(remainedProducts)
+      const remainedProduct = response.data
+      const action = removedProductFromCart(remainedProduct)
       dispatch(action)
     } catch (error) {
       console.log(error)
@@ -200,6 +230,9 @@ export default function(state = defaultOrderState, action) {
     case DELETE_PRODUCT_FROM_CART: {
       return {...state, cart: action.remainedProducts}
     }
+    case EDIT_QUANTITY: {
+      return {...state, cart: action.updatedQuantity}
+    }
     case CHECKOUT: {
       return {
         ...state,
@@ -211,6 +244,12 @@ export default function(state = defaultOrderState, action) {
       return {
         ...state,
         allOrders: [...state.allOrders, action.cart]
+      }
+    }
+    case GET_TOTAL: {
+      return {
+        ...state,
+        total: action.total
       }
     }
     default:
