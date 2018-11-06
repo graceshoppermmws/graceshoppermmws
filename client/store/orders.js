@@ -123,10 +123,10 @@ export const putCart = ({product, quantity}, userId) => {
   }
 }
 
-export const putQuantity = ({product, quantity}, userId) => {
+export const putQuantity = (product, quantity, userId) => {
   return async dispatch => {
     try {
-      const response = await axios.put(`/api/users/${userId}/cart`, {
+      const response = await axios.put(`/api/users/${userId}/updateQuantity`, {
         product,
         quantity
       })

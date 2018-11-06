@@ -1,6 +1,7 @@
 import React, {Component} from 'react'
 import {connect} from 'react-redux'
 import {putQuantity} from '../store'
+import EditLineItems from './EditLineItems'
 
 class Order extends Component {
   constructor() {
@@ -56,15 +57,15 @@ class Order extends Component {
                   : product.quantity
                 return (
                   <div key={product.id}>
-                    <li>Name: {product.name}</li>
+                    {/* <li>Name: {product.name}</li>
                     <li>Purchase Price: {price}</li>
-                    <li>Quantity: {quantity}</li>
+                    <li>Quantity: {quantity}</li> */}
 
                     {isAdmin ? (
                       ' '
                     ) : isCart ? (
                       <div>
-                        <form
+                        {/* <form
                           onSubmit={() =>
                             this.props.putQuantity({product, quantity}, userId)
                           }
@@ -86,7 +87,14 @@ class Order extends Component {
                           }
                         >
                           Remove Item From Cart
-                        </button>
+                        </button> */}
+                        <EditLineItems
+                          quantity={quantity}
+                          product={product}
+                          userId={userId}
+                          handleDeleteProduct={this.props.handleDeleteProduct}
+                          putQuantity={this.props.putQuantity}
+                        />
                       </div>
                     ) : (
                       <li>Quantity: {quantity}</li>
@@ -105,7 +113,8 @@ class Order extends Component {
 
 const mapDispatchToProps = dispatch => {
   return {
-    putQuantity: (cartItem, userId) => dispatch(putQuantity(cartItem, userId))
+    putQuantity: (product, quantity, userId) =>
+      dispatch(putQuantity(product, quantity, userId))
   }
 }
 
