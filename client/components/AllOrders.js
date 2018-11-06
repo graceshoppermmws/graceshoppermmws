@@ -40,7 +40,7 @@ class AllOrders extends Component {
           <div>
             <h1>Not Shipped</h1>
             {this.props.allOrders
-              .filter(order => !order.isShipped)
+              .filter(order => !order.isShipped && !order.isCart)
               .map(order => <Order order={order} key={order.id} />)}
           </div>
         ) : (
