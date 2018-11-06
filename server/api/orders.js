@@ -23,23 +23,35 @@ router.get('/', async (req, res, next) => {
 router.post('/checkout', async (req, res, next) => {
   try {
     // check if payment processed ? req.payment === true? who knows.
+    const discount = req.body.discount || 1
     const products = req.body.products
     const newOrder = await Order.create({
       userId: 1,
       isCart: false,
       isShipped: false
     })
-    products.forEach(async product => {
-      const tempProduct = await Product.findOne({where: {id: product.id}})
-      await newOrder.addProduct(tempProduct)
-      const updateJoinTable = await OrderProduct.findOne({
-        where: {orderId: newOrder.id, productId: tempProduct.id}
+    const productPromises = products.map(product =>
+      Product.findOne({where: {id: product.id}})
+    )
+    const dbProductsArray = await Promise.all(productPromises)
+    // turn fetched products into promises of added products
+    const addProductPromises = dbProductsArray.map(product =>
+      newOrder.addProduct(product)
+    )
+    await Promise.all(addProductPromises)
+    const updateJoinTablePromises = dbProductsArray.map(product =>
+      OrderProduct.findOne({
+        where: {orderId: newOrder.id, productId: product.id}
       })
-      await updateJoinTable.update({
-        quantity: product.quantity,
-        historicPrice: product.price
+    )
+    const joinTableArray = await Promise.all(updateJoinTablePromises)
+    const updatedJoinsPromises = joinTableArray.map((lineItem, i) =>
+      lineItem.update({
+        quantity: req.body.products[i].quantity,
+        historicPrice: +dbProductsArray[i].price * discount
       })
-    })
+    )
+    await Promise.all(updatedJoinsPromises)
     const completedOrder = await Order.findOne({
       where: {id: newOrder.id},
       include: [{model: Product}]
