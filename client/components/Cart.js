@@ -104,7 +104,7 @@ class Cart extends Component {
       } else {
         cart = {isCart: true, products: []}
       }
-    } else {
+    } else { 
       if (this.state.cart.products) {
         cart = this.state.cart
       } else {
