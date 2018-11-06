@@ -5,17 +5,7 @@ import {putQuantity} from '../store'
 class Order extends Component {
   constructor() {
     super()
-    // this.state = {
-    //   quantity: product.order_product.quantity
-    // }
-    // this.handleChange = this.handleChange.bind(this)
   }
-
-  // handleChange(evt) {
-  //   this.setState({
-  //     quantity: evt.target.value
-  //   })
-  // }
 
   // const Order = props => {
   render() {
@@ -80,7 +70,12 @@ class Order extends Component {
                           }
                         >
                           <label>Quantity:</label>
-                          <input type="text" name="quantity" value={quantity} />
+                          <input
+                            type="text"
+                            name="quantity"
+                            value={quantity}
+                            onChange={this.handleChange}
+                          />
                           <button type="submit">Update Quantity</button>
                         </form>
 
