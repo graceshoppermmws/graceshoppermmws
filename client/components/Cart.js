@@ -43,7 +43,6 @@ class Cart extends Component {
 
   handleDiscountChange(evt) {
     const code = evt.target.value
-    console.log('CODE', code)
     this.setState({discountCode: code})
   }
 
@@ -80,10 +79,10 @@ class Cart extends Component {
 
   handleCheckout() {
     if (this.props.user.id) {
-      this.props.putCheckout(this.props.user.id)
+      this.props.putCheckout(this.props.user.id, this.state.discount)
     } else {
       let localStorageCart = JSON.parse(localStorage.getItem('cart'))
-      this.props.postUnauthOrder(localStorageCart)
+      this.props.postUnauthOrder(localStorageCart, this.state.discount)
       localStorage.setItem('cart', JSON.stringify({isCart: true, products: []}))
       let emptyCart = JSON.parse(localStorage.getItem('cart'))
       this.setState({
@@ -104,12 +103,10 @@ class Cart extends Component {
       } else {
         cart = {isCart: true, products: []}
       }
-    } else { 
-      if (this.state.cart.products) {
-        cart = this.state.cart
-      } else {
-        cart = {isCart: true, products: []}
-      }
+    } else if (this.state.cart.products) {
+      cart = this.state.cart
+    } else {
+      cart = {isCart: true, products: []}
     }
     return (
       <div>
@@ -150,8 +147,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return {
     getCart: userId => dispatch(getCart(userId)),
-    putCheckout: user => dispatch(putCheckout(user)),
-    postUnauthOrder: cart => dispatch(postUnauthOrder(cart)),
+    putCheckout: (user, discount) => dispatch(putCheckout(user, discount)),
+    postUnauthOrder: (cart, discount) =>
+      dispatch(postUnauthOrder(cart, discount)),
     deletedProductFromCart: (userId, productId) =>
       dispatch(deleteProductFromCart(userId, productId))
   }

@@ -117,10 +117,12 @@ export const putCart = ({product, quantity}, userId) => {
   }
 }
 
-export const putCheckout = userId => {
+export const putCheckout = (userId, discount) => {
   return async dispatch => {
     try {
-      const response = await axios.put(`/api/users/${userId}/checkout`)
+      const response = await axios.put(`/api/users/${userId}/checkout`, {
+        discount
+      })
       const cart = response.data
       const action = checkedOut(cart)
       dispatch(action)
@@ -145,9 +147,10 @@ export const getPastOrders = userId => {
   }
 }
 
-export const postUnauthOrder = order => {
+export const postUnauthOrder = (order, discount) => {
   return async dispatch => {
     try {
+      order.discount = discount
       const response = await axios.post('/api/orders/checkout', order)
       const newOrder = response.data
       const action = createdOrder(newOrder)
