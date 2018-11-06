@@ -165,8 +165,8 @@ export const deleteProductFromCart = (userId, productId) => {
       const response = await axios.put(`/api/users/${userId}/removeitem`, {
         productId
       })
-      const remainedProduct = response.data
-      const action = removedProductFromCart([remainedProduct])
+      const remainedProducts = response.data
+      const action = removedProductFromCart(remainedProducts)
       dispatch(action)
     } catch (error) {
       console.log(error)
