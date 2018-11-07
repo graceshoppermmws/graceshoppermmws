@@ -59,7 +59,6 @@ export const getProducts = () => {
       const action = gotProducts(products)
       dispatch(action)
     } catch (err) {
-      // to add toastr
       console.error(err)
     }
   }

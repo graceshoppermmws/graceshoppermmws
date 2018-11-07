@@ -31,40 +31,7 @@ router.get('/:productId', async (req, res, next) => {
 // POST a Product
 router.post('/', async (req, res, next) => {
   try {
-    // check isAdmin
-    const {
-      name,
-      bio,
-      imageUrl,
-      districtName,
-      position,
-      inventory,
-      price,
-      govLevel
-    } = req.body
-    const newProduct = await Product.create({
-      name,
-      bio,
-      imageUrl,
-      districtName,
-      position,
-      inventory,
-      price,
-      govLevel
-    })
-    res.status(201).json(newProduct)
-  } catch (error) {
-    next(error)
-  }
-})
-
-// PUT by productId
-router.put('/:productId', async (req, res, next) => {
-  try {
-    const oldProduct = await Product.findById(+req.params.ProductId)
-    if (!oldProduct) {
-      res.sendStatus(404)
-    } else {
+    if (req.user.isAdmin) {
       const {
         name,
         bio,
@@ -75,7 +42,7 @@ router.put('/:productId', async (req, res, next) => {
         price,
         govLevel
       } = req.body
-      const updatedProduct = oldProduct.update({
+      const newProduct = await Product.create({
         name,
         bio,
         imageUrl,
@@ -85,7 +52,47 @@ router.put('/:productId', async (req, res, next) => {
         price,
         govLevel
       })
-      res.status(201).json(updatedProduct)
+      res.status(201).json(newProduct)
+    } else {
+      res.sendStatus(403)
+    }
+  } catch (error) {
+    next(error)
+  }
+})
+
+// PUT by productId
+router.put('/:productId', async (req, res, next) => {
+  try {
+    if (req.user.isAdmin) {
+      const oldProduct = await Product.findById(+req.params.ProductId)
+      if (!oldProduct) {
+        res.sendStatus(404)
+      } else {
+        const {
+          name,
+          bio,
+          imageUrl,
+          districtName,
+          position,
+          inventory,
+          price,
+          govLevel
+        } = req.body
+        const updatedProduct = oldProduct.update({
+          name,
+          bio,
+          imageUrl,
+          districtName,
+          position,
+          inventory,
+          price,
+          govLevel
+        })
+        res.status(201).json(updatedProduct)
+      }
+    } else {
+      res.sendStatus(403)
     }
   } catch (error) {
     next(error)

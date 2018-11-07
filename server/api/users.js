@@ -6,18 +6,23 @@ module.exports = router
 
 router.get('/:userId', async (req, res, next) => {
   try {
-    const particularUser = await User.findById(+req.params.userId, {
-      include: [{model: Order}]
-    })
-    if (!particularUser) {
-      res.sendStatus(404)
+    const userId = req.user.id || null
+    if (userId === req.params.userId || req.user.isAdmin) {
+      const particularUser = await User.findById(+req.params.userId, {
+        include: [{model: Order}]
+      })
+      if (!particularUser) {
+        res.sendStatus(404)
+      }
+      // find or create cart based on user id and cart
+      const cart = await Order.findOrCreate({
+        where: {userId: +req.params.userId, isCart: true},
+        include: [{model: Product}]
+      })
+      res.status(200).json({particularUser, cart})
+    } else {
+      res.sendStatus(403)
     }
-    // find or create cart based on user id and cart
-    const cart = await Order.findOrCreate({
-      where: {userId: +req.params.userId, isCart: true},
-      include: [{model: Product}]
-    })
-    res.status(200).json({particularUser, cart})
   } catch (err) {
     next(err)
   }
@@ -26,50 +31,50 @@ router.get('/:userId', async (req, res, next) => {
 // get current cart
 
 router.get('/:userId/cart', async (req, res, next) => {
-  const userId = req.user.id || null
-  if (userId === +req.params.userId) {
-    try {
+  try {
+    const userId = req.user.id || null
+    if (userId === +req.params.userId) {
       const cart = await Order.findOne({
         where: {isCart: true, userId: +req.params.userId},
         include: [{model: Product}]
       })
       res.status(200).json(cart)
-    } catch (err) {
-      next(err)
+    } else {
+      res.sendStatus(403)
     }
-  } else {
-    res.sendStatus(403)
+  } catch (err) {
+    next(err)
   }
 })
 
 // get past orders
 
 router.get('/:userId/past', async (req, res, next) => {
-  const userId = req.user.id || null
-  if (userId === +req.params.userId) {
-    try {
+  try {
+    const userId = req.user.id || null
+    if (userId === +req.params.userId) {
       const cart = await Order.findAll({
-        where: {isCart: false, userId: +req.params.userId},
+        where: {isCart: false, userId},
         include: [{model: Product}]
       })
       res.status(200).json(cart)
-    } catch (err) {
-      next(err)
+    } else {
+      res.sendStatus(403)
     }
-  } else {
-    res.sendStatus(403)
+  } catch (err) {
+    next(err)
   }
 })
 
 // update cart
 
 router.put('/:userId/cart', async (req, res, next) => {
-  const userId = req.user.id || null
-  const productId = +req.body.product.id || null
-  if (userId === +req.params.userId) {
-    try {
+  try {
+    const userId = req.user.id || null
+    const productId = +req.body.product.id || null
+    if (userId === +req.params.userId) {
       let cart = await Order.findOne({
-        where: {isCart: true, userId: +req.params.userId}
+        where: {isCart: true, userId}
       })
       let product = await Product.findOne({
         where: {id: productId}
@@ -83,15 +88,15 @@ router.put('/:userId/cart', async (req, res, next) => {
         historicPrice: req.body.product.price
       })
       let returnCart = await Order.findOne({
-        where: {isCart: true, userId: +req.params.userId},
+        where: {isCart: true, userId},
         include: [{model: Product}]
       })
       res.status(201).json(returnCart)
-    } catch (err) {
-      next(err)
+    } else {
+      res.sendStatus(403)
     }
-  } else {
-    res.sendStatus(403)
+  } catch (err) {
+    next(err)
   }
 })
 
@@ -125,12 +130,12 @@ router.put('/:userId/removeitem', async (req, res, next) => {
 // reset quantity in cart
 
 router.put('/:userId/editquantity', async (req, res, next) => {
-  const userId = req.user.id || null
-  const productId = +req.body.product.id || null
-  if (userId === +req.params.userId) {
-    try {
+  try {
+    const userId = req.user.id || null
+    const productId = +req.body.product.id || null
+    if (userId === +req.params.userId) {
       let cart = await Order.findOne({
-        where: {isCart: true, userId: +req.params.userId}
+        where: {isCart: true, userId}
       })
       let product = await Product.findOne({
         where: {id: productId}
@@ -144,24 +149,24 @@ router.put('/:userId/editquantity', async (req, res, next) => {
         // historicPrice: req.body.product.price
       })
       let returnCart = await Order.findOne({
-        where: {isCart: true, userId: +req.params.userId},
+        where: {isCart: true, userId},
         include: [{model: Product}]
       })
       res.status(201).json(returnCart)
-    } catch (err) {
-      next(err)
+    } else {
+      res.sendStatus(403)
     }
-  } else {
-    res.sendStatus(403)
+  } catch (err) {
+    next(err)
   }
 })
 
 // checkout
 
 router.put('/:userId/checkout', async (req, res, next) => {
-  const userId = req.user.id || null
-  if (userId === +req.params.userId) {
-    try {
+  try {
+    const userId = req.user.id || null
+    if (userId === +req.params.userId) {
       const discount = req.body.discount || 1
       let cart = await Order.findOne({
         where: {isCart: true, userId: +req.params.userId},
@@ -197,11 +202,11 @@ router.put('/:userId/checkout', async (req, res, next) => {
         include: [{model: Product}]
       })
       res.status(201).json(checkout)
-    } catch (err) {
-      next(err)
+    } else {
+      res.sendStatus(403)
     }
-  } else {
-    res.sendStatus(403)
+  } catch (err) {
+    next(err)
   }
 })
 
