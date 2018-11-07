@@ -34,8 +34,8 @@ const Order = props => {
       )}
 
       <div className="row">
-        <div className="col-md-8 order-md-1">
-          <div className="row">
+        <div className="album py-5">
+          <div className="card">
             {products.map(product => {
               const price = product.order_product
                 ? product.order_product.historicPrice
