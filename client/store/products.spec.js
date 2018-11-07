@@ -43,15 +43,13 @@ const products = [
   }
 ]
 
-function getRandomProduct(products) {
-  return products[Math.floor(Math.random() * products.length)]
+function getRandomProduct(arrayOfProducts) {
+  return arrayOfProducts[Math.floor(Math.random() * arrayOfProducts.length)]
 }
 
 describe('Action creators', () => {
   describe('gotProducts', () => {
     it('returns properly formatted action', () => {
-      const product = getRandomProduct(products)
-
       expect(gotProducts(products)).to.be.deep.equal({
         type: 'GET_PRODUCTS',
         products
@@ -62,7 +60,6 @@ describe('Action creators', () => {
   describe('gotSelectedProduct', () => {
     it('returns properly formatted action', () => {
       const product = getRandomProduct(products)
-
       expect(gotSelectedProduct(product)).to.be.deep.equal({
         type: 'SELECT_PRODUCT',
         product
@@ -76,6 +73,18 @@ describe('Action creators', () => {
 
       expect(createdProduct(product)).to.be.deep.equal({
         type: 'ADD_PRODUCT',
+        product
+      })
+    })
+  })
+
+  describe('editedProduct', () => {
+    it('returns properly formatted action', () => {
+      const product = getRandomProduct(products)
+
+      expect(editedProduct(product.id, product)).to.be.deep.equal({
+        type: 'EDIT_PRODUCT',
+        productId: product.id,
         product
       })
     })
