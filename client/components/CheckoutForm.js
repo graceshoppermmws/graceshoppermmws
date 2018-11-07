@@ -32,7 +32,9 @@ class CheckoutForm extends Component {
       <div className="checkout">
         <p>Would you like to complete the purchase?</p>
         <CardElement />
-        <button onClick={this.submit}>Complete Purchase</button>
+        <button className="btn btn-primary btn-sm" onClick={this.submit}>
+          Complete Purchase
+        </button>
       </div>
     )
   }

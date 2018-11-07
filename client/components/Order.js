@@ -21,7 +21,7 @@ const Order = props => {
 
   return (
     <div>
-      <h3>Order: {id}</h3>
+      <h3>Order:</h3>
       {isAdmin ? (
         <ul>
           <li>User: {userId}</li>
@@ -59,6 +59,7 @@ const Order = props => {
                       />
                       <button
                         type="button"
+                        className="btn btn-primary btn-sm"
                         onClick={() =>
                           props.handleDeleteProduct(userId, product.id)
                         }

@@ -88,68 +88,58 @@ class AllProducts extends Component {
     const admin = this.props.user.isAdmin
     return (
       <div>
-        <h2>Candidates For Sale</h2>
-        <h4>Filter By Category</h4>
-        <select onChange={evt => this.handleFilter(evt)}>
-          <option value="">View All</option>
-          {this.props.tags.map((tag, i) => (
-            <option value={tag} key={i}>
-              {tag}
-            </option>
-          ))}
-        </select>
-        <ul>
-          {filterView
-            ? this.props.allProducts
-                .filter(
-                  product =>
-                    filterView === product.districtName ||
-                    filterView === product.govLevel ||
-                    filterView === product.position
-                )
-                .map((product, i) => (
-                  <li key={i}>
-                    <Product product={product} />
-                    {!admin ? (
-                      <div>
-                        <button
-                          type="button"
-                          onClick={() => this.handleClick(product)}
-                        >
-                          Buy!
-                        </button>
-                      </div>
-                    ) : (
-                      ' '
-                    )}
-                  </li>
-                ))
-            : this.props.allProducts.map((product, i) => (
-                <li key={i}>
-                  <Product product={product} handleClick={this.handleClick} />
-                  {/* {!admin ? (
-                    <div>
-                      <button
-                        type="button"
-                        onClick={() => this.handleClick(product)}
-                      >
-                        Buy!
-                      </button>
-                    </div>
-                  ) : (
-                    ' '
-                  )} */}
-                </li>
+        <div className="container text-center">
+          <div className="container">
+            <h2 className="text-center">кандидаты на продажу</h2>
+            <h4>Filter By Category</h4>
+            <select onChange={evt => this.handleFilter(evt)}>
+              <option value="">View All</option>
+              {this.props.tags.map((tag, i) => (
+                <option value={tag} key={i}>
+                  {tag}
+                </option>
               ))}
-        </ul>
-        {admin ? (
-          <div>
-            <a>Add Candidate</a>
-            <AddProduct />{' '}
+            </select>
           </div>
-        ) : (
-          ' '
-        )}
+        </div>
+        <div className="album py-5">
+          <div className="container">
+            <div className="row">
+              {filterView
+                ? this.props.allProducts
+                    .filter(
+                      product =>
+                        filterView === product.districtName ||
+                        filterView === product.govLevel ||
+                        filterView === product.position
+                    )
+                    .map((product, i) => (
+                      <div className="col-md-4" key={i}>
+                        <Product
+                          product={product}
+                          handleClick={this.handleClick}
+                        />
+                      </div>
+                    ))
+                : this.props.allProducts.map((product, i) => (
+                    <div className="col-md-4" key={i}>
+                      <Product
+                        product={product}
+                        handleClick={this.handleClick}
+                      />
+                    </div>
+                  ))}
+            </div>
+            {admin ? (
+              <div>
+                <a>Add Candidate</a>
+                <AddProduct />{' '}
+              </div>
+            ) : (
+              ' '
+            )}
+          </div>
+        </div>
       </div>
     )
   }
@@ -174,5 +164,3 @@ const mapDispatchToProps = dispatch => {
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AllProducts)
-
-// export default AllProducts

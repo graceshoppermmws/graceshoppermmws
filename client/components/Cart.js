@@ -40,38 +40,11 @@ class Cart extends Component {
       this.setState({
         cart: localStorageCart
       })
-      // this.gotCart(localStorageCart)
-      let cart = {}
-      if (this.props.user.id) {
-        if (this.props.cart.products) {
-          cart = this.props.cart
-        } else {
-          cart = {isCart: true, products: []}
-        }
-      } else if (this.state.cart.products) {
-        cart = this.state.cart
-      } else {
-        cart = {isCart: true, products: []}
-      }
-
-      let subtotal = 0
-      cart.products.forEach(product => {
-        const price = product.order_product
-          ? product.order_product.historicPrice
-          : product.price
-        const quantity = product.order_product
-          ? product.order_product.quantity
-          : product.quantity
-        subtotal += price * quantity
-      })
-      this.props.getTotal(subtotal)
-      console.log('subtotal', subtotal)
     }
   }
 
   handleDiscountChange(evt) {
     const code = evt.target.value
-    console.log('CODE', code)
     this.setState({discountCode: code})
   }
 
@@ -122,9 +95,6 @@ class Cart extends Component {
 
   render() {
     const discount = this.state.discount
-    // const cart = this.props.user.id
-    //   ? this.props.cart[0] ? this.props.cart[0] : {isCart: true, products: []}
-    //   : this.state.cart
     let cart = {}
     if (this.props.user.id) {
       if (this.props.cart.products) {
@@ -137,25 +107,8 @@ class Cart extends Component {
     } else {
       cart = {isCart: true, products: []}
     }
-
-    // let subtotal = 0
-    // cart.products.forEach(product => {
-    //   const price = product.order_product
-    //     ? product.order_product.historicPrice
-    //     : product.price
-    //   const quantity = product.order_product
-    //     ? product.order_product.quantity
-    //     : product.quantity
-    //   subtotal += price * quantity
-    // })
-    // //sets redux store based local storage
-    // // this.props.getTotal(subtotal)
-    // console.log('subtotal', subtotal)
-
     return (
-      <div>
-        {/* <label>{`Original Subtotal: ${subtotal}.00`}</label>
-        <label>{`New Subtotal: ${this.props.total}.00`}</label> */}
+      <div className="cart">
         <Order
           discount={discount}
           user={this.props.user}
@@ -170,7 +123,9 @@ class Cart extends Component {
               onChange={this.handleDiscountChange}
               value={this.state.discountCode}
             />
-            <button type="submit">Enter</button>
+            <button className="btn btn-primary btn-sm" type="submit">
+              Enter
+            </button>
           </form>
         ) : (
           ' '
