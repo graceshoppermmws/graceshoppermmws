@@ -37,11 +37,14 @@ class AddProduct extends Component {
 
   render() {
     return (
-      <ProductForm
-        product={this.state}
-        changeHandler={this.changeHandler}
-        submitHandler={this.submitHandler}
-      />
+      <div>
+        <h2>Add Candidate</h2>
+        <ProductForm
+          product={this.state}
+          changeHandler={this.changeHandler}
+          submitHandler={this.submitHandler}
+        />
+      </div>
     )
   }
 }
