@@ -32,7 +32,7 @@ const Product = db.define('product', {
   },
   position: {
     // type: Sequelize.STRING
-    type: Sequelize.ENUM('Representative', 'Senator')
+    type: Sequelize.ENUM('Representative', 'Senator', 'President')
   },
   inventory: {
     type: Sequelize.INTEGER,
@@ -42,7 +42,7 @@ const Product = db.define('product', {
     type: Sequelize.DECIMAL
   },
   govLevel: {
-    type: Sequelize.ENUM('Federal'),
+    type: Sequelize.ENUM('Federal', 'State'),
     allowNull: false
   }
 })
