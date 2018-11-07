@@ -19,3 +19,7 @@ To use this implementation, you'll need to take the following steps:
 If you want to run the server and/or webpack separately, you can also `npm run start-server` and `npm run build-client`.
 
 From there, just follow your bliss.
+
+# Deployed
+
+http://candidates-for-sale.herokuapp.com/home
