@@ -4,7 +4,7 @@ import EditCheckout from './EditCheckout'
 const Order = props => {
   const {id, userId, isCart, isShipped, createdAt, products} = props.order
   const {isAdmin} = props.user || false
-  const discount = props.discount
+  const discount = props.discount || 1
   let subtotal = 0
 
   products.forEach(product => {
