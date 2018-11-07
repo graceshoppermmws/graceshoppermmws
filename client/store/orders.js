@@ -60,7 +60,6 @@ export const editQuantity = updatedQuantity => ({
 })
 
 export const removedProductFromCart = remainedProducts => ({
-  //rename deleteProductFromCart
   type: DELETE_PRODUCT_FROM_CART,
   remainedProducts
 })
@@ -93,7 +92,6 @@ export const getOrders = () => {
         dispatch(action)
       }
     } catch (err) {
-      // to add toastr
       console.error(err)
     }
   }
@@ -185,7 +183,6 @@ export const postUnauthOrder = (order, discount) => {
       const action = createdOrder(newOrder)
       dispatch(action)
     } catch (err) {
-      // to add toastr
       console.log(err)
     }
   }
