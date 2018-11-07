@@ -31,18 +31,20 @@ class Product extends Component {
     return (
       <div>
         <div className="card mb-4 shadow-sm">
-          <Link to={`/products/${id}`}>
-            <img
-              className="card-image-top"
-              src={imageUrl}
-              alt="card image cap"
-              position="center"
-              width="100%"
-            />
-          </Link>
+          <div className="text-center">
+            <Link to={`/products/${id}`}>
+              <img
+                className="card-image-top"
+                src={imageUrl}
+                alt="card image cap"
+                position="center"
+                width="200px"
+              />
+            </Link>
+          </div>
           <div className="card-body">
             <p>Name: {name}</p>
-            <p>Bio: {bio}</p>
+            {this.props.selectedProduct ? <p>Bio: {bio}</p> : ' '}
             <p>District: {districtName}</p>
             <p>Level: {govLevel}</p>
             <p>Position: {position}</p>

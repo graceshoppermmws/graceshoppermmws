@@ -81,6 +81,7 @@ class SingleProduct extends Component {
           <Product
             product={this.props.selectedProduct}
             handleClick={this.handleClick}
+            selectedProduct={this.props.selectedProduct}
           />
           {this.props.selectedProduct.id && admin ? (
             <EditProduct id={this.props.selectedProduct.id} />

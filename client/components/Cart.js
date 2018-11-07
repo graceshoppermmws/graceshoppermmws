@@ -65,13 +65,11 @@ class Cart extends Component {
         subtotal += price * quantity
       })
       this.props.getTotal(subtotal)
-      console.log('subtotal', subtotal)
     }
   }
 
   handleDiscountChange(evt) {
     const code = evt.target.value
-    console.log('CODE', code)
     this.setState({discountCode: code})
   }
 

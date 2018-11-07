@@ -35,3 +35,7 @@ form div {
   margin: 1em;
   display: inline-block;
 }
+
+.card {
+  background: linear-gradient(to top, #66ccff 0%, #ffcccc 100%);
+}
