@@ -26,7 +26,6 @@ class SingleProduct extends Component {
     localStorage.setItem('cart', JSON.stringify(localCart))
     let data = JSON.parse(localStorage.getItem('cart'))
     this.props.getSelectedProduct()
-    // this.props.getTags()
     if (!this.props.user.id) {
       this.setState({
         cart: data
@@ -39,9 +38,7 @@ class SingleProduct extends Component {
     toastr.success('Item added to cart!')
     if (!this.props.user.id) {
       const products = this.state.cart.products
-      // check if product is already in cart
       if (products.some(item => item.id === product.id)) {
-        // if so update product quantity by 1
         products.map(item => {
           if (item.id === product.id) {
             item.quantity = Number(item.quantity) + Number(quantity)
@@ -50,7 +47,6 @@ class SingleProduct extends Component {
             return item
           }
         })
-        // if product does not exist in cart, push to cart
       } else {
         products.push({
           id: product.id,
@@ -109,5 +105,3 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SingleProduct)
-
-// export default AllProducts

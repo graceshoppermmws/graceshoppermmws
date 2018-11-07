@@ -133,7 +133,6 @@ export const putCart = ({product, quantity}, userId) => {
 export const putQuantity = (product, quantity, userId) => {
   return async dispatch => {
     try {
-      console.log('store', userId)
       const response = await axios.put(`/api/users/${userId}/editquantity`, {
         product,
         quantity

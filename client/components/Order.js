@@ -20,8 +20,8 @@ const Order = props => {
   subtotal *= discount
 
   return (
-    <div className="container">
-      <h3 className="py-5 text-center">Order:</h3>
+    <div>
+      <h3>Order:</h3>
       {isAdmin ? (
         <ul>
           <li>User: {userId}</li>
@@ -33,9 +33,9 @@ const Order = props => {
         ' '
       )}
 
-      <div className="row">
-        <div className="album py-5">
-          <div className="card">
+      <ul>
+        <li>
+          <ul>
             {products.map(product => {
               const price = product.order_product
                 ? product.order_product.historicPrice
@@ -45,11 +45,11 @@ const Order = props => {
                 : product.quantity
               return (
                 <div key={product.id}>
-                  <div className="mb-3">Name: {product.name}</div>
-                  <div className="mb-3">Purchase Price: {price}</div>
+                  <li>Name: {product.name}</li>
+                  <li>Purchase Price: {price}</li>
 
                   {isAdmin ? (
-                    <div className="mb-3">Quantity: {quantity}</div>
+                    <li>Quantity: {quantity}</li>
                   ) : isCart ? (
                     <div>
                       <EditCheckout
@@ -58,8 +58,8 @@ const Order = props => {
                         userId={userId}
                       />
                       <button
-                        className="btn btn-primary btn-block"
                         type="button"
+                        className="btn btn-primary btn-sm"
                         onClick={() =>
                           props.handleDeleteProduct(userId, product.id)
                         }
@@ -68,15 +68,15 @@ const Order = props => {
                       </button>
                     </div>
                   ) : (
-                    <div className="mb-3">Quantity: {quantity}</div>
+                    <li>Quantity: {quantity}</li>
                   )}
                 </div>
               )
             })}
-          </div>
+          </ul>
           Subtotal: ${subtotal}.00
-        </div>
-      </div>
+        </li>
+      </ul>
     </div>
   )
 }

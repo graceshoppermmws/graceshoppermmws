@@ -120,9 +120,6 @@ class Cart extends Component {
 
   render() {
     const discount = this.state.discount
-    // const cart = this.props.user.id
-    //   ? this.props.cart[0] ? this.props.cart[0] : {isCart: true, products: []}
-    //   : this.state.cart
     let cart = {}
     if (this.props.user.id) {
       if (this.props.cart.products) {
@@ -151,9 +148,7 @@ class Cart extends Component {
     // console.log('subtotal', subtotal)
 
     return (
-      <div>
-        {/* <label>{`Original Subtotal: ${subtotal}.00`}</label>
-        <label>{`New Subtotal: ${this.props.total}.00`}</label> */}
+      <div className="cart">
         <Order
           discount={discount}
           user={this.props.user}
@@ -168,7 +163,9 @@ class Cart extends Component {
               onChange={this.handleDiscountChange}
               value={this.state.discountCode}
             />
-            <button type="submit">Enter</button>
+            <button className="btn btn-primary btn-sm" type="submit">
+              Enter
+            </button>
           </form>
         ) : (
           ' '

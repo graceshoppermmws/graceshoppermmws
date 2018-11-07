@@ -73,24 +73,20 @@ class EditCheckout extends Component {
 
   render() {
     return (
-      <div className="mb-3">
-        <form onSubmit={this.handleSubmit}>
-          <div>
-            Quantity:
-            <input
-              type="text"
-              name="quantity"
-              className="form-control"
-              required
-              value={this.state.quantity}
-              onChange={this.handleChange}
-            />
-            <button className="btn btn-primary btn-block" type="submit">
-              Update Quantity
-            </button>
-          </div>
-        </form>
-      </div>
+      <form onSubmit={this.handleSubmit}>
+        <li>
+          Quantity:
+          <input
+            type="text"
+            name="quantity"
+            value={this.state.quantity}
+            onChange={this.handleChange}
+          />
+          <button className="btn btn-primary btn-sm" type="submit">
+            Update Quantity
+          </button>
+        </li>
+      </form>
     )
   }
 }

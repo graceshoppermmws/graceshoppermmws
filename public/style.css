@@ -39,3 +39,11 @@ form div {
 .card {
   background: linear-gradient(to top, #66ccff 0%, #ffcccc 100%);
 }
+
+ul {
+  list-style-type: none;
+}
+
+.cart {
+  margin: 18px;
+}
