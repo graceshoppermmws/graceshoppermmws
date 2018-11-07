@@ -82,7 +82,9 @@ class EditCheckout extends Component {
             value={this.state.quantity}
             onChange={this.handleChange}
           />
-          <button type="submit">Update Quantity</button>
+          <button className="btn btn-primary btn-sm" type="submit">
+            Update Quantity
+          </button>
         </li>
       </form>
     )

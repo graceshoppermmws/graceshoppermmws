@@ -30,40 +30,52 @@ class Product extends Component {
     } = this.props.product
     return (
       <div>
-        <ul>
-          <Link to={`/products/${id}`}>
-            <img src={imageUrl} width="80px" />
-            <br />
-            <small>click for details</small>
-          </Link>
-          <li>Name: {name}</li>
-          <li>Bio: {bio}</li>
-          <li>District: {districtName}</li>
-          <li>Level: {govLevel}</li>
-          <li>Position: {position}</li>
-          <li>Price: ${price}</li>
-        </ul>
-        <div>
-          {!this.props.user.isAdmin && (
-            <form
-              onSubmit={event =>
-                this.props.handleClick(
-                  event,
-                  this.props.product,
-                  this.state.quantity
-                )
-              }
-            >
-              <label>Quantity:</label>
-              <input
-                type="text"
-                name="quantity"
-                value={this.state.quantity}
-                onChange={this.handleChange}
+        <div className="card mb-4 shadow-sm">
+          <div className="text-center">
+            <Link to={`/products/${id}`}>
+              <img
+                className="card-image-top"
+                src={imageUrl}
+                alt="card image cap"
+                position="center"
+                width="200px"
               />
-              <button type="submit">Add to Cart</button>
-            </form>
-          )}
+            </Link>
+          </div>
+          <div className="card-body">
+            <p>Name: {name}</p>
+            {this.props.selectedProduct ? <p>Bio: {bio}</p> : ' '}
+            <p>District: {districtName}</p>
+            <p>Level: {govLevel}</p>
+            <p>Position: {position}</p>
+            <p>Price: ${price}</p>
+            <div>
+              {!this.props.user.isAdmin && (
+                <form
+                  onSubmit={event =>
+                    this.props.handleClick(
+                      event,
+                      this.props.product,
+                      this.state.quantity
+                    )
+                  }
+                >
+                  <label>Quantity:</label>
+                  <input
+                    type="text"
+                    name="quantity"
+                    className="form-control"
+                    required
+                    value={this.state.quantity}
+                    onChange={this.handleChange}
+                  />
+                  <button className="btn btn-primary" type="submit">
+                    Add to Cart
+                  </button>
+                </form>
+              )}
+            </div>
+          </div>
         </div>
       </div>
     )

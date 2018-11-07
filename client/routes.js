@@ -41,10 +41,6 @@ class Routes extends Component {
           render={routeProps => <Cart {...routeProps} />}
         />
 
-        {/* Testing allRaces routes */}
-        {/* <Route exact path="/races" component={AllRaces} /> */}
-        {/* <Route path="/races/:raceId" component={SingleRace} /> */}
-
         {isLoggedIn && (
           <Switch>
             {/* Routes placed here are only available after logging in */}

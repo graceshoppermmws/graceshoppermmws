@@ -20,10 +20,12 @@ class PastOrders extends Component {
 
   render() {
     return (
-      <div>
+      <div className="cart">
         <h1>Your Past Orders</h1>
-        {this.props.pastOrders.map(order => (
-          <Order key={order.id} order={order} />
+        {this.props.pastOrders.map((order, i) => (
+          <div>
+            <Order key={order.id} order={order} />
+          </div>
         ))}
       </div>
     )

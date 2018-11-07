@@ -60,7 +60,6 @@ export const editQuantity = updatedQuantity => ({
 })
 
 export const removedProductFromCart = remainedProducts => ({
-  //rename deleteProductFromCart
   type: DELETE_PRODUCT_FROM_CART,
   remainedProducts
 })
@@ -93,7 +92,6 @@ export const getOrders = () => {
         dispatch(action)
       }
     } catch (err) {
-      // to add toastr
       console.error(err)
     }
   }
@@ -133,7 +131,6 @@ export const putCart = ({product, quantity}, userId) => {
 export const putQuantity = (product, quantity, userId) => {
   return async dispatch => {
     try {
-      console.log('store', userId)
       const response = await axios.put(`/api/users/${userId}/editquantity`, {
         product,
         quantity
@@ -186,7 +183,6 @@ export const postUnauthOrder = (order, discount) => {
       const action = createdOrder(newOrder)
       dispatch(action)
     } catch (err) {
-      // to add toastr
       console.log(err)
     }
   }
