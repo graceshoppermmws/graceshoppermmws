@@ -4,17 +4,17 @@ module.exports = router
 
 //Get all orders
 router.get('/', async (req, res, next) => {
-  if (req.user.isAdmin) {
-    try {
+  try {
+    if (req.user.isAdmin) {
       const allOrders = await Order.findAll({
         include: [{model: Product}]
       })
       res.status(200).json(allOrders)
-    } catch (err) {
-      next(err)
+    } else {
+      res.sendStatus(403)
     }
-  } else {
-    res.sendStatus(403)
+  } catch (err) {
+    next(err)
   }
 })
 
