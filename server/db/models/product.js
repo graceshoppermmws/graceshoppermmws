@@ -20,13 +20,19 @@ const Product = db.define('product', {
   districtName: {
     // type: Sequelize.ARRAY(Sequelize.STRING)
     type: Sequelize.ENUM(
+      'State Senate District 17',
+      'US House of Representatives District 1',
+      'US House of Representatives District 2',
+      'US House of Representatives District 3',
+      'US House of Representatives District 6',
       'US House of Representatives District 14',
-      'State Senate District 17'
+      'US House of Representatives District 15',
+      'US House of Representatives District 19'
     )
   },
   position: {
     // type: Sequelize.STRING
-    type: Sequelize.ENUM('Representative', 'Senator', 'Mayor', 'President')
+    type: Sequelize.ENUM('Representative', 'Senator', 'President')
   },
   inventory: {
     type: Sequelize.INTEGER,
@@ -36,7 +42,7 @@ const Product = db.define('product', {
     type: Sequelize.DECIMAL
   },
   govLevel: {
-    type: Sequelize.ENUM('Municipal', 'State', 'Federal'),
+    type: Sequelize.ENUM('Federal', 'State'),
     allowNull: false
   }
 })

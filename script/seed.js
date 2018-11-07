@@ -78,7 +78,7 @@ async function seed() {
     bio: `Gershon worked as a lender for commercial real estate investments. He received his bachelor's degree from Yale University and his M.B.A. from the University of California, Berkeley.`,
     imageUrl:
       'https://s3.amazonaws.com/ballotpedia-api/storage/uploads/thumbs/200/300/crop/best/Lee_Zeldin_new_official_portrait.jpg',
-    districtName: 'US House of Representatives District 14',
+    districtName: 'US House of Representatives District 1',
     position: 'Representative',
     govLevel: 'Federal',
     inventory: 100,
@@ -91,7 +91,7 @@ async function seed() {
     bio: `In addition to running as a Republican candidate, he is running in the 2018 election as a Conservative Party, Independence Party, and Reform Party candidate through fusion voting. He was re-elected in 2016. He faced Democrat Anna Throne-Holst and Working Families candidate Kenneth Schaeffer in the general election. New York's 1st Congressional District race was rated as a race to watch in 2016. Zeldin was previously a Republican member of the New York State Senate, representing District 3 from 2010 to January 1, 2015.`,
     imageUrl:
       'https://s3.amazonaws.com/ballotpedia-api/storage/uploads/thumbs/200/300/crop/best/Perry_Gershon.jpg',
-    districtName: 'US House of Representatives District 14',
+    districtName: 'US House of Representatives District 1',
     position: 'Representative',
     govLevel: 'Federal',
     inventory: 100,
@@ -104,7 +104,7 @@ async function seed() {
     bio: `Liuba Grechen Shirley is a Democratic candidate for New York's 2nd Congressional District in the U.S. House. Shirley is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
     imageUrl:
       'https://s3.amazonaws.com/ballotpedia-api/storage/uploads/thumbs/200/300/crop/best/Liuba_Grechen_Shirley.jpeg',
-    districtName: 'US House of Representatives District 14',
+    districtName: 'US House of Representatives District 2',
     position: 'Representative',
     govLevel: 'Federal',
     inventory: 100,
@@ -117,7 +117,7 @@ async function seed() {
     bio: `Peter King is the Republican representative from New York's 2nd Congressional District in the U.S. House. King is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018. In addition to running as a Republican candidate, King is running in the 2018 election as a Conservative Party, Independence Party, Reform Party, and Tax Revolt Party candidate through fusion voting. Prior offices held by King have been Nassau County Comptroller and a member of the Hempstead Town Council. Based on analysis of multiple outside rankings, King is a more moderate right of center Republican Party vote. As a result, he may break with the Republican Party line more than his fellow members.`,
     imageUrl:
       'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d2/Peter_T._King%2C_official_portrait%2C_112th_Congress.jpg/800px-Peter_T._King%2C_official_portrait%2C_112th_Congress.jpg',
-    districtName: 'US House of Representatives District 14',
+    districtName: 'US House of Representatives District 2',
     position: 'Representative',
     govLevel: 'Federal',
     inventory: 100,
@@ -130,7 +130,7 @@ async function seed() {
     bio: `om Suozzi is the Democratic representative from New York's 3rd Congressional District in the U.S. House. Suozzi is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
     imageUrl:
       'https://s3.amazonaws.com/ballotpedia-api/storage/uploads/thumbs/200/300/crop/best/Tom_Suozzi.jpg',
-    districtName: 'State Senate District 17',
+    districtName: 'US House of Representatives District 3',
     position: 'Representative',
     govLevel: 'Federal',
     inventory: 100,
@@ -143,7 +143,7 @@ async function seed() {
     bio: `Dan DeBono is a Republican candidate for New York's 3rd Congressional District in the U.S. House. DeBono is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
     imageUrl:
       'https://s3.amazonaws.com/ballotpedia-api/storage/uploads/thumbs/200/300/crop/best/image1-2.jpeg',
-    districtName: 'State Senate District 17',
+    districtName: 'US House of Representatives District 3',
     position: 'Representative',
     govLevel: 'Federal',
     inventory: 100,
@@ -156,7 +156,7 @@ async function seed() {
     bio: `Antonio Delgado is a Democratic candidate for New York's 19th Congressional District in the U.S. House. Delgado is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
     imageUrl:
       'https://s3.amazonaws.com/ballotpedia-api/storage/uploads/thumbs/200/300/crop/best/Web-Pic.jpg',
-    districtName: 'State Senate District 17',
+    districtName: 'US House of Representatives District 19',
     position: 'Representative',
     govLevel: 'Federal',
     inventory: 100,
@@ -169,7 +169,7 @@ async function seed() {
     bio: `John Faso is the Republican representative from New York's 19th Congressional District in the U.S. House. Faso is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
     imageUrl:
       'https://s3.amazonaws.com/ballotpedia-api/storage/uploads/thumbs/200/300/crop/best/John_Faso_official_congressional_photo.jpg',
-    districtName: 'State Senate District 17',
+    districtName: 'US House of Representatives District 19',
     position: 'Representative',
     govLevel: 'Federal',
     inventory: 100,
@@ -202,7 +202,61 @@ async function seed() {
     price: 50.0
   })
 
+  //11
+  const Serrano = await Product.create({
+    name: 'Jose Serrano',
+    bio: `José Serrano is the Democratic representative from New York's 15th Congressional District in the U.S. House. Serrano is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018. In addition to running as a Democratic candidate, Serrano ran in the 2018 election as a Working Families Party candidate through fusion voting.`,
+    imageUrl:
+      'https://s3.amazonaws.com/ballotpedia-api/storage/uploads/thumbs/200/300/crop/best/Jose_E._Serrano.jpeg',
+    districtName: 'US House of Representatives District 15',
+    position: 'Representative',
+    govLevel: 'Federal',
+    inventory: 100,
+    price: 50.0
+  })
+
   const testShopper = await User.create({
+    email: 'test@user.com',
+    isAdmin: true,
+    password: '123'
+  })
+
+  //12
+  const Gonzalez = await Product.create({
+    name: 'Jason Gonzalez',
+    bio: `Jason Gonzalez is a Republican candidate for New York's 15th Congressional District in the U.S. House. Gonzalez is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
+    districtName: 'US House of Representatives District 15',
+    position: 'Representative',
+    govLevel: 'Federal',
+    inventory: 100,
+    price: 50.0
+  })
+
+  //13
+  const Meng = await Product.create({
+    name: 'Grace Meng',
+    bio: `Grace Meng is the Democratic representative from New York's 6th Congressional District in the U.S. House. Meng is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018. In addition to running as a Democratic candidate, Meng ran in the 2018 election as a Working Families Party and Reform Party candidate through fusion voting. Meng is the first Asian American member of Congress from New York. Before her successful bid for Congress in 2012, Meng was a member of the New York State Assembly. Based on analysis of multiple outside rankings, Meng is an average Democratic member of Congress, meaning she will vote with the Democratic Party on the majority of bills.`,
+    imageUrl:
+      'https://s3.amazonaws.com/ballotpedia-api/storage/uploads/thumbs/200/300/crop/best/Grace_Meng_Official_Congressional_Photo.jpg',
+    districtName: 'US House of Representatives District 6',
+    position: 'Representative',
+    govLevel: 'Federal',
+    inventory: 100,
+    price: 50.0
+  })
+
+  //12
+  const Hillgardner = await Product.create({
+    name: 'Tom Hillgardner',
+    bio: `Tom Hillgardner is a Green Party candidate for New York's 6th Congressional District in the U.S. House. Hillgardner is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
+    districtName: 'US House of Representatives District 6',
+    position: 'Representative',
+    govLevel: 'Federal',
+    inventory: 100,
+    price: 50.0
+  })
+
+  const testShopperTwo = await User.create({
     email: 'test@user.com',
     isAdmin: true,
     password: '123'
