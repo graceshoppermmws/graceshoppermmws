@@ -20,8 +20,8 @@ const Order = props => {
   subtotal *= discount
 
   return (
-    <div>
-      <h3>Order: {id}</h3>
+    <div className="container">
+      <h3 className="py-5 text-center">Order:</h3>
       {isAdmin ? (
         <ul>
           <li>User: {userId}</li>
@@ -33,9 +33,9 @@ const Order = props => {
         ' '
       )}
 
-      <ul>
-        <li>
-          <ul>
+      <div className="row">
+        <div className="col-md-8 order-md-1">
+          <div className="row">
             {products.map(product => {
               const price = product.order_product
                 ? product.order_product.historicPrice
@@ -45,11 +45,11 @@ const Order = props => {
                 : product.quantity
               return (
                 <div key={product.id}>
-                  <li>Name: {product.name}</li>
-                  <li>Purchase Price: {price}</li>
+                  <div className="mb-3">Name: {product.name}</div>
+                  <div className="mb-3">Purchase Price: {price}</div>
 
                   {isAdmin ? (
-                    <li>Quantity: {quantity}</li>
+                    <div className="mb-3">Quantity: {quantity}</div>
                   ) : isCart ? (
                     <div>
                       <EditCheckout
@@ -58,6 +58,7 @@ const Order = props => {
                         userId={userId}
                       />
                       <button
+                        className="btn btn-primary btn-block"
                         type="button"
                         onClick={() =>
                           props.handleDeleteProduct(userId, product.id)
@@ -67,15 +68,15 @@ const Order = props => {
                       </button>
                     </div>
                   ) : (
-                    <li>Quantity: {quantity}</li>
+                    <div className="mb-3">Quantity: {quantity}</div>
                   )}
                 </div>
               )
             })}
-          </ul>
+          </div>
           Subtotal: ${subtotal}.00
-        </li>
-      </ul>
+        </div>
+      </div>
     </div>
   )
 }

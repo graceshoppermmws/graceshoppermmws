@@ -154,12 +154,14 @@ class Cart extends Component {
       <div>
         {/* <label>{`Original Subtotal: ${subtotal}.00`}</label>
         <label>{`New Subtotal: ${this.props.total}.00`}</label> */}
-        <Order
-          discount={discount}
-          user={this.props.user}
-          order={cart}
-          handleDeleteProduct={this.handleDeleteProduct}
-        />
+        <table>
+          <Order
+            discount={discount}
+            user={this.props.user}
+            order={cart}
+            handleDeleteProduct={this.handleDeleteProduct}
+          />
+        </table>
         {this.props.match.params.userId && cart.products.length ? (
           <form onSubmit={this.handleDiscount}>
             <label>Promo Code:</label>

@@ -90,7 +90,7 @@ class AllProducts extends Component {
       <div>
         <div className="container text-center">
           <div className="container">
-            <h2 className="text-center">Candidates For Sale</h2>
+            <h2 className="text-center">кандидаты на продажу</h2>
             <h4>Filter By Category</h4>
             <select onChange={evt => this.handleFilter(evt)}>
               <option value="">View All</option>
