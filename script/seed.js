@@ -222,15 +222,15 @@ async function seed() {
   })
 
   //12
-  const Gonzalez = await Product.create({
-    name: 'Jason Gonzalez',
-    bio: `Jason Gonzalez is a Republican candidate for New York's 15th Congressional District in the U.S. House. Gonzalez is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
-    districtName: 'US House of Representatives District 15',
-    position: 'Representative',
-    govLevel: 'Federal',
-    inventory: 100,
-    price: 50.0
-  })
+  // const Gonzalez = await Product.create({
+  //   name: 'Jason Gonzalez',
+  //   bio: `Jason Gonzalez is a Republican candidate for New York's 15th Congressional District in the U.S. House. Gonzalez is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
+  //   districtName: 'US House of Representatives District 15',
+  //   position: 'Representative',
+  //   govLevel: 'Federal',
+  //   inventory: 100,
+  //   price: 50.0
+  // })
 
   //13
   const Meng = await Product.create({
@@ -246,18 +246,18 @@ async function seed() {
   })
 
   //12
-  const Hillgardner = await Product.create({
-    name: 'Tom Hillgardner',
-    bio: `Tom Hillgardner is a Green Party candidate for New York's 6th Congressional District in the U.S. House. Hillgardner is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
-    districtName: 'US House of Representatives District 6',
-    position: 'Representative',
-    govLevel: 'Federal',
-    inventory: 100,
-    price: 50.0
-  })
+  // const Hillgardner = await Product.create({
+  //   name: 'Tom Hillgardner',
+  //   bio: `Tom Hillgardner is a Green Party candidate for New York's 6th Congressional District in the U.S. House. Hillgardner is running in the general election on November 6, 2018, after advancing from the primary on June 26, 2018.`,
+  //   districtName: 'US House of Representatives District 6',
+  //   position: 'Representative',
+  //   govLevel: 'Federal',
+  //   inventory: 100,
+  //   price: 50.0
+  // })
 
   const testShopperTwo = await User.create({
-    email: 'test@user.com',
+    email: 'test2@user.com',
     isAdmin: true,
     password: '123'
   })
