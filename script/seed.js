@@ -257,7 +257,7 @@ async function seed() {
   })
 
   const testShopperTwo = await User.create({
-    email: 'test@user.com',
+    email: 'test2@user.com',
     isAdmin: true,
     password: '123'
   })

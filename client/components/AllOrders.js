@@ -28,7 +28,7 @@ class AllOrders extends Component {
   render() {
     const filterView = this.state.filter
     return (
-      <div>
+      <div className="cart">
         <h1>User Orders</h1>
         <h4>Filter By Status</h4>
         <select onChange={evt => this.handleFilter(evt)}>
