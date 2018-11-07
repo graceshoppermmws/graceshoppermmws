@@ -32,8 +32,6 @@ router.post('/charge', async (req, res) => {
         0
       )
     }
-    console.log(`$${calculateTotal / 100}.00`)
-    //*****
     let {status} = await stripe.charges.create({
       amount: calculateTotal,
       currency: 'usd',

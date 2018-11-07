@@ -6,7 +6,8 @@ module.exports = router
 
 router.get('/:userId', async (req, res, next) => {
   try {
-    if (req.user.id === req.params.userId || req.user.isAdmin) {
+    const userId = req.user.id || null
+    if (userId === req.params.userId || req.user.isAdmin) {
       const particularUser = await User.findById(+req.params.userId, {
         include: [{model: Order}]
       })
@@ -30,8 +31,8 @@ router.get('/:userId', async (req, res, next) => {
 // get current cart
 
 router.get('/:userId/cart', async (req, res, next) => {
-  const userId = req.user.id || null
   try {
+    const userId = req.user.id || null
     if (userId === +req.params.userId) {
       const cart = await Order.findOne({
         where: {isCart: true, userId: +req.params.userId},

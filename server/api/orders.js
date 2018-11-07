@@ -22,7 +22,6 @@ router.get('/', async (req, res, next) => {
 
 router.post('/checkout', async (req, res, next) => {
   try {
-    // check if payment processed ? req.payment === true? who knows.
     const discount = req.body.discount || 1
     const products = req.body.products
     const newOrder = await Order.create({
